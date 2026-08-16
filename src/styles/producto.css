@@ -1,0 +1,241 @@
+/* src/styles/producto.css */
+.producto-page {
+  padding: 120px 20px 60px; /* Espacio para el header fijo */
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'DM Sans', sans-serif;
+  color: #111111;
+}
+
+.producto-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.producto-volver {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #111111;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.producto-volver:hover {
+  color: #2D5A3D;
+}
+
+/* Sección de Imagen */
+.producto-galeria {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.producto-imagen-principal {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background-color: #F4F1EC;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.producto-imagen-principal img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Sección de Información */
+.producto-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.producto-badge {
+  background-color: #111111;
+  color: #F4F1EC;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 20px;
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.producto-categoria {
+  color: #4A8C60;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.producto-nombre {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.producto-rating {
+  color: #D4C4A8;
+  font-size: 1.2rem;
+}
+
+.producto-precio {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #111111;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+/* Selectores de Tamaño y Marco */
+.producto-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.opcion-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.opcion-grupo label {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.selector-botones {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-selector {
+  background-color: #F4F1EC;
+  border: 2px solid #D4C4A8;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #111111;
+}
+
+.btn-selector:hover {
+  border-color: #111111;
+}
+
+.btn-selector.activo {
+  background-color: #111111;
+  border-color: #111111;
+  color: #F4F1EC;
+}
+
+/* Selector de Cantidad */
+.selector-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #F4F1EC;
+  width: fit-content;
+  border-radius: 8px;
+  border: 2px solid #D4C4A8;
+  padding: 5px;
+}
+
+.selector-cantidad button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111111;
+}
+
+.selector-cantidad span {
+  font-weight: bold;
+  font-size: 1.1rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Botón Agregar al Carrito */
+.btn-agregar-carrito {
+  background-color: #2D5A3D;
+  color: white;
+  border: none;
+  padding: 18px 24px;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.btn-agregar-carrito:hover {
+  background-color: #1a3a26;
+}
+
+/* Nota Cuadro Personalizado */
+.nota-personalizada {
+  background-color: #E84040;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsive Móvil */
+@media (max-width: 768px) {
+  .producto-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .producto-nombre {
+    font-size: 2rem;
+  }
+
+  .producto-page {
+    padding-top: 100px;
+  }
+}
