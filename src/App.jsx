@@ -141,25 +141,22 @@ function App() {
 
   useEffect(() => {
     function detectarScroll() {
-      const actual =
-        window.scrollY;
+      const actual = window.scrollY;
 
+      // Si estás cerca de la parte superior, muestra el header
       if (actual < 80) {
         setHeaderVisible(true);
-      } else if (
-        actual >
-        lastScrollY.current
-      ) {
-        setHeaderVisible(false);
-      } else if (
-        actual <
-        lastScrollY.current
-      ) {
+      } 
+      // Si haces scroll hacia arriba, aparece inmediatamente sin importar dónde estés
+      else if (actual < lastScrollY.current) {
         setHeaderVisible(true);
+      } 
+      // Si haces scroll hacia abajo, se oculta
+      else if (actual > lastScrollY.current) {
+        setHeaderVisible(false);
       }
 
-      lastScrollY.current =
-        actual;
+      lastScrollY.current = actual;
     }
 
     window.addEventListener(
