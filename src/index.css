@@ -132,3 +132,51 @@ code {
     height: auto !important;
   }
 }
+
+/* --- Arreglos de la Sección de Personalización SOLO PARA CELULARES --- */
+@media (max-width: 768px) {
+  
+  /* 1. Centrar y dar espacio a la sección */
+  section[data-personalizar] { 
+    text-align: center !important;
+    padding: 30px 15px !important; 
+  }
+
+  /* 2. Arreglar el título grande y pesado */
+  section[data-personalizar] h2, 
+  section[data-personalizar] .grande-y-bold { 
+    line-height: 1.2 !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* 3. Arreglar el texto descriptivo */
+  section[data-personalizar] p,
+  section[data-personalizar] .descriptivo {
+    margin-bottom: 30px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* 4. Estilizar la lista de pasos */
+  section[data-personalizar] ul,
+  section[data-personalizar] .lista-pasos {
+    display: inline-block !important;
+    text-align: left !important;
+    margin-bottom: 40px !important;
+  }
+
+  section[data-personalizar] ul li,
+  section[data-personalizar] .lista-pasos li {
+    margin-bottom: 15px !important;
+  }
+
+  /* 5. Modernizar el botón y hacerlo ancho completo */
+  section[data-personalizar] button,
+  section[data-personalizar] .boton-personalizar {
+    border-radius: 5px !important;
+    padding: 12px 24px !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    width: 100% !important; 
+  }
+}
