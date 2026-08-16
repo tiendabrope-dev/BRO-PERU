@@ -109,3 +109,26 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* --- Ajustes exclusivos para celulares --- */
+@media (max-width: 768px) {
+  /* Asegura que los textos blancos pasen a negro */
+  h1, h2, h3, p, span, .title {
+    color: #000000 !important;
+  }
+
+  /* Apila los productos en columna (uno debajo del otro) */
+  .flex, .grid { 
+    /* Si usaste display flex o grid para alinear los productos, esto los apila */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+  }
+
+  /* Ajusta el ancho de las imágenes para que entren en la pantalla */
+  img {
+    max-width: 90% !important;
+    height: auto !important;
+  }
+}
