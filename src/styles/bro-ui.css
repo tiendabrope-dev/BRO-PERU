@@ -1679,3 +1679,20 @@
   opacity: 0;
   pointer-events: none; /* Evita que hagas click accidentalmente cuando está oculto */
 }
+
+/* --- Header Inteligente (Ocultar al bajar / Mostrar al subir) --- */
+.bro-main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: transform 0.25s ease-in-out;
+  background-color: var(--bg, #fff);
+}
+
+.bro-main-header.visible {
+  transform: translateY(0);
+}
+
+.bro-main-header.hidden {
+  transform: translateY(-100%);
+}
