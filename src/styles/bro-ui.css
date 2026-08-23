@@ -718,7 +718,7 @@
   width: 100%;
   height: 100%;
 
-  object-fit: cover !important;
+  object-fit: contain !important; /* <--- Ajustado a contain para ver los cuadros completos */
 
   object-position: center;
 
@@ -1677,10 +1677,9 @@
 .bro-main-header.hidden {
   transform: translateY(-100%);
   opacity: 0;
-  pointer-events: none; /* Evita que hagas click accidentalmente cuando está oculto */
+  pointer-events: none;
 }
 
-/* --- Header Inteligente (Ocultar al bajar / Mostrar al subir) --- */
 .bro-main-header {
   position: sticky;
   top: 0;
