@@ -694,9 +694,9 @@
 
   width: 100%;
 
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1.414; /* Proporción exacta A4 */
 
-  background: #000000; /* <--- Fondo negro para eliminar líneas blancas */
+  background: #000000;
 
   padding: 0px;
 
