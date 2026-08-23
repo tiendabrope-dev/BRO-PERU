@@ -37,16 +37,6 @@ export const categorias = [
   },
 ];
 
-/* =========================================================
-   OPCIONES TEMPORALES DE CUADROS
-
-   Por ahora:
-   - cualquier tamaño = S/ 15
-   - marco = + S/ 15
-
-   Luego cambiaremos estos montos por los precios reales.
-========================================================= */
-
 const tamanosCuadro = [
   {
     id: 'a4',
@@ -89,43 +79,63 @@ export const productos = [
     rating: 0,
     ratingCount: 0,
     categoria: 'cuadros',
-
     tamanos: tamanosCuadro,
     marcos: marcosCuadro,
   },
-
   {
     id: 2,
     slug: 'porsche-911-gt3-rs',
     nombre: 'Porsche 911 GT3 RS',
     precioDesde: 15,
-    imagen: heroCuadro,
+    imagen: heroCuadro, // Muestra el cuadro del Porsche que ya armaste
     badge: 'MÁS VENDIDO',
     rating: 0,
     ratingCount: 0,
     categoria: 'cuadros',
-
     tamanos: tamanosCuadro,
     marcos: marcosCuadro,
   },
-
   {
     id: 3,
-    slug: 'bmw-m3-competition',
-    nombre: 'BMW M3 Competition',
+    slug: 'case-porsche-911',
+    nombre: 'Case Porsche 911 GT3 RS',
     precioDesde: 15,
-    imagen: heroCuadro,
+    imagen: heroCase, // Usamos la imagen del case que ya está lista
     badge: 'TENDENCIA',
     rating: 0,
     ratingCount: 0,
+    categoria: 'cases',
+    tamanos: [],
+    marcos: [],
+  },
+  {
+    id: 4,
+    slug: 'polo-porsche-911',
+    nombre: 'Polo Porsche 911 GT3 RS',
+    precioDesde: 15,
+    imagen: heroPolo, // Usamos la imagen del polo que ya está lista
+    badge: 'NUEVO',
+    rating: 0,
+    ratingCount: 0,
+    categoria: 'polos',
+    tamanos: [],
+    marcos: [],
+  },
+  {
+    id: 5,
+    slug: 'bmw-m3-competition',
+    nombre: 'BMW M3 Competition',
+    precioDesde: 15,
+    imagen: heroCuadro, // Temporalmente usa heroCuadro hasta que subas su render
+    badge: '',
+    rating: 0,
+    ratingCount: 0,
     categoria: 'cuadros',
-
     tamanos: tamanosCuadro,
     marcos: marcosCuadro,
   },
-
   {
-    id: 4,
+    id: 6,
     slug: 'nissan-gtr-r34',
     nombre: 'Nissan GT-R R34',
     precioDesde: 15,
@@ -134,13 +144,11 @@ export const productos = [
     rating: 0,
     ratingCount: 0,
     categoria: 'cuadros',
-
     tamanos: tamanosCuadro,
     marcos: marcosCuadro,
   },
-
   {
-    id: 5,
+    id: 7,
     slug: 'toyota-supra-mk4',
     nombre: 'Toyota Supra MK4',
     precioDesde: 15,
@@ -149,13 +157,11 @@ export const productos = [
     rating: 0,
     ratingCount: 0,
     categoria: 'cuadros',
-
     tamanos: tamanosCuadro,
     marcos: marcosCuadro,
   },
-
   {
-    id: 6,
+    id: 8,
     slug: 'lamborghini-huracan',
     nombre: 'Lamborghini Huracán',
     precioDesde: 15,
@@ -164,67 +170,6 @@ export const productos = [
     rating: 0,
     ratingCount: 0,
     categoria: 'cuadros',
-
-    tamanos: tamanosCuadro,
-    marcos: marcosCuadro,
-  },
-
-  {
-    id: 7,
-    slug: 'mercedes-amg',
-    nombre: 'Mercedes AMG',
-    precioDesde: 15,
-    imagen: heroCuadro,
-    badge: '',
-    rating: 0,
-    ratingCount: 0,
-    categoria: 'cuadros',
-
-    tamanos: tamanosCuadro,
-    marcos: marcosCuadro,
-  },
-
-  {
-    id: 8,
-    slug: 'audi-rs',
-    nombre: 'Audi RS',
-    precioDesde: 15,
-    imagen: heroCuadro,
-    badge: '',
-    rating: 0,
-    ratingCount: 0,
-    categoria: 'cuadros',
-
-    tamanos: tamanosCuadro,
-    marcos: marcosCuadro,
-  },
-
-  {
-    id: 9,
-    slug: 'ford-mustang-gt',
-    nombre: 'Ford Mustang GT',
-    precioDesde: 15,
-    imagen: heroCuadro,
-    badge: '',
-    rating: 0,
-    ratingCount: 0,
-    categoria: 'cuadros',
-
-    tamanos: tamanosCuadro,
-    marcos: marcosCuadro,
-  },
-
-  {
-    id: 10,
-    slug: 'porsche-collection',
-    nombre: 'Porsche Collection',
-    precioDesde: 15,
-    imagen: heroCuadro,
-    badge: '',
-    rating: 0,
-    ratingCount: 0,
-    categoria: 'cuadros',
-
     tamanos: tamanosCuadro,
     marcos: marcosCuadro,
   },
