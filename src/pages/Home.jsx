@@ -2,7 +2,7 @@ import Hero from '../components/Hero';
 import Categorias from '../components/Categorias';
 import BestSellers from '../components/BestSellers';
 
-import heroCuadro from '../assets/hero/hero-cuadro.png';
+import heroCuadro from '../assets/hero/hero-cuadro.jpg';
 
 function Home({
   categorias,
