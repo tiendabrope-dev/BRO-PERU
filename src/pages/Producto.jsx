@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import '../styles/producto.css';
+import medidaCuadro from '../assets/hero/hero-cuadro.png'; // Imagen secundaria de medidas para la miniatura
 
 export default function Producto({ producto, onVolver, onAgregarAlCarrito }) {
   const [tamano, setTamano] = useState('A3');
   const [marco, setMarco] = useState('Sin marco');
   const [cantidad, setCantidad] = useState(1);
 
+  // Estado para la galería: índice de la imagen seleccionada (0 = principal, 1 = medidas)
+  const [imagenActiva, setImagenActiva] = useState(0);
+
   if (!producto) return null;
+
+  // Lista de imágenes para la galería (imagen del producto + miniatura de medidas)
+  const imagenesGaleria = [
+    producto.imagen,
+    medidaCuadro
+  ];
 
   // Lógica temporal de precios (cualquier tamaño sin marco = S/15, con marco = S/30)
   const precioUnitario = marco === 'Con marco' ? 30 : 15;
@@ -37,10 +47,36 @@ export default function Producto({ producto, onVolver, onAgregarAlCarrito }) {
       </button>
 
       <div className="producto-container">
-        {/* Columna Izquierda: Imagen */}
-        <div className="producto-galeria">
+        {/* Columna Izquierda: Galería e Imagen con Miniaturas */}
+        <div className="producto-galeria" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div className="producto-imagen-principal">
-            <img src={producto.imagen} alt={producto.nombre} />
+            <img src={imagenesGaleria[imagenActiva]} alt={producto.nombre} />
+          </div>
+
+          {/* Miniaturas de la galería */}
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {imagenesGaleria.map((imgSrc, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setImagenActiva(index)}
+                style={{
+                  width: '65px',
+                  aspectRatio: '1 / 1.414',
+                  background: '#000',
+                  border: imagenActiva === index ? '2px solid #2d5a3d' : '1px solid #ccc',
+                  borderRadius: '6px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  padding: '0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <img src={imgSrc} alt="Miniatura" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              </button>
+            ))}
           </div>
         </div>
 
@@ -67,6 +103,7 @@ export default function Producto({ producto, onVolver, onAgregarAlCarrito }) {
                 {['A4', 'A3', 'A2'].map((t) => (
                   <button 
                     key={t}
+                    type="button"
                     className={`btn-selector ${tamano === t ? 'activo' : ''}`}
                     onClick={() => setTamano(t)}
                   >
@@ -82,6 +119,7 @@ export default function Producto({ producto, onVolver, onAgregarAlCarrito }) {
                 {['Sin marco', 'Con marco'].map((m) => (
                   <button 
                     key={m}
+                    type="button"
                     className={`btn-selector ${marco === m ? 'activo' : ''}`}
                     onClick={() => setMarco(m)}
                   >
@@ -94,14 +132,14 @@ export default function Producto({ producto, onVolver, onAgregarAlCarrito }) {
             <div className="opcion-grupo">
               <label>Cantidad:</label>
               <div className="selector-cantidad">
-                <button onClick={() => setCantidad(Math.max(1, cantidad - 1))}>-</button>
+                <button type="button" onClick={() => setCantidad(Math.max(1, cantidad - 1))}>-</button>
                 <span>{cantidad}</span>
-                <button onClick={() => setCantidad(cantidad + 1)}>+</button>
+                <button type="button" onClick={() => setCantidad(cantidad + 1)}>+</button>
               </div>
             </div>
           </div>
 
-          <button className="btn-agregar-carrito" onClick={handleAgregar}>
+          <button type="button" className="btn-agregar-carrito" onClick={handleAgregar}>
             AGREGAR AL CARRITO • S/ {precioTotal}.00
           </button>
         </div>
