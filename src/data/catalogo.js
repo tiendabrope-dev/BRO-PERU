@@ -1,9 +1,7 @@
 import heroCuadro from '../assets/hero/hero-cuadro.png';
 import heroCase from '../assets/hero/hero-case.png';
 import heroPolo from '../assets/hero/hero-polo.png';
-
-// Importa aquí tu nueva imagen de cuadro personalizado cuando la guardes en la carpeta nueva:
-// import cuadroPersonalizado from '../assets/productos/cuadro-personalizado.png';
+import cuadroPersonalizado from '../assets/productos/cuadro-personalizado.png';
 
 export const DELIVERY = 15;
 
@@ -51,14 +49,13 @@ const marcosCuadro = [
   { id: 'con-marco', nombre: 'Con marco', adicional: 15 },
 ];
 
-// LISTA DE PRODUCTOS (EXCLUSIVAMENTE CUADROS PARA LA VISTA PRINCIPAL)
 export const productos = [
   {
     id: 1,
     slug: 'cuadro-personalizado',
     nombre: 'Cuadro personalizado',
     precioDesde: 15,
-    imagen: heroCuadro, // Cámbialo por `cuadroPersonalizado` cuando lo pongas en la nueva carpeta
+    imagen: cuadroPersonalizado,
     badge: 'PERSONALIZABLE',
     rating: 0,
     ratingCount: 0,
@@ -71,7 +68,7 @@ export const productos = [
     slug: 'porsche-911-gt3-rs',
     nombre: 'Porsche 911 GT3 RS',
     precioDesde: 15,
-    imagen: heroCuadro, 
+    imagen: heroCuadro,
     badge: 'MÁS VENDIDO',
     rating: 0,
     ratingCount: 0,
