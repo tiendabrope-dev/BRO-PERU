@@ -696,7 +696,7 @@
 
   aspect-ratio: 3 / 4;
 
-  background: #fdfdfd;
+  background: #000000; /* <--- Fondo negro para eliminar líneas blancas */
 
   padding: 0px;
 
