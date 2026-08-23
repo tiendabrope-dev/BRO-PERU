@@ -5,16 +5,8 @@ import {
 
 function SearchIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle
-        cx="11"
-        cy="11"
-        r="6.2"
-      />
-
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.2" />
       <path d="M16 16L21 21" />
     </svg>
   );
@@ -22,16 +14,8 @@ function SearchIcon() {
 
 function UserIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle
-        cx="12"
-        cy="7.3"
-        r="3.4"
-      />
-
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="7.3" r="3.4" />
       <path d="M5.5 19C6.5 15.7 8.7 14 12 14C15.3 14 17.5 15.7 18.5 19" />
     </svg>
   );
@@ -39,23 +23,10 @@ function UserIcon() {
 
 function CartIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M3 4H5.2L7.4 14H18.4L20 7H6.3" />
-
-      <circle
-        cx="9"
-        cy="18.3"
-        r="1.4"
-      />
-
-      <circle
-        cx="17"
-        cy="18.3"
-        r="1.4"
-      />
+      <circle cx="9" cy="18.3" r="1.4" />
+      <circle cx="17" cy="18.3" r="1.4" />
     </svg>
   );
 }
@@ -74,11 +45,7 @@ function Header({
   onAfiliados,
   onAbrirCarrito,
 }) {
-  const [
-    menuCategorias,
-    setMenuCategorias,
-  ] = useState(false);
-
+  const [menuCategorias, setMenuCategorias] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -86,15 +53,15 @@ function Header({
     function handleScroll() {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY < 50) {
+      if (currentScrollY <= 30) {
         setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Al bajar: se oculta
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolleando hacia arriba en cualquier parte: aparece inmediatamente
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // Scrolleando hacia abajo: se oculta
         setIsVisible(false);
         setMenuCategorias(false);
-      } else {
-        // Al subir en cualquier parte: aparece al instante
-        setIsVisible(true);
       }
 
       setLastScrollY(currentScrollY);
@@ -113,15 +80,13 @@ function Header({
 
   return (
     <div
-      className={`bro-main-header ${
-        isVisible ? 'visible' : 'hidden'
-      }`}
       style={{
         position: 'sticky',
         top: 0,
         zIndex: 1400,
-        transition: 'transform 0.25s ease-in-out',
+        width: '100%',
         transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+        transition: 'transform 0.3s ease-in-out',
       }}
     >
       <div className="bro-topbar">
@@ -134,11 +99,7 @@ function Header({
         </button>
 
         <div className="bro-topbar-message">
-          {
-            mensajesSuperiores[
-              mensajeSuperior
-            ]
-          }
+          {mensajesSuperiores[mensajeSuperior]}
         </div>
 
         <button
@@ -150,7 +111,7 @@ function Header({
         </button>
       </div>
 
-      <header className="bro-main-header-inner">
+      <header className="bro-main-header">
         <div className="bro-header-top">
           <button
             type="button"
@@ -186,14 +147,8 @@ function Header({
               onClick={onAbrirCarrito}
             >
               <CartIcon />
-
-              <strong>
-                Carrito
-              </strong>
-
-              <span>
-                {cantidadTotal}
-              </span>
+              <strong>Carrito</strong>
+              <span>{cantidadTotal}</span>
             </button>
           </div>
         </div>
@@ -211,46 +166,24 @@ function Header({
             <button
               type="button"
               className="bro-nav-dropdown-button"
-              onClick={() =>
-                setMenuCategorias(
-                  (actual) => !actual
-                )
-              }
+              onClick={() => setMenuCategorias((actual) => !actual)}
             >
               Comprar por categoría
-
-              <span className="bro-chevron">
-                ⌄
-              </span>
+              <span className="bro-chevron">⌄</span>
             </button>
 
             {menuCategorias && (
               <div className="bro-dropdown-menu">
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
+                <button type="button" onClick={abrirCategoria}>
                   Cuadros
                 </button>
-
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
+                <button type="button" onClick={abrirCategoria}>
                   Cases
                 </button>
-
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
+                <button type="button" onClick={abrirCategoria}>
                   Polos
                 </button>
-
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
+                <button type="button" onClick={abrirCategoria}>
                   Wallpapers
                 </button>
               </div>
