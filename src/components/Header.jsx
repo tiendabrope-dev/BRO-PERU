@@ -1,266 +1,163 @@
-import {
-  useState,
-} from 'react';
-
-function SearchIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle
-        cx="11"
-        cy="11"
-        r="6.2"
-      />
-
-      <path d="M16 16L21 21" />
-    </svg>
-  );
-}
-
-function UserIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle
-        cx="12"
-        cy="7.3"
-        r="3.4"
-      />
-
-      <path d="M5.5 19C6.5 15.7 8.7 14 12 14C15.3 14 17.5 15.7 18.5 19" />
-    </svg>
-  );
-}
-
-function CartIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path d="M3 4H5.2L7.4 14H18.4L20 7H6.3" />
-
-      <circle
-        cx="9"
-        cy="18.3"
-        r="1.4"
-      />
-
-      <circle
-        cx="17"
-        cy="18.3"
-        r="1.4"
-      />
-    </svg>
-  );
-}
+import { useEffect, useState } from 'react';
 
 function Header({
-  mensajesSuperiores,
-  mensajeSuperior,
-  onMensajeAnterior,
-  onMensajeSiguiente,
-  headerVisible,
-  cantidadTotal,
-  onInicio,
-  onCategoria,
-  onMiPedido,
-  onPreguntas,
-  onContacto,
-  onAfiliados,
-  onAbrirCarrito,
+  cartCount,
+  onOpenCart,
+  onNavigate,
+  categorias,
+  onCategoriaSelect,
 }) {
-  const [
-    menuCategorias,
-    setMenuCategorias,
-  ] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  function abrirCategoria() {
-    setMenuCategorias(false);
-    onCategoria();
-  }
+  useEffect(() => {
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 50) {
+        // Arriba del todo: mostrar siempre
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolleando hacia abajo: ocultar
+        setIsVisible(false);
+        setIsDropdownOpen(false);
+      } else {
+        // Scrolleando hacia arriba en cualquier parte: mostrar al instante
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   return (
-    <>
-      <div className="bro-topbar">
+    <header className={`bro-main-header ${isVisible ? 'visible' : 'hidden'}`}>
+      <div className="bro-header-top">
         <button
           type="button"
-          onClick={onMensajeAnterior}
-          aria-label="Mensaje anterior"
+          className="bro-logo"
+          onClick={() => onNavigate('home')}
         >
-          ‹
+          BR<span>O</span>
         </button>
 
-        <div className="bro-topbar-message">
-          {
-            mensajesSuperiores[
-              mensajeSuperior
-            ]
-          }
+        <div className="bro-header-center-space" />
+
+        <div className="bro-header-actions">
+          <button
+            type="button"
+            className="bro-icon-button"
+            aria-label="Buscar"
+          >
+            <svg viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="bro-icon-button"
+            aria-label="Mi cuenta"
+          >
+            <svg viewBox="0 0 24 24">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className="bro-cart-new"
+            onClick={onOpenCart}
+          >
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            <strong>Carrito</strong>
+            <span>{cartCount}</span>
+          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={onMensajeSiguiente}
-          aria-label="Mensaje siguiente"
-        >
-          ›
-        </button>
       </div>
 
-      <header
-        className={
-          `bro-main-header ${
-            headerVisible
-              ? 'visible'
-              : 'hidden'
-          }`
-        }
-      >
-        <div className="bro-header-top">
+      <nav className="bro-nav-row">
+        <button
+          type="button"
+          className="bro-nav-link"
+          onClick={() => onNavigate('home')}
+        >
+          Inicio
+        </button>
+
+        <div className="bro-category-dropdown">
           <button
             type="button"
-            className="bro-logo"
-            onClick={onInicio}
-            aria-label="Ir al inicio"
+            className="bro-nav-dropdown-button"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            BR<span>O</span>
+            Comprar por categoría
+            <span className="bro-chevron">▼</span>
           </button>
 
-          <div className="bro-header-center-space" />
-
-          <div className="bro-header-actions">
-            <button
-              type="button"
-              className="bro-icon-button"
-              aria-label="Buscar"
-            >
-              <SearchIcon />
-            </button>
-
-            <button
-              type="button"
-              className="bro-icon-button"
-              aria-label="Usuario"
-            >
-              <UserIcon />
-            </button>
-
-            <button
-              type="button"
-              className="bro-cart-new"
-              onClick={onAbrirCarrito}
-            >
-              <CartIcon />
-
-              <strong>
-                Carrito
-              </strong>
-
-              <span>
-                {cantidadTotal}
-              </span>
-            </button>
-          </div>
+          {isDropdownOpen && (
+            <div className="bro-dropdown-menu">
+              {categorias.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => {
+                    onCategoriaSelect(cat.tipo);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {cat.nombre}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        <nav className="bro-nav-row">
-          <button
-            type="button"
-            className="bro-nav-link"
-            onClick={onInicio}
-          >
-            Inicio
-          </button>
+        <button
+          type="button"
+          className="bro-nav-link"
+          onClick={() => onNavigate('mi-pedido')}
+        >
+          Mi pedido
+        </button>
 
-          <div className="bro-category-dropdown">
-            <button
-              type="button"
-              className="bro-nav-dropdown-button"
-              onClick={() =>
-                setMenuCategorias(
-                  (actual) => !actual
-                )
-              }
-            >
-              Comprar por categoría
+        <button
+          type="button"
+          className="bro-nav-link"
+          onClick={() => onNavigate('preguntas')}
+        >
+          Preguntas frecuentes
+        </button>
 
-              <span className="bro-chevron">
-                ⌄
-              </span>
-            </button>
+        <button
+          type="button"
+          className="bro-nav-link"
+          onClick={() => onNavigate('contacto')}
+        >
+          Contacto
+        </button>
 
-            {menuCategorias && (
-              <div className="bro-dropdown-menu">
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
-                  Cuadros
-                </button>
-
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
-                  Cases
-                </button>
-
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
-                  Polos
-                </button>
-
-                <button
-                  type="button"
-                  onClick={abrirCategoria}
-                >
-                  Wallpapers
-                </button>
-              </div>
-            )}
-          </div>
-
-          <button
-            type="button"
-            className="bro-nav-link"
-            onClick={onMiPedido}
-          >
-            Mi pedido
-          </button>
-
-          <button
-            type="button"
-            className="bro-nav-link"
-            onClick={onPreguntas}
-          >
-            Preguntas frecuentes
-          </button>
-
-          <button
-            type="button"
-            className="bro-nav-link"
-            onClick={onContacto}
-          >
-            Contacto
-          </button>
-
-          <button
-            type="button"
-            className="bro-nav-link"
-            onClick={onAfiliados}
-          >
-            Programa de afiliados
-          </button>
-        </nav>
-      </header>
-    </>
+        <button
+          type="button"
+          className="bro-nav-link"
+          onClick={() => onNavigate('afiliados')}
+        >
+          Programa de afiliados
+        </button>
+      </nav>
+    </header>
   );
 }
 
