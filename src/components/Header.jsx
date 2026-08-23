@@ -53,13 +53,13 @@ function Header({
     function handleScroll() {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY <= 30) {
+      if (currentScrollY <= 40) {
         setIsVisible(true);
       } else if (currentScrollY < lastScrollY) {
-        // Scrolleando hacia arriba en cualquier parte: aparece inmediatamente
+        // Al subir en cualquier parte de la página: aparece al instante
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        // Scrolleando hacia abajo: se oculta
+        // Al bajar: se oculta
         setIsVisible(false);
         setMenuCategorias(false);
       }
@@ -81,12 +81,13 @@ function Header({
   return (
     <div
       style={{
-        position: 'sticky',
+        position: 'fixed',
         top: 0,
-        zIndex: 1400,
+        left: 0,
         width: '100%',
+        zIndex: 2000,
         transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
-        transition: 'transform 0.3s ease-in-out',
+        transition: 'transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
       }}
     >
       <div className="bro-topbar">
