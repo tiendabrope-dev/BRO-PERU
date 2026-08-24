@@ -16,27 +16,27 @@ function Hero() {
       </div>
 
       <div className="bro-hero-products">
-        <div className="bro-hero-product bro-hero-case">
+        <div className="bro-hero-product bro-hero-case" style={{ textAlign: 'center' }}>
           <img
             src={heroCase}
             alt="Case BRO"
-            style={{ width: '160px !important', maxWidth: '160px', height: 'auto', objectFit: 'contain' }}
+            style={{ width: '160px', height: 'auto', objectFit: 'contain', display: 'inline-block' }}
           />
         </div>
 
-        <div className="bro-hero-product bro-hero-frame">
+        <div className="bro-hero-product bro-hero-frame" style={{ textAlign: 'center' }}>
           <img
             src={heroCuadro}
             alt="Cuadro BRO"
-            style={{ width: '250px !important', maxWidth: '250px', height: 'auto', objectFit: 'contain' }}
+            style={{ width: '250px', height: 'auto', objectFit: 'contain', display: 'inline-block' }}
           />
         </div>
 
-        <div className="bro-hero-product bro-hero-shirt">
+        <div className="bro-hero-product bro-hero-shirt" style={{ textAlign: 'center' }}>
           <img
             src={heroPolo}
             alt="Polo BRO"
-            style={{ width: '210px !important', maxWidth: '210px', height: 'auto', objectFit: 'contain' }}
+            style={{ width: '210px', height: 'auto', objectFit: 'contain', display: 'inline-block' }}
           />
         </div>
       </div>
