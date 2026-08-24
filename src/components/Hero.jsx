@@ -71,9 +71,9 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
-          /* --- COLUMNAS LATERALES SIMÉTRICAS --- */
+          /* --- COLUMNAS LATERALES AMPLIADAS Y SIMÉTRICAS --- */
           .hero-side-col {
-            width: 320px;
+            width: 340px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -82,7 +82,7 @@ function Hero() {
 
           .hero-image-container {
             width: 100%;
-            height: 480px; /* Altura fija para que ambas imágenes descansen a la misma altura exacta */
+            height: 520px; /* Altura generosa para acomodar los productos más grandes alineados abajo */
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -166,14 +166,14 @@ function Hero() {
       {/* Contenedor principal alineado abajo */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
-        {/* Case */}
+        {/* Case (Agrandado a 310px de ancho) */}
         <div className="hero-side-col">
           <div className="hero-image-container">
             <img
               src={heroCase}
               alt="Case BRO"
               className="hero-image-hover"
-              style={{ width: '250px', height: 'auto', objectFit: 'contain' }}
+              style={{ width: '310px', height: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
@@ -200,14 +200,14 @@ function Hero() {
           </div>
         </div>
 
-        {/* Polo */}
+        {/* Polo (Agrandado a 340px de ancho) */}
         <div className="hero-side-col">
           <div className="hero-image-container">
             <img
               src={heroPolo}
               alt="Polo BRO"
               className="hero-image-hover"
-              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+              style={{ width: '340px', height: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
