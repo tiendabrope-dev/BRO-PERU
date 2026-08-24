@@ -71,10 +71,19 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
-          /* --- MINI BARRAS DE PROXIMAMENTE (TAMAÑO FIJO Y COMPACTO) --- */
+          /* --- CONTENEDORES DE PRODUCTO SIMÉTRICOS --- */
+          .hero-product-col {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          /* --- MINI BARRAS DE PROXIMAMENTE --- */
           .pixel-loader-small {
             width: 180px;
-            margin: 14px auto 0 auto;
+            margin-top: 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -83,7 +92,7 @@ function Hero() {
 
           .pixel-loader-label {
             font-family: 'DM Sans', sans-serif;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 0.18em;
             text-transform: uppercase;
@@ -146,17 +155,19 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor principal */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
+      {/* Contenedor principal alineado arriba para que las barras queden a la misma altura */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
-        {/* Case + Barra */}
-        <div style={{ width: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img
-            src={heroCase}
-            alt="Case BRO"
-            className="hero-image-hover"
-            style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-          />
+        {/* Case (Mismo ancho de 350px que el polo y el cuadro) */}
+        <div className="hero-product-col">
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <img
+              src={heroCase}
+              alt="Case BRO"
+              className="hero-image-hover"
+              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+            />
+          </div>
           <div className="pixel-loader-small">
             <span className="pixel-loader-label">Próximamente</span>
             <div className="pixel-bar-box-small">
@@ -169,24 +180,28 @@ function Hero() {
           </div>
         </div>
 
-        {/* Cuadro (Intacto) */}
-        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img
-            src={heroCuadro}
-            alt="Cuadro BRO"
-            className="hero-image-hover"
-            style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-          />
+        {/* Cuadro (Intacto al centro) */}
+        <div className="hero-product-col">
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <img
+              src={heroCuadro}
+              alt="Cuadro BRO"
+              className="hero-image-hover"
+              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+            />
+          </div>
         </div>
 
-        {/* Polo (Más grande, con ancho de 350px igual al cuadro, pero su barra se mantiene pequeña e independiente con 180px) */}
-        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img
-            src={heroPolo}
-            alt="Polo BRO"
-            className="hero-image-hover"
-            style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-          />
+        {/* Polo (Ancho de 350px simétrico al case) */}
+        <div className="hero-product-col">
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <img
+              src={heroPolo}
+              alt="Polo BRO"
+              className="hero-image-hover"
+              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+            />
+          </div>
           <div className="pixel-loader-small">
             <span className="pixel-loader-label">Próximamente</span>
             <div className="pixel-bar-box-small">
