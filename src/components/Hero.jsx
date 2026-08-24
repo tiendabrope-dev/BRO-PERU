@@ -71,10 +71,27 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
+          /* --- COLUMNAS LATERALES SIMÉTRICAS --- */
+          .hero-side-col {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+          }
+
+          .hero-image-container {
+            width: 100%;
+            height: 480px; /* Altura fija para que ambas imágenes descansen a la misma altura exacta */
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 15px;
+          }
+
           /* --- MINI BARRAS DE PROXIMAMENTE --- */
           .pixel-loader-small {
             width: 180px;
-            margin-top: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -146,17 +163,17 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor principal alineado abajo para fijar las barras a la misma altura */}
+      {/* Contenedor principal alineado abajo */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
-        {/* Case (Proporción ideal de 260px) */}
-        <div style={{ width: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        {/* Case */}
+        <div className="hero-side-col">
+          <div className="hero-image-container">
             <img
               src={heroCase}
               alt="Case BRO"
               className="hero-image-hover"
-              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+              style={{ width: '250px', height: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
@@ -183,9 +200,9 @@ function Hero() {
           </div>
         </div>
 
-        {/* Polo (Tamaño imponente de 350px) */}
-        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        {/* Polo */}
+        <div className="hero-side-col">
+          <div className="hero-image-container">
             <img
               src={heroPolo}
               alt="Polo BRO"
