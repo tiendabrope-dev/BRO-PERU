@@ -71,9 +71,9 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
-          /* --- COLUMNAS LATERALES AMPLIADAS Y SIMÉTRICAS --- */
+          /* --- COLUMNAS LATERALES IDÉNTICAS --- */
           .hero-side-col {
-            width: 340px;
+            width: 375px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -82,7 +82,7 @@ function Hero() {
 
           .hero-image-container {
             width: 100%;
-            height: 520px; /* Altura generosa para acomodar los productos más grandes alineados abajo */
+            height: 550px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -163,17 +163,17 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor principal alineado abajo */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
+      {/* Contenedor principal */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '50px', flexWrap: 'wrap', maxWidth: '1300px', margin: '0 auto' }}>
         
-        {/* Case (Agrandado a 310px de ancho) */}
+        {/* Case (Mismo tamaño exacto que el polo: 375px de ancho) */}
         <div className="hero-side-col">
           <div className="hero-image-container">
             <img
               src={heroCase}
               alt="Case BRO"
               className="hero-image-hover"
-              style={{ width: '310px', height: 'auto', objectFit: 'contain' }}
+              style={{ width: '375px', height: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
@@ -200,14 +200,14 @@ function Hero() {
           </div>
         </div>
 
-        {/* Polo (Agrandado a 340px de ancho) */}
+        {/* Polo (Tamaño idéntico al case: 375px de ancho) */}
         <div className="hero-side-col">
           <div className="hero-image-container">
             <img
               src={heroPolo}
               alt="Polo BRO"
               className="hero-image-hover"
-              style={{ width: '340px', height: 'auto', objectFit: 'contain' }}
+              style={{ width: '375px', height: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
