@@ -51,7 +51,7 @@
 .bro-category-circle img { width: 75%; height: 75%; object-fit: contain; }
 .bro-category-name { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; color: #111; }
 
-/* --- 6. PRODUCTOS Y CATÁLOGO (DISEÑO SUTIL Y ESPACIADO CORREGIDO) --- */
+/* --- 6. PRODUCTOS Y CATÁLOGO --- */
 .bro-best-sellers { padding: 60px 3vw 90px 3vw; background: #f4f1ec; }
 .bro-best-heading { text-align: left; margin-bottom: 25px; max-width: 1400px; margin-left: auto; margin-right: auto; }
 .bro-best-small { font-size: 12px; letter-spacing: 0.15em; color: #555; margin-bottom: 4px; }
@@ -74,7 +74,6 @@
   margin: 0 auto; 
 }
 
-/* Tarjeta individual con espacio inferior generoso para separar de los siguientes cuadros */
 .bro-product-card { 
   width: 100%; 
   background: transparent; 
@@ -83,15 +82,12 @@
 }
 .bro-product-card:hover { transform: translateY(-5px); }
 
-/* Imagen limpia sin marcos negros */
+/* Estructura de las tarjetas con sus marcos originales */
 .bro-product-image { 
   position: relative; 
   width: 100%; 
   aspect-ratio: 1 / 1.35; 
-  background: transparent; 
-  border: none !important; 
-  outline: none !important;
-  box-shadow: none !important;
+  background: #000; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
@@ -103,28 +99,22 @@
   width: 100%; 
   height: 100%; 
   object-fit: contain !important; 
-  border: none !important;
 }
 
-/* ETIQUETAS MÁS SUTILES Y PEQUEÑAS EN LA ESQUINA */
+/* WIDGETS / ETIQUETAS (Mantenemos su estilo original de bordes redondeados y fondos, pero achicamos su escala) */
 .bro-product-image .badge,
 .bro-product-image > div[class*="badge"],
 .bro-product-image > span,
 .bro-product-image [class*="tag"] {
-  position: absolute !important;
-  top: 8px !important;
-  left: 8px !important;
   font-size: 9px !important;
   padding: 3px 8px !important;
-  border-radius: 4px !important;
-  background: rgba(255, 255, 255, 0.9) !important;
-  color: #111 !important;
-  font-weight: 700 !important;
+  border-radius: 10px !important;
   letter-spacing: 0.05em !important;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+  transform: scale(0.85);
+  transform-origin: top left;
 }
 
-/* INFORMACIÓN COMPACTA Y BOTÓN PEGADO AL PRECIO CON MARGEN INFERIOR */
+/* INFORMACIÓN DE PRODUCTO */
 .bro-product-info { padding: 6px 0 0 0; text-align: left; }
 .bro-product-name-button { background: transparent; border: none; padding: 0; text-align: left; cursor: pointer; margin-bottom: 2px; }
 .bro-product-name-button h3 { font-size: 13px; font-weight: 700; color: #111; margin: 0; }
@@ -132,7 +122,6 @@
 .bro-rating-stars { color: #e9b000; font-size: 11px; }
 .bro-rating-count { font-size: 10px; color: #666; }
 
-/* El precio se pega más al botón y se reduce el margen intermedio */
 .bro-price { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #111; }
 .bro-view-product-button { width: 100%; padding: 8px; background: #111; color: #fff; border: none; border-radius: 6px; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; }
 
