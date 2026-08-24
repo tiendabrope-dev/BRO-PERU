@@ -77,7 +77,7 @@ function Hero() {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 8px; /* Separación calculada entre texto y barra */
           }
 
           .pixel-loader-label {
@@ -87,6 +87,7 @@ function Hero() {
             letter-spacing: 0.18em;
             text-transform: uppercase;
             color: #555;
+            line-height: 1;
           }
 
           .pixel-bar-box-small {
@@ -145,21 +146,17 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor principal alineado desde arriba (flex-start) para mantener la cuadrícula estable */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: '40px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
+      {/* Contenedor principal alineado desde ABAJO (flex-end) para que el cuadro repose sobre la misma línea que las barras */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '40px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
         {/* === CASE === */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px' }}>
-          {/* Caja contenedora que fuerza a las imágenes a descansar en la misma línea base */}
-          <div style={{ height: '420px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '16px' }}>
-            <img
-              src={heroCase}
-              alt="Case BRO"
-              className="hero-image-hover"
-              // Forzamos la altura a 390px, el ancho se ajusta solo. El case ya NO crecerá infinitamente.
-              style={{ height: '390px', width: 'auto', objectFit: 'contain' }}
-            />
-          </div>
+          <img
+            src={heroCase}
+            alt="Case BRO"
+            className="hero-image-hover"
+            style={{ height: '390px', width: 'auto', objectFit: 'contain', marginBottom: '32px' }}
+          />
           <div className="pixel-loader-small">
             <span className="pixel-loader-label">Próximamente</span>
             <div className="pixel-bar-box-small">
@@ -173,28 +170,24 @@ function Hero() {
         </div>
 
         {/* === CUADRO (Centro) === */}
+        {/* Altura de 460px = 390px (Polo/Case) + 32px (margen) + 38px (altura exacta de la barra y su texto) */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '360px' }}>
-          <div style={{ height: '420px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '16px' }}>
-            <img
-              src={heroCuadro}
-              alt="Cuadro BRO"
-              className="hero-image-hover"
-              style={{ width: '100%', maxHeight: '420px', objectFit: 'contain' }}
-            />
-          </div>
+          <img
+            src={heroCuadro}
+            alt="Cuadro BRO"
+            className="hero-image-hover"
+            style={{ height: '460px', width: 'auto', objectFit: 'contain' }}
+          />
         </div>
 
         {/* === POLO === */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px' }}>
-          <div style={{ height: '420px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '16px' }}>
-            <img
-              src={heroPolo}
-              alt="Polo BRO"
-              className="hero-image-hover"
-              // Misma altura exacta que el Case. Tendrán idéntico peso visual.
-              style={{ height: '390px', width: 'auto', objectFit: 'contain' }}
-            />
-          </div>
+          <img
+            src={heroPolo}
+            alt="Polo BRO"
+            className="hero-image-hover"
+            style={{ height: '390px', width: 'auto', objectFit: 'contain', marginBottom: '32px' }}
+          />
           <div className="pixel-loader-small">
             <span className="pixel-loader-label">Próximamente</span>
             <div className="pixel-bar-box-small">
