@@ -20,7 +20,7 @@ function Hero() {
           <img
             src={heroCase}
             alt="Case BRO"
-            style={{ width: '160px', maxHeight: '220px', objectFit: 'contain' }}
+            style={{ width: '160px !important', maxWidth: '160px', height: 'auto', objectFit: 'contain' }}
           />
         </div>
 
@@ -28,7 +28,7 @@ function Hero() {
           <img
             src={heroCuadro}
             alt="Cuadro BRO"
-            style={{ width: '250px', maxHeight: '340px', objectFit: 'contain' }}
+            style={{ width: '250px !important', maxWidth: '250px', height: 'auto', objectFit: 'contain' }}
           />
         </div>
 
@@ -36,7 +36,7 @@ function Hero() {
           <img
             src={heroPolo}
             alt="Polo BRO"
-            style={{ width: '210px', maxHeight: '280px', objectFit: 'contain' }}
+            style={{ width: '210px !important', maxWidth: '210px', height: 'auto', objectFit: 'contain' }}
           />
         </div>
       </div>
