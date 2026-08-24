@@ -51,10 +51,10 @@
 .bro-category-circle img { width: 75%; height: 75%; object-fit: contain; }
 .bro-category-name { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; color: #111; }
 
-/* --- 6. PRODUCTOS Y CATÁLOGO (OPTIMIZADO Y COMPACTO) --- */
-.bro-best-sellers { padding: 60px 4vw; background: #f4f1ec; }
-.bro-best-heading { text-align: left; margin-bottom: 25px; }
-.bro-best-small { font-size: 12px; letter-spacing: 0.2em; color: #666; margin-bottom: 4px; font-weight: 700; }
+/* --- 6. PRODUCTOS Y CATÁLOGO (CUADROS MÁS PEQUEÑOS Y ESCALADOS) --- */
+.bro-best-sellers { padding: 50px 3vw; background: #f4f1ec; }
+.bro-best-heading { text-align: left; margin-bottom: 25px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+.bro-best-small { font-size: 12px; letter-spacing: 0.15em; color: #555; margin-bottom: 4px; }
 .bro-best-heading h2 { 
   font-size: clamp(28px, 3.5vw, 42px); 
   font-weight: 800; 
@@ -65,15 +65,23 @@
   color: #111;
   line-height: 1.1;
 }
-.bro-carousel-products { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+
+/* Limitamos el ancho del contenedor y reducimos el espacio entre tarjetas para que se vean más compactas */
+.bro-carousel-products { 
+  display: grid; 
+  grid-template-columns: repeat(5, minmax(0, 1fr)); 
+  gap: 14px; 
+  max-width: 1400px; 
+  margin: 0 auto; 
+}
+
 .bro-product-card { width: 100%; background: transparent; transition: transform 0.3s ease; }
 .bro-product-card:hover { transform: translateY(-5px); }
 
-/* Cuadros más sutiles y proporcionados */
-.bro-product-image { position: relative; width: 100%; aspect-ratio: 1 / 1.25; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; }
-.bro-product-image img { width: 92%; height: 92%; object-fit: contain !important; }
+/* Reducimos el tamaño general de la tarjeta achicando un poco la proporción de la imagen */
+.bro-product-image { position: relative; width: 100%; aspect-ratio: 1 / 1.35; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; }
+.bro-product-image img { width: 100%; height: 100%; object-fit: contain !important; }
 
-/* Textos, precios y botones más limpios y compactos */
 .bro-product-info { padding: 10px 0; text-align: left; }
 .bro-product-name-button { background: transparent; border: none; padding: 0; text-align: left; cursor: pointer; margin-bottom: 4px; }
 .bro-product-name-button h3 { font-size: 14px; font-weight: 700; color: #111; margin: 0; }
@@ -81,7 +89,7 @@
 .bro-rating-stars { color: #e9b000; font-size: 12px; }
 .bro-rating-count { font-size: 11px; color: #666; }
 .bro-price { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-.bro-view-product-button { width: 100%; padding: 9px; background: #111; color: #fff; border: none; border-radius: 6px; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; }
+.bro-view-product-button { width: 100%; padding: 10px; background: #111; color: #fff; border: none; border-radius: 6px; font-weight: 700; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; }
 
 /* --- 7. SECCIÓN PERSONALIZADOS --- */
 .custom-section { background: #050505; padding: 80px 4vw; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
