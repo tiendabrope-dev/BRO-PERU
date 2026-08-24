@@ -4,7 +4,7 @@ import heroCase from '../assets/hero/hero-case.png';
 import heroPolo from '../assets/hero/hero-polo.png';
 
 function Hero() {
-  const totalSegments = 12; // Barras más pequeñas
+  const totalSegments = 12;
   const [currentStepCase, setCurrentStepCase] = useState(0);
   const [isFillingCase, setIsFillingCase] = useState(true);
 
@@ -51,7 +51,7 @@ function Hero() {
           return prev - 1;
         }
       });
-    }, 100); // Velocidad ligeramente distinta para que se vean naturales
+    }, 100);
     return () => clearInterval(interval);
   }, [isFillingPolo]);
 
@@ -71,7 +71,7 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
-          /* --- MINI BARRAS DE PROXIMAMENTE --- */
+          /* --- MINI BARRAS DE PROXIMAMENTE (TAMAÑO FIJO Y COMPACTO) --- */
           .pixel-loader-small {
             width: 180px;
             margin: 14px auto 0 auto;
@@ -146,11 +146,11 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor de los 3 productos (Case con barra, Cuadro solo, Polo con barra) */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: '50px', flexWrap: 'wrap', maxWidth: '1200px', margin: '0 auto' }}>
+      {/* Contenedor principal */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
-        {/* Case + Barra debajo */}
-        <div style={{ width: '240px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Case + Barra */}
+        <div style={{ width: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img
             src={heroCase}
             alt="Case BRO"
@@ -169,7 +169,7 @@ function Hero() {
           </div>
         </div>
 
-        {/* Cuadro (Sin barra, queda libre al centro) */}
+        {/* Cuadro (Intacto) */}
         <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img
             src={heroCuadro}
@@ -179,8 +179,8 @@ function Hero() {
           />
         </div>
 
-        {/* Polo + Barra debajo */}
-        <div style={{ width: '290px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Polo (Más grande, con ancho de 350px igual al cuadro, pero su barra se mantiene pequeña e independiente con 180px) */}
+        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img
             src={heroPolo}
             alt="Polo BRO"
