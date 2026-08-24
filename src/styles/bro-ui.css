@@ -51,7 +51,7 @@
 .bro-category-circle img { width: 75%; height: 75%; object-fit: contain; }
 .bro-category-name { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; color: #111; }
 
-/* --- 6. PRODUCTOS Y CATÁLOGO (SIN MARCOS NEGROS, IMAGEN LIMPIA) --- */
+/* --- 6. PRODUCTOS Y CATÁLOGO (SIN MARCOS NI SOMBRAS TRANSPARENTES) --- */
 .bro-best-sellers { padding: 60px 3vw 90px 3vw; background: #f4f1ec; }
 .bro-best-heading { text-align: left; margin-bottom: 25px; max-width: 1400px; margin-left: auto; margin-right: auto; }
 .bro-best-small { font-size: 12px; letter-spacing: 0.15em; color: #555; margin-bottom: 4px; }
@@ -82,23 +82,28 @@
 }
 .bro-product-card:hover { transform: translateY(-5px); }
 
-/* QUITAMOS EL FONDO NEGRO: Ahora el contenedor es transparente y muestra el póster completo sin cortes raros */
+/* CONTENEDOR 100% LIMPIO: Cero bordes, cero sombras, fondo completamente transparente */
 .bro-product-image { 
   position: relative; 
   width: 100%; 
   aspect-ratio: 1 / 1.38; 
-  background: transparent; 
+  background: transparent !important; 
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
   display: flex; 
   align-items: center; 
   justify-content: center; 
   overflow: hidden; 
-  border-radius: 8px; 
+  border-radius: 0px; 
 }
 
 .bro-product-image img { 
   width: 100%; 
   height: 100%; 
   object-fit: contain !important; 
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* WIDGETS / ETIQUETAS MÁS PEQUEÑAS Y ESTILIZADAS */
