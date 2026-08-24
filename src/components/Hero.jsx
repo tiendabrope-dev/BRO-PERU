@@ -71,24 +71,6 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
-          /* --- COLUMNAS LATERALES IDÉNTICAS --- */
-          .hero-side-col {
-            width: 375px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-          }
-
-          .hero-image-container {
-            width: 100%;
-            height: 550px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            margin-bottom: 15px;
-          }
-
           /* --- MINI BARRAS DE PROXIMAMENTE --- */
           .pixel-loader-small {
             width: 180px;
@@ -163,17 +145,19 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor principal */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '50px', flexWrap: 'wrap', maxWidth: '1300px', margin: '0 auto' }}>
+      {/* Contenedor principal alineado desde arriba (flex-start) para mantener la cuadrícula estable */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: '40px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
-        {/* Case (Mismo tamaño exacto que el polo: 375px de ancho) */}
-        <div className="hero-side-col">
-          <div className="hero-image-container">
+        {/* === CASE === */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px' }}>
+          {/* Caja contenedora que fuerza a las imágenes a descansar en la misma línea base */}
+          <div style={{ height: '420px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '16px' }}>
             <img
               src={heroCase}
               alt="Case BRO"
               className="hero-image-hover"
-              style={{ width: '375px', height: 'auto', objectFit: 'contain' }}
+              // Forzamos la altura a 390px, el ancho se ajusta solo. El case ya NO crecerá infinitamente.
+              style={{ height: '390px', width: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
@@ -188,26 +172,27 @@ function Hero() {
           </div>
         </div>
 
-        {/* Cuadro (Intacto al centro) */}
-        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+        {/* === CUADRO (Centro) === */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '360px' }}>
+          <div style={{ height: '420px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '16px' }}>
             <img
               src={heroCuadro}
               alt="Cuadro BRO"
               className="hero-image-hover"
-              style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+              style={{ width: '100%', maxHeight: '420px', objectFit: 'contain' }}
             />
           </div>
         </div>
 
-        {/* Polo (Tamaño idéntico al case: 375px de ancho) */}
-        <div className="hero-side-col">
-          <div className="hero-image-container">
+        {/* === POLO === */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '320px' }}>
+          <div style={{ height: '420px', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', marginBottom: '16px' }}>
             <img
               src={heroPolo}
               alt="Polo BRO"
               className="hero-image-hover"
-              style={{ width: '375px', height: 'auto', objectFit: 'contain' }}
+              // Misma altura exacta que el Case. Tendrán idéntico peso visual.
+              style={{ height: '390px', width: 'auto', objectFit: 'contain' }}
             />
           </div>
           <div className="pixel-loader-small">
