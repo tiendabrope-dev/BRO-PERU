@@ -1,341 +1,187 @@
 /* =========================================================
-   BRO PERU - UI PRINCIPAL
+   SECCIÓN: Ticker (Cinta de Descuentos)
 ========================================================= */
-
-.bro-topbar {
-  width: 100%;
-  min-height: 40px;
-  background: #2d5a3d;
-  color: #ffffff;
-  display: grid;
-  grid-template-columns: 50px 1fr 50px;
-  align-items: center;
-  position: relative;
-  z-index: 1500;
-}
-
-.bro-topbar button {
-  height: 40px;
-  background: transparent;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 20px;
-  opacity: 0.86;
-}
-
-.bro-topbar-message {
-  text-align: center;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-}
-
-.bro-main-header {
-  background: #f4f1ec;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-
-.bro-header-top {
-  min-height: 75px;
-  padding: 0 4vw;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-}
-
-.bro-logo {
-  justify-self: start;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font-family: 'Black Ops One', sans-serif;
-  font-size: 38px;
-  line-height: 1;
-  letter-spacing: -0.06em;
-  color: #111111;
-}
-
-.bro-logo span {
-  color: #2d5a3d;
-}
-
-.bro-header-center-space {
-  min-width: 60px;
-}
-
-.bro-header-actions {
-  justify-self: end;
+.launch-ticker {
+  background: #111;
+  padding: 12px 0;
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  gap: 6px;
 }
-
-.bro-icon-button {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  color: #111111;
-}
-
-.bro-icon-button svg {
-  width: 23px;
-  height: 23px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.65;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.bro-cart-new {
-  height: 42px;
-  padding: 0 14px;
-  margin-left: 2px;
+.launch-ticker-track {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.13);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.45);
-  cursor: pointer;
-}
-
-.bro-cart-new svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: #111111;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.bro-cart-new strong {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: #111111;
-}
-
-.bro-cart-new span {
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  background: #111111;
-  color: #ffffff;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-/* =========================================================
-   NAVEGACIÓN
-========================================================= */
-
-.bro-nav-row {
-  min-height: 46px;
-  padding: 0 3vw;
-  border-top: 1px solid rgba(0, 0, 0, 0.07);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 36px;
-  position: relative;
-}
-
-.bro-nav-link,
-.bro-nav-dropdown-button {
-  border: 0;
-  background: transparent;
-  color: #171717;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
   white-space: nowrap;
+  animation: ticker 25s linear infinite;
 }
-
-.bro-nav-link:hover,
-.bro-nav-dropdown-button:hover {
-  color: #2d5a3d;
-}
-
-.bro-category-dropdown {
-  position: relative;
-  height: 46px;
+.launch-ticker-group {
   display: flex;
   align-items: center;
+  padding: 0 30px;
 }
-
-.bro-nav-dropdown-button {
-  height: 46px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.bro-chevron {
-  font-size: 14px;
-  transform: translateY(-1px);
-}
-
-.bro-dropdown-menu {
-  position: absolute;
-  top: 44px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  padding: 8px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
-  z-index: 1600;
-}
-
-.bro-dropdown-menu button {
-  width: 100%;
-  min-height: 40px;
-  padding: 0 12px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
+.launch-ticker-text {
+  color: #fff;
   font-size: 13px;
-  color: #111111;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
-
-.bro-dropdown-menu button:hover {
-  background: #f4f1ec;
-  color: #2d5a3d;
+.launch-ticker-dot {
+  color: #fff;
+  margin-left: 30px;
+}
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* =========================================================
-   HERO - CORREGIDO Y CONTROLADO
+   SECCIÓN: Personalizados (La que se veía gigante)
 ========================================================= */
-
-.bro-hero {
-  width: 100%;
-  background: radial-gradient(circle at center, #ffffff 0%, #f8f7f4 50%, #efede8 100%);
-  padding: 50px 20px 60px;
-}
-
-.bro-hero-copy {
-  width: 100%;
-  margin: 0 auto 40px;
-  text-align: center;
-}
-
-.bro-hero-eyebrow {
-  margin: 0 0 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  color: #444444;
-}
-
-.bro-hero-copy h1 {
-  width: fit-content;
-  max-width: calc(100vw - 40px);
-  margin: 0 auto;
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(24px, 3vw, 40px);
-  font-weight: 800;
-  letter-spacing: -0.045em;
-  line-height: 0.92;
-}
-
-.bro-hero-products {
-  width: min(1000px, 100%);
-  margin: 0 auto;
+.custom-section {
+  background: #050505;
+  padding: 80px 4vw;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
   align-items: center;
-  gap: 30px;
 }
-
-.bro-hero-product {
+.custom-image {
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
-
-/* Control estricto de tamaños para evitar deformaciones en el Hero */
-.bro-hero-product img {
-  display: block;
+.custom-image img {
+  max-width: 400px; /* Aquí evitamos que la imagen reviente la pantalla */
+  width: 100%;
   height: auto;
   object-fit: contain;
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-
-.bro-hero-product img:hover {
-  transform: translateY(-8px);
+.custom-copy {
+  color: #fff;
 }
-
-.bro-hero-case img {
-  width: 100%;
-  max-width: 190px;
+.eyebrow.dark {
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: #aaa;
+  margin-bottom: 10px;
 }
-
-.bro-hero-frame img {
-  width: 100%;
-  max-width: 270px;
+.custom-copy h2 {
+  font-size: 48px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  font-weight: 800;
 }
-
-.bro-hero-shirt img {
-  width: 100%;
-  max-width: 230px;
+.custom-description {
+  font-size: 16px;
+  color: #ccc;
+  margin-bottom: 30px;
+  max-width: 400px;
 }
-
-/* =========================================================
-   TARJETAS DE PRODUCTO GENERALES
-========================================================= */
-
-.bro-best-sellers {
-  padding: 80px 2vw;
-  background: #f4f1ec;
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
 }
-
-.bro-carousel-products {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 20px;
+.steps div {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
-
-.bro-product-card {
-  width: 100%;
-  background: transparent;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.bro-product-card:hover {
-  transform: translateY(-6px);
-}
-
-.bro-product-image {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1.414;
-  background: #000000;
+.steps span {
+  background: #222;
+  color: #fff;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: bold;
+}
+.steps p {
+  margin: 0;
+  font-size: 15px;
+}
+.button-green {
+  background: #2d5a3d;
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   border-radius: 6px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
-.bro-product-image img {
+/* =========================================================
+   SECCIÓN: Beneficios e Info del Catálogo
+========================================================= */
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 60px 4vw;
+  background: #f4f1ec;
+}
+.bro-best-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.bro-best-small {
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: #555;
+  margin-bottom: 8px;
+}
+.bro-best-heading h2 {
+  font-size: 32px;
+  font-weight: 800;
+}
+.bro-product-info {
+  padding: 16px 0;
+  text-align: left;
+}
+.bro-product-name-button {
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.bro-product-name-button h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+}
+.bro-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.bro-rating-stars {
+  color: #e9b000;
+  font-size: 14px;
+}
+.bro-rating-count {
+  font-size: 12px;
+  color: #666;
+}
+.bro-price {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.bro-view-product-button {
   width: 100%;
-  height: 100%;
-  object-fit: contain !important;
+  padding: 12px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
 }
