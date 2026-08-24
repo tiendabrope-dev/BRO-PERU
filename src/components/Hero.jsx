@@ -4,20 +4,20 @@ import heroPolo from '../assets/hero/hero-polo.png';
 
 function Hero() {
   return (
-    <section className="bro-hero" style={{ padding: '35px 20px 45px', textAlign: 'center' }}>
-      <div className="bro-hero-copy" style={{ marginBottom: '25px' }}>
-        <p style={{ fontSize: '13px', fontWeight: '600', letterSpacing: '0.25em', color: '#555', marginBottom: '6px' }}>
+    <section className="bro-hero" style={{ padding: '60px 20px', textAlign: 'center' }}>
+      <div className="bro-hero-copy" style={{ marginBottom: '40px' }}>
+        <p style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '0.25em', color: '#555', marginBottom: '8px' }}>
           TU IDEA
         </p>
-        <h1 style={{ fontSize: '32px', fontWeight: '800', margin: '0', color: '#111' }}>
+        <h1 style={{ fontSize: '42px', fontWeight: '800', margin: '0', color: '#111' }}>
           NUESTRA CREACIÓN
         </h1>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '35px', flexWrap: 'wrap', maxWidth: '900px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '50px', flexWrap: 'wrap', maxWidth: '1100px', margin: '0 auto' }}>
         
         {/* Case */}
-        <div style={{ width: '130px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: '200px', display: 'flex', justifyContent: 'center' }}>
           <img
             src={heroCase}
             alt="Case BRO"
@@ -25,8 +25,8 @@ function Hero() {
           />
         </div>
 
-        {/* Cuadro (Reducido para nivelar con los demás) */}
-        <div style={{ width: '180px', display: 'flex', justifyContent: 'center' }}>
+        {/* Cuadro (El más grande, al centro) */}
+        <div style={{ width: '300px', display: 'flex', justifyContent: 'center' }}>
           <img
             src={heroCuadro}
             alt="Cuadro BRO"
@@ -35,7 +35,7 @@ function Hero() {
         </div>
 
         {/* Polo */}
-        <div style={{ width: '170px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: '250px', display: 'flex', justifyContent: 'center' }}>
           <img
             src={heroPolo}
             alt="Polo BRO"
