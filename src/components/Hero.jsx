@@ -5,10 +5,8 @@ import heroPolo from '../assets/hero/hero-polo.png';
 
 function Hero() {
   return (
-    /* Aquí aumentamos el padding superior a 180px para que el menú fijo no lo tape */
     <section className="bro-hero" style={{ padding: '180px 20px 60px', textAlign: 'center' }}>
       
-      {/* Inyectamos las animaciones de sombra y elevación de forma segura */}
       <style>
         {`
           /* Efecto hover para las 3 imágenes principales del Hero */
@@ -20,22 +18,31 @@ function Hero() {
             transform: translateY(-12px) scale(1.02);
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
-
-          /* Efecto hover extra para las tarjetas de los productos del catálogo (Más vendidos) */
-          .bro-product-card:hover {
-            transform: translateY(-8px) !important;
-          }
-          .bro-product-card:hover .bro-product-image {
-            box-shadow: 0 15px 35px rgba(0,0,0,0.18) !important;
-          }
         `}
       </style>
 
       <div className="bro-hero-copy" style={{ marginBottom: '50px' }}>
-        <p style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '0.25em', color: '#555', marginBottom: '8px' }}>
+        <p style={{ 
+          fontSize: '14px', 
+          fontWeight: '700', 
+          letterSpacing: '0.3em', 
+          color: '#555', 
+          marginBottom: '10px',
+          fontFamily: 'DM Sans, sans-serif'
+        }}>
           TU IDEA
         </p>
-        <h1 style={{ fontSize: '42px', fontWeight: '800', margin: '0', color: '#111' }}>
+        
+        {/* Título principal con fuente fuerte, moderna y espaciado elegante */}
+        <h1 style={{ 
+          fontSize: 'clamp(32px, 5vw, 52px)', 
+          fontWeight: '800', 
+          margin: '0', 
+          color: '#111',
+          fontFamily: 'Syne, sans-serif',
+          letterSpacing: '-0.03em',
+          textTransform: 'uppercase'
+        }}>
           NUESTRA CREACIÓN
         </h1>
       </div>
