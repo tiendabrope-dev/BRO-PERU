@@ -5,11 +5,13 @@ import heroPolo from '../assets/hero/hero-polo.png';
 
 function Hero() {
   return (
-    <section className="bro-hero" style={{ padding: '180px 20px 60px', textAlign: 'center' }}>
+    /* Aumentamos el padding superior de 180px a 230px para separarlo del menú */
+    <section className="bro-hero" style={{ padding: '230px 20px 70px', textAlign: 'center' }}>
       
       <style>
         {`
-          /* Efecto hover para las 3 imágenes principales del Hero */
+          @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@600;700&display=swap');
+
           .hero-image-hover {
             transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.4s ease;
             cursor: pointer;
@@ -17,6 +19,13 @@ function Hero() {
           .hero-image-hover:hover {
             transform: translateY(-12px) scale(1.02);
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
+          }
+
+          .bro-product-card:hover {
+            transform: translateY(-8px) !important;
+          }
+          .bro-product-card:hover .bro-product-image {
+            box-shadow: 0 15px 35px rgba(0,0,0,0.18) !important;
           }
         `}
       </style>
@@ -28,18 +37,17 @@ function Hero() {
           letterSpacing: '0.3em', 
           color: '#555', 
           marginBottom: '10px',
-          fontFamily: 'DM Sans, sans-serif'
+          fontFamily: "'DM Sans', sans-serif"
         }}>
           TU IDEA
         </p>
         
-        {/* Título principal con fuente fuerte, moderna y espaciado elegante */}
         <h1 style={{ 
           fontSize: 'clamp(32px, 5vw, 52px)', 
           fontWeight: '800', 
           margin: '0', 
           color: '#111',
-          fontFamily: 'Syne, sans-serif',
+          fontFamily: "'Syne', sans-serif",
           letterSpacing: '-0.03em',
           textTransform: 'uppercase'
         }}>
