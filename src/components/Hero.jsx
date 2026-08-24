@@ -5,7 +5,7 @@ import heroPolo from '../assets/hero/hero-polo.png';
 
 function Hero() {
   return (
-    <section className="bro-hero" style={{ padding: '220px 20px 80px', textAlign: 'center' }}>
+    <section className="bro-hero" style={{ padding: '220px 20px 40px', textAlign: 'center' }}>
       
       <style>
         {`
@@ -29,8 +29,7 @@ function Hero() {
         `}
       </style>
 
-      {/* Título separado con un margen inferior más generoso (70px) */}
-      <div className="bro-hero-copy" style={{ marginBottom: '70px' }}>
+      <div className="bro-hero-copy" style={{ marginBottom: '60px' }}>
         <p style={{ 
           fontSize: '14px', 
           fontWeight: '700', 
@@ -55,10 +54,9 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedores con tamaños aumentados para darles mayor presencia */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '50px', flexWrap: 'wrap', maxWidth: '1200px', margin: '0 auto' }}>
         
-        {/* Case (Aumentado) */}
+        {/* Case */}
         <div style={{ width: '240px', display: 'flex', justifyContent: 'center' }}>
           <img
             src={heroCase}
@@ -68,7 +66,7 @@ function Hero() {
           />
         </div>
 
-        {/* Cuadro (El principal, más grande al centro) */}
+        {/* Cuadro */}
         <div style={{ width: '350px', display: 'flex', justifyContent: 'center' }}>
           <img
             src={heroCuadro}
@@ -78,7 +76,7 @@ function Hero() {
           />
         </div>
 
-        {/* Polo (Aumentado) */}
+        {/* Polo */}
         <div style={{ width: '290px', display: 'flex', justifyContent: 'center' }}>
           <img
             src={heroPolo}

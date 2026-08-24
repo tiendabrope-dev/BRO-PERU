@@ -1,5 +1,5 @@
 /* =========================================================
-   BRO PERU - UI PRINCIPAL (RESTAURACIÓN TOTAL)
+   BRO PERU - UI PRINCIPAL (ESTILOS COMPLETOS)
 ========================================================= */
 
 /* --- 1. BARRA SUPERIOR Y HEADER --- */
@@ -34,8 +34,8 @@
 /* --- 3. HERO (BANNER PRINCIPAL) --- */
 .bro-hero { width: 100%; background: radial-gradient(circle at center, #ffffff 0%, #f8f7f4 50%, #efede8 100%); }
 
-/* --- 4. CINTA DE DESCUENTOS (TICKER) --- */
-.launch-ticker { background: #111; padding: 12px 0; overflow: hidden; display: flex; }
+/* --- 4. CINTA DE DESCUENTOS (TICKER) - COMPACTA --- */
+.launch-ticker { background: #111; padding: 6px 0; overflow: hidden; display: flex; }
 .launch-ticker-track { display: flex; white-space: nowrap; animation: ticker 25s linear infinite; }
 .launch-ticker-group { display: flex; align-items: center; padding: 0 30px; }
 .launch-ticker-text { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; }
