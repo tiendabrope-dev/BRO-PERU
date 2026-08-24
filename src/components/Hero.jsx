@@ -71,19 +71,10 @@ function Hero() {
             filter: drop-shadow(0 20px 25px rgba(0,0,0,0.25));
           }
 
-          /* --- CONTENEDORES DE PRODUCTO SIMÉTRICOS --- */
-          .hero-product-col {
-            width: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-          }
-
           /* --- MINI BARRAS DE PROXIMAMENTE --- */
           .pixel-loader-small {
             width: 180px;
-            margin-top: 14px;
+            margin-top: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -155,11 +146,11 @@ function Hero() {
         </h1>
       </div>
 
-      {/* Contenedor principal alineado arriba para que las barras queden a la misma altura */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
+      {/* Contenedor principal alineado abajo para fijar las barras a la misma altura */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '50px', flexWrap: 'wrap', maxWidth: '1250px', margin: '0 auto' }}>
         
-        {/* Case (Mismo ancho de 350px que el polo y el cuadro) */}
-        <div className="hero-product-col">
+        {/* Case (Proporción ideal de 260px) */}
+        <div style={{ width: '260px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <img
               src={heroCase}
@@ -181,7 +172,7 @@ function Hero() {
         </div>
 
         {/* Cuadro (Intacto al centro) */}
-        <div className="hero-product-col">
+        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <img
               src={heroCuadro}
@@ -192,8 +183,8 @@ function Hero() {
           </div>
         </div>
 
-        {/* Polo (Ancho de 350px simétrico al case) */}
-        <div className="hero-product-col">
+        {/* Polo (Tamaño imponente de 350px) */}
+        <div style={{ width: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <img
               src={heroPolo}
