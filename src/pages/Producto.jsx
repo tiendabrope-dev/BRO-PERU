@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
-// Importa tus imágenes aquí si es necesario, por ejemplo:
-// import cuadroImg from '../assets/cuadro.png';
+import heroCuadro from '../assets/hero/hero-cuadro.png'; // Asegúrate de que apunte bien a tu imagen
 
 function Producto() {
-  // 1. ESTADOS (A4 y Sin marco vienen seleccionados por defecto como en tu diseño)
   const [size, setSize] = useState('A4');
   const [frame, setFrame] = useState('Sin marco');
   const [wallpaper, setWallpaper] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
-  // 2. LÓGICA DE BLOQUEO MUTUO
+  // Lógica de bloqueo mutuo
   const handleSizeSelect = (selectedSize) => {
     setSize(selectedSize);
-    setWallpaper(null); // Deselecciona el wallpaper si eligen tamaño físico
+    setWallpaper(null); 
+    if (!frame) setFrame('Sin marco');
   };
 
   const handleFrameSelect = (selectedFrame) => {
     setFrame(selectedFrame);
-    setWallpaper(null); // Deselecciona el wallpaper si eligen marco físico
+    setWallpaper(null); 
+    if (!size) setSize('A4');
   };
 
   const handleWallpaperSelect = (selectedWallpaper) => {
     setWallpaper(selectedWallpaper);
-    setSize(null);  // Deselecciona el tamaño (se apaga)
-    setFrame(null); // Deselecciona el marco (se apaga)
+    setSize(null);  
+    setFrame(null); 
   };
 
   const handleQuantity = (type) => {
@@ -72,20 +72,20 @@ function Producto() {
         `}
       </style>
 
-      {/* --- COLUMNA IZQUIERDA: IMÁGENES --- */}
+      {/* --- COLUMNA IZQUIERDA: IMAGEN DEL CUADRO --- */}
       <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <div style={{ width: '100%', border: '2px solid #111', backgroundColor: '#fcfcfc', padding: '30px', display: 'flex', justifyContent: 'center' }}>
-          {/* Aquí va la imagen principal de tu producto */}
-          <div style={{ height: '550px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0' }}>
-            <span style={{ color: '#666', fontWeight: '600' }}>Vista previa del Cuadro</span>
-          </div>
+          <img 
+            src={heroCuadro} 
+            alt="Cuadro Personalizado Porsche" 
+            style={{ width: '100%', maxWidth: '450px', height: 'auto', objectFit: 'contain' }}
+          />
         </div>
       </div>
 
       {/* --- COLUMNA DERECHA: DETALLES Y OPCIONES --- */}
       <div style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column' }}>
         
-        {/* Etiqueta superior */}
         <div style={{ marginBottom: '15px' }}>
           <span style={{ 
             backgroundColor: '#111', color: '#fff', padding: '5px 14px', borderRadius: '20px', 
@@ -98,7 +98,6 @@ function Producto() {
           </p>
         </div>
 
-        {/* Título y Precio */}
         <h1 style={{ 
           fontFamily: "'Syne', sans-serif", fontSize: '42px', fontWeight: '800', 
           lineHeight: '1.1', textTransform: 'uppercase', margin: '0 0 10px 0', color: '#111' 
@@ -114,7 +113,6 @@ function Producto() {
           S/ 30.00
         </p>
 
-        {/* Banner Rojo */}
         <div style={{ 
           backgroundColor: '#e54b4b', color: '#fff', padding: '16px 20px', borderRadius: '6px', 
           textAlign: 'center', fontWeight: '700', fontSize: '13px', lineHeight: '1.4', marginBottom: '30px' 
@@ -131,8 +129,7 @@ function Producto() {
             <div style={{ display: 'flex', gap: '10px' }}>
               {['A4', 'A3', 'A2'].map((t) => (
                 <button 
-                  key={t} 
-                  type="button" 
+                  key={t} type="button" 
                   className={`bro-btn-option ${size === t ? 'active' : ''}`}
                   onClick={() => handleSizeSelect(t)}
                 >
@@ -148,8 +145,7 @@ function Producto() {
             <div style={{ display: 'flex', gap: '10px' }}>
               {['Sin marco', 'Con marco'].map((m) => (
                 <button 
-                  key={m} 
-                  type="button" 
+                  key={m} type="button" 
                   className={`bro-btn-option ${frame === m ? 'active' : ''}`}
                   onClick={() => handleFrameSelect(m)}
                 >
@@ -159,14 +155,13 @@ function Producto() {
             </div>
           </div>
 
-          {/* WALLPAPER (Opción digital con bloqueo mutuo) */}
+          {/* WALLPAPER */}
           <div>
             <label className="bro-section-label">WALLPAPER:</label>
             <div style={{ display: 'flex', gap: '10px' }}>
               {['Celular', 'Laptop'].map((w) => (
                 <button 
-                  key={w} 
-                  type="button" 
+                  key={w} type="button" 
                   className={`bro-btn-option ${wallpaper === w ? 'active' : ''}`}
                   onClick={() => handleWallpaperSelect(w)}
                 >
