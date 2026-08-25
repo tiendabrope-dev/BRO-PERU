@@ -1,149 +1,199 @@
 import React, { useState } from 'react';
-import '../styles/producto.css';
-import medidaCuadro from '../assets/hero/hero-cuadro.png'; // Imagen secundaria de medidas para la miniatura
+// Importa tus imágenes aquí si es necesario, por ejemplo:
+// import cuadroImg from '../assets/cuadro.png';
 
-export default function Producto({ producto, onVolver, onAgregarAlCarrito }) {
-  const [tamano, setTamano] = useState('A3');
-  const [marco, setMarco] = useState('Sin marco');
-  const [cantidad, setCantidad] = useState(1);
+function Producto() {
+  // 1. ESTADOS (A4 y Sin marco vienen seleccionados por defecto como en tu diseño)
+  const [size, setSize] = useState('A4');
+  const [frame, setFrame] = useState('Sin marco');
+  const [wallpaper, setWallpaper] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
-  // Estado para la galería: índice de la imagen seleccionada (0 = principal, 1 = medidas)
-  const [imagenActiva, setImagenActiva] = useState(0);
+  // 2. LÓGICA DE BLOQUEO MUTUO
+  const handleSizeSelect = (selectedSize) => {
+    setSize(selectedSize);
+    setWallpaper(null); // Deselecciona el wallpaper si eligen tamaño físico
+  };
 
-  if (!producto) return null;
+  const handleFrameSelect = (selectedFrame) => {
+    setFrame(selectedFrame);
+    setWallpaper(null); // Deselecciona el wallpaper si eligen marco físico
+  };
 
-  // Lista de imágenes para la galería (imagen del producto + miniatura de medidas)
-  const imagenesGaleria = [
-    producto.imagen,
-    medidaCuadro
-  ];
+  const handleWallpaperSelect = (selectedWallpaper) => {
+    setWallpaper(selectedWallpaper);
+    setSize(null);  // Deselecciona el tamaño (se apaga)
+    setFrame(null); // Deselecciona el marco (se apaga)
+  };
 
-  // Lógica temporal de precios (cualquier tamaño sin marco = S/15, con marco = S/30)
-  const precioUnitario = marco === 'Con marco' ? 30 : 15;
-  const precioTotal = precioUnitario * cantidad;
-
-  const esPersonalizado = producto.slug === 'cuadro-personalizado';
-
-  const handleAgregar = () => {
-    // Generar variante de texto y id único para el carrito
-    const varianteTexto = `${tamano} · ${marco}`;
-    const idCarrito = `${producto.id}-${tamano}-${marco}`;
-    
-    // Usamos exactamente el prop que envía App.jsx
-    onAgregarAlCarrito({
-      ...producto,
-      idCarrito,
-      varianteTexto,
-      precio: precioUnitario,
-      cantidad
-    });
+  const handleQuantity = (type) => {
+    if (type === 'minus' && quantity > 1) {
+      setQuantity(quantity - 1);
+    } else if (type === 'plus') {
+      setQuantity(quantity + 1);
+    }
   };
 
   return (
-    <div className="producto-page">
-      {/* Usamos directamente onVolver desde App.jsx */}
-      <button className="producto-volver" onClick={onVolver}>
-        ← Volver
-      </button>
+    <div className="bro-product-page" style={{ maxWidth: '1250px', margin: '40px auto', padding: '0 20px', display: 'flex', gap: '50px', flexWrap: 'wrap', fontFamily: "'DM Sans', sans-serif" }}>
+      
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@500;600;700&display=swap');
 
-      <div className="producto-container">
-        {/* Columna Izquierda: Galería e Imagen con Miniaturas */}
-        <div className="producto-galeria" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div className="producto-imagen-principal">
-            <img src={imagenesGaleria[imagenActiva]} alt={producto.nombre} />
-          </div>
+          .bro-btn-option {
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            border: 1px solid #d1d1d1;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #ffffff;
+            color: #111111;
+          }
 
-          {/* Miniaturas de la galería */}
-          <div style={{ display: 'flex', gap: '10px' }}>
-            {imagenesGaleria.map((imgSrc, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => setImagenActiva(index)}
-                style={{
-                  width: '65px',
-                  aspectRatio: '1 / 1.414',
-                  background: '#000',
-                  border: imagenActiva === index ? '2px solid #2d5a3d' : '1px solid #ccc',
-                  borderRadius: '6px',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  padding: '0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <img src={imgSrc} alt="Miniatura" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              </button>
-            ))}
+          .bro-btn-option.active {
+            background-color: #111111;
+            color: #ffffff;
+            border-color: #111111;
+          }
+
+          .bro-section-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+            color: #111;
+            text-transform: uppercase;
+          }
+        `}
+      </style>
+
+      {/* --- COLUMNA IZQUIERDA: IMÁGENES --- */}
+      <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ width: '100%', border: '2px solid #111', backgroundColor: '#fcfcfc', padding: '30px', display: 'flex', justifyContent: 'center' }}>
+          {/* Aquí va la imagen principal de tu producto */}
+          <div style={{ height: '550px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0' }}>
+            <span style={{ color: '#666', fontWeight: '600' }}>Vista previa del Cuadro</span>
           </div>
         </div>
+      </div>
 
-        {/* Columna Derecha: Información */}
-        <div className="producto-info">
-          {producto.badge && <div className="producto-badge">{producto.badge}</div>}
-          <div className="producto-categoria">{producto.categoria || 'Cuadros'}</div>
+      {/* --- COLUMNA DERECHA: DETALLES Y OPCIONES --- */}
+      <div style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column' }}>
+        
+        {/* Etiqueta superior */}
+        <div style={{ marginBottom: '15px' }}>
+          <span style={{ 
+            backgroundColor: '#111', color: '#fff', padding: '5px 14px', borderRadius: '20px', 
+            fontSize: '11px', fontWeight: '700', letterSpacing: '0.05em' 
+          }}>
+            PERSONALIZABLE
+          </span>
+          <p style={{ color: '#4a7a5e', fontWeight: '700', fontSize: '13px', letterSpacing: '0.1em', marginTop: '15px' }}>
+            CUADROS
+          </p>
+        </div>
+
+        {/* Título y Precio */}
+        <h1 style={{ 
+          fontFamily: "'Syne', sans-serif", fontSize: '42px', fontWeight: '800', 
+          lineHeight: '1.1', textTransform: 'uppercase', margin: '0 0 10px 0', color: '#111' 
+        }}>
+          CUADRO<br/>PERSONALIZADO
+        </h1>
+
+        <div style={{ color: '#b5b5b5', fontSize: '16px', marginBottom: '10px' }}>
+          ☆☆☆☆☆ <span style={{ fontSize: '13px', color: '#888' }}>(0)</span>
+        </div>
+
+        <p style={{ fontSize: '26px', fontWeight: '700', margin: '0 0 20px 0', color: '#111' }}>
+          S/ 30.00
+        </p>
+
+        {/* Banner Rojo */}
+        <div style={{ 
+          backgroundColor: '#e54b4b', color: '#fff', padding: '16px 20px', borderRadius: '6px', 
+          textAlign: 'center', fontWeight: '700', fontSize: '13px', lineHeight: '1.4', marginBottom: '30px' 
+        }}>
+          DISEÑO PERSONALIZADO: TRAS EL PEDIDO NOS<br/>CONTACTAREMOS PARA PEDIRTE LA FOTO DE TU AUTO.
+        </div>
+
+        {/* --- OPCIONES --- */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
           
-          <h1 className="producto-nombre">{producto.nombre}</h1>
-          <div className="producto-rating">☆☆☆☆☆ (0)</div>
-          
-          <div className="producto-precio">S/ {precioUnitario}.00</div>
-
-          {esPersonalizado && (
-            <div className="nota-personalizada">
-              DISEÑO PERSONALIZADO: Tras el pedido nos contactaremos para pedirte la foto de tu auto.
-            </div>
-          )}
-
-          <div className="producto-opciones">
-            <div className="opcion-grupo">
-              <label>Tamaño:</label>
-              <div className="selector-botones">
-                {['A4', 'A3', 'A2'].map((t) => (
-                  <button 
-                    key={t}
-                    type="button"
-                    className={`btn-selector ${tamano === t ? 'activo' : ''}`}
-                    onClick={() => setTamano(t)}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="opcion-grupo">
-              <label>Marco:</label>
-              <div className="selector-botones">
-                {['Sin marco', 'Con marco'].map((m) => (
-                  <button 
-                    key={m}
-                    type="button"
-                    className={`btn-selector ${marco === m ? 'activo' : ''}`}
-                    onClick={() => setMarco(m)}
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="opcion-grupo">
-              <label>Cantidad:</label>
-              <div className="selector-cantidad">
-                <button type="button" onClick={() => setCantidad(Math.max(1, cantidad - 1))}>-</button>
-                <span>{cantidad}</span>
-                <button type="button" onClick={() => setCantidad(cantidad + 1)}>+</button>
-              </div>
+          {/* TAMAÑO */}
+          <div>
+            <label className="bro-section-label">TAMAÑO:</label>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              {['A4', 'A3', 'A2'].map((t) => (
+                <button 
+                  key={t} 
+                  type="button" 
+                  className={`bro-btn-option ${size === t ? 'active' : ''}`}
+                  onClick={() => handleSizeSelect(t)}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
           </div>
 
-          <button type="button" className="btn-agregar-carrito" onClick={handleAgregar}>
-            AGREGAR AL CARRITO • S/ {precioTotal}.00
-          </button>
+          {/* MARCO */}
+          <div>
+            <label className="bro-section-label">MARCO:</label>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              {['Sin marco', 'Con marco'].map((m) => (
+                <button 
+                  key={m} 
+                  type="button" 
+                  className={`bro-btn-option ${frame === m ? 'active' : ''}`}
+                  onClick={() => handleFrameSelect(m)}
+                >
+                  {m}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* WALLPAPER (Opción digital con bloqueo mutuo) */}
+          <div>
+            <label className="bro-section-label">WALLPAPER:</label>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              {['Celular', 'Laptop'].map((w) => (
+                <button 
+                  key={w} 
+                  type="button" 
+                  className={`bro-btn-option ${wallpaper === w ? 'active' : ''}`}
+                  onClick={() => handleWallpaperSelect(w)}
+                >
+                  {w}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* CANTIDAD */}
+          <div>
+            <label className="bro-section-label">CANTIDAD:</label>
+            <div style={{ 
+              display: 'flex', alignItems: 'center', border: '1px solid #d1d1d1', 
+              borderRadius: '6px', width: 'fit-content', overflow: 'hidden' 
+            }}>
+              <button onClick={() => handleQuantity('minus')} style={{ border: 'none', background: 'none', padding: '10px 16px', cursor: 'pointer', fontSize: '16px', fontWeight: 'bold' }}>-</button>
+              <span style={{ padding: '10px 12px', fontWeight: '600', minWidth: '30px', textAlign: 'center' }}>{quantity}</span>
+              <button onClick={() => handleQuantity('plus')} style={{ border: 'none', background: 'none', padding: '10px 16px', cursor: 'pointer', fontSize: '16px', fontWeight: 'bold' }}>+</button>
+            </div>
+          </div>
+
         </div>
+
       </div>
     </div>
   );
 }
+
+export default Producto;
