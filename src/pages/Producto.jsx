@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import heroCuadro from '../assets/hero/hero-cuadro.png'; // Asegúrate de que apunte bien a tu imagen
+import heroCuadro from '../assets/hero/hero-cuadro.png';
 
 function Producto() {
   const [size, setSize] = useState('A4');
@@ -86,21 +86,22 @@ function Producto() {
       {/* --- COLUMNA DERECHA: DETALLES Y OPCIONES --- */}
       <div style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column' }}>
         
-        <div style={{ marginBottom: '15px' }}>
+        <div style={{ marginBottom: '10px' }}>
           <span style={{ 
             backgroundColor: '#111', color: '#fff', padding: '5px 14px', borderRadius: '20px', 
             fontSize: '11px', fontWeight: '700', letterSpacing: '0.05em' 
           }}>
             PERSONALIZABLE
           </span>
-          <p style={{ color: '#4a7a5e', fontWeight: '700', fontSize: '13px', letterSpacing: '0.1em', marginTop: '15px' }}>
+          <p style={{ color: '#4a7a5e', fontWeight: '700', fontSize: '13px', letterSpacing: '0.1em', marginTop: '12px' }}>
             CUADROS
           </p>
         </div>
 
+        {/* Título corregido con espacio superior para que no se corte */}
         <h1 style={{ 
           fontFamily: "'Syne', sans-serif", fontSize: '42px', fontWeight: '800', 
-          lineHeight: '1.1', textTransform: 'uppercase', margin: '0 0 10px 0', color: '#111' 
+          lineHeight: '1.15', textTransform: 'uppercase', margin: '15px 0 10px 0', color: '#111' 
         }}>
           CUADRO<br/>PERSONALIZADO
         </h1>
