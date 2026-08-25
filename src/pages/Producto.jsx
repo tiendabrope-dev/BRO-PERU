@@ -35,7 +35,8 @@ function Producto() {
   };
 
   return (
-    <div className="bro-product-page" style={{ maxWidth: '1250px', margin: '40px auto', padding: '0 20px', display: 'flex', gap: '50px', flexWrap: 'wrap', fontFamily: "'DM Sans', sans-serif" }}>
+    {/* Agregamos padding-top de 180px para bajar toda la sección y que no choque con el header */}
+    <div className="bro-product-page" style={{ maxWidth: '1250px', margin: '0 auto', padding: '180px 20px 60px 20px', display: 'flex', gap: '50px', flexWrap: 'wrap', fontFamily: "'DM Sans', sans-serif" }}>
       
       <style>
         {`
@@ -72,13 +73,13 @@ function Producto() {
         `}
       </style>
 
-      {/* --- COLUMNA IZQUIERDA: IMAGEN DEL CUADRO --- */}
-      <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div style={{ width: '100%', border: '2px solid #111', backgroundColor: '#fcfcfc', padding: '30px', display: 'flex', justifyContent: 'center' }}>
+      {/* --- COLUMNA IZQUIERDA: IMAGEN DEL CUADRO ARREGLADA --- */}
+      <div style={{ flex: '1 1 500px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+        <div style={{ width: '100%', backgroundColor: '#ffffff', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
             src={heroCuadro} 
             alt="Cuadro Personalizado Porsche" 
-            style={{ width: '100%', maxWidth: '450px', height: 'auto', objectFit: 'contain' }}
+            style={{ width: '100%', maxWidth: '480px', height: 'auto', objectFit: 'contain' }}
           />
         </div>
       </div>
@@ -98,7 +99,7 @@ function Producto() {
           </p>
         </div>
 
-        {/* Título corregido con espacio superior para que no se corte */}
+        {/* Título completo y limpio */}
         <h1 style={{ 
           fontFamily: "'Syne', sans-serif", fontSize: '42px', fontWeight: '800', 
           lineHeight: '1.15', textTransform: 'uppercase', margin: '15px 0 10px 0', color: '#111' 
