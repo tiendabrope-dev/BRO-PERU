@@ -146,17 +146,22 @@ function App() {
       // Si estás cerca de la parte superior, muestra el header
       if (actual < 80) {
         setHeaderVisible(true);
-      } 
+      }
       // Si haces scroll hacia arriba, aparece inmediatamente sin importar dónde estés
-      else if (actual < lastScrollY.current) {
+      else if (
+        actual < lastScrollY.current
+      ) {
         setHeaderVisible(true);
-      } 
+      }
       // Si haces scroll hacia abajo, se oculta
-      else if (actual > lastScrollY.current) {
+      else if (
+        actual > lastScrollY.current
+      ) {
         setHeaderVisible(false);
       }
 
-      lastScrollY.current = actual;
+      lastScrollY.current =
+        actual;
     }
 
     window.addEventListener(
@@ -542,6 +547,67 @@ function App() {
 
     setErrorCheckout('');
 
+    /*
+      IMPORTANTE:
+
+      WhatsApp debe abrirse desde la
+      acción directa del usuario.
+
+      Si esperamos primero el resultado
+      de Supabase y después usamos
+      window.open(), Chrome puede
+      interpretarlo como popup y bloquearlo.
+
+      Por eso abrimos una pestaña vacía
+      ANTES del await.
+    */
+    const ventanaWhatsApp =
+      window.open(
+        'about:blank',
+        '_blank'
+      );
+
+    /*
+      Si Chrome permitió abrir la pestaña,
+      mostramos un pequeño mensaje mientras
+      Supabase crea el pedido.
+    */
+    if (ventanaWhatsApp) {
+      try {
+        ventanaWhatsApp.document.title =
+          'BRO PERU';
+
+        ventanaWhatsApp.document.body.innerHTML =
+          `
+            <div
+              style="
+                min-height:100vh;
+                margin:0;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:#f4f1ec;
+                font-family:Arial,sans-serif;
+                color:#111111;
+              "
+            >
+              <div style="text-align:center;">
+                <h2 style="margin-bottom:10px;">
+                  BRO PERU
+                </h2>
+
+                <p>
+                  Estamos creando tu pedido...
+                </p>
+              </div>
+            </div>
+          `;
+      } catch {
+        // Si el navegador no permite modificar
+        // la pestaña vacía, simplemente continuamos.
+      }
+    }
+
     setGuardandoPedido(true);
 
     try {
@@ -571,6 +637,7 @@ function App() {
         pedido,
         formulario,
         carrito,
+        ventanaWhatsApp,
       });
 
       localStorage.removeItem(
@@ -599,6 +666,18 @@ function App() {
       console.error(
         errorPedido
       );
+
+      /*
+        Si Supabase falla, cerramos
+        la pestaña vacía para no dejar
+        una ventana inútil abierta.
+      */
+      if (
+        ventanaWhatsApp &&
+        !ventanaWhatsApp.closed
+      ) {
+        ventanaWhatsApp.close();
+      }
 
       setErrorCheckout(
         errorPedido.message ||
