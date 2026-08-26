@@ -9,31 +9,43 @@ function Producto({
   onVolver,
   onAgregarAlCarrito,
 }) {
-  const [
-    size,
-    setSize,
-  ] = useState(null);
+  const [size, setSize] =
+    useState(null);
+
+  const [frame, setFrame] =
+    useState(null);
+
+  const [wallpaper, setWallpaper] =
+    useState(null);
+
+  const [quantity, setQuantity] =
+    useState(1);
 
   const [
-    frame,
-    setFrame,
-  ] = useState(null);
+    imagenActiva,
+    setImagenActiva,
+  ] = useState(0);
 
-  const [
-    wallpaper,
-    setWallpaper,
-  ] = useState(null);
+  const imagenesProducto =
+    useMemo(() => {
+      if (
+        Array.isArray(
+          producto?.imagenes
+        ) &&
+        producto.imagenes.length > 0
+      ) {
+        return producto.imagenes;
+      }
 
-  const [
-    quantity,
-    setQuantity,
-  ] = useState(1);
+      if (producto?.imagen) {
+        return [
+          producto.imagen,
+        ];
+      }
 
-  /*
-    Cada vez que cambiamos de producto,
-    seleccionamos por defecto la primera
-    medida y el primer tipo de marco.
-  */
+      return [];
+    }, [producto]);
+
   useEffect(() => {
     if (!producto) {
       return;
@@ -41,32 +53,24 @@ function Producto({
 
     setSize(
       producto.tamanos?.[0] ||
-      null
+        null
     );
 
     setFrame(
       producto.marcos?.[0] ||
-      null
+        null
     );
 
     setWallpaper(null);
 
     setQuantity(1);
+
+    setImagenActiva(0);
   }, [producto]);
 
-  /*
-    PRECIO DEL PRODUCTO FÍSICO
-
-    Ejemplo:
-    A4 = S/15
-    Con marco = +S/15
-    Total = S/30
-  */
   const precioActual =
     useMemo(() => {
-      if (
-        wallpaper
-      ) {
+      if (wallpaper) {
         return null;
       }
 
@@ -90,69 +94,52 @@ function Producto({
       wallpaper,
     ]);
 
-  /*
-    LÓGICA DE BLOQUEO MUTUO
+  const esGuiaTamanos =
+    imagenActiva === 1;
 
-    Si selecciona tamaño o marco,
-    se desactiva Wallpaper.
-  */
-  const handleSizeSelect = (
+  function handleSizeSelect(
     selectedSize
-  ) => {
-    setSize(
-      selectedSize
-    );
+  ) {
+    setSize(selectedSize);
 
     setWallpaper(null);
 
     if (!frame) {
       setFrame(
         producto.marcos?.[0] ||
-        null
+          null
       );
     }
-  };
+  }
 
-  const handleFrameSelect = (
+  function handleFrameSelect(
     selectedFrame
-  ) => {
-    setFrame(
-      selectedFrame
-    );
+  ) {
+    setFrame(selectedFrame);
 
     setWallpaper(null);
 
     if (!size) {
       setSize(
         producto.tamanos?.[0] ||
-        null
+          null
       );
     }
-  };
+  }
 
-  /*
-    Si selecciona Wallpaper,
-    se desactivan tamaño y marco.
-
-    Todavía NO permitimos agregar
-    Wallpaper al carrito porque
-    falta definir sus precios
-    comerciales en catalogo.js.
-  */
-  const handleWallpaperSelect = (
+  function handleWallpaperSelect(
     selectedWallpaper
-  ) => {
+  ) {
     setWallpaper(
       selectedWallpaper
     );
 
     setSize(null);
-    setFrame(null);
-  };
 
-  const handleQuantity = (
-    type
-  ) => {
+    setFrame(null);
+  }
+
+  function handleQuantity(type) {
     if (
       type === 'minus' &&
       quantity > 1
@@ -163,21 +150,15 @@ function Producto({
       );
     }
 
-    if (
-      type === 'plus'
-    ) {
+    if (type === 'plus') {
       setQuantity(
         (actual) =>
           actual + 1
       );
     }
-  };
+  }
 
-  /*
-    AGREGAR PRODUCTO FÍSICO
-    AL CARRITO
-  */
-  const handleAddToCart = () => {
+  function handleAddToCart() {
     if (
       !producto ||
       !size ||
@@ -196,7 +177,8 @@ function Producto({
       `${size.nombre} · ${frame.nombre}`;
 
     const productoConfigurado = {
-      id: producto.id,
+      id:
+        producto.id,
 
       idCarrito,
 
@@ -207,6 +189,7 @@ function Producto({
         producto.nombre,
 
       imagen:
+        imagenesProducto[0] ||
         producto.imagen,
 
       precio:
@@ -236,7 +219,7 @@ function Producto({
     onAgregarAlCarrito(
       productoConfigurado
     );
-  };
+  }
 
   if (!producto) {
     return (
@@ -273,14 +256,10 @@ function Producto({
               '#111111',
             color:
               '#ffffff',
-            border:
-              'none',
-            borderRadius:
-              '6px',
-            cursor:
-              'pointer',
-            fontWeight:
-              '700',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontWeight: '700',
           }}
         >
           VOLVER AL INICIO
@@ -296,8 +275,7 @@ function Producto({
         5,
         Math.round(
           Number(
-            producto.rating ||
-            0
+            producto.rating || 0
           )
         )
       )
@@ -307,13 +285,14 @@ function Producto({
     <div
       className="bro-product-page"
       style={{
-        maxWidth: '1250px',
+        maxWidth: '1320px',
         margin: '0 auto',
         padding:
-          '240px 20px 80px 20px',
+          '215px 20px 90px',
         display: 'flex',
-        gap: '50px',
+        gap: '45px',
         flexWrap: 'wrap',
+        alignItems: 'flex-start',
         fontFamily:
           "'DM Sans', sans-serif",
       }}
@@ -360,21 +339,197 @@ function Producto({
             text-transform: uppercase;
           }
 
+          /* ==================================
+             GALERÍA
+          ================================== */
+
+          .bro-product-gallery {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          /*
+             IMAGEN PRINCIPAL DEL CUADRO
+
+             NO CAMBIAMOS SU TAMAÑO.
+          */
+
+          .bro-product-main-image {
+            width: 100%;
+            max-width: 390px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: transparent;
+
+            overflow: hidden;
+
+            transition:
+              max-width 0.25s ease;
+          }
+
+          .bro-product-main-image img {
+            display: block;
+
+            width: 100%;
+            max-width: 390px;
+
+            height: auto;
+
+            object-fit: contain;
+          }
+
+          /*
+             SEGUNDA IMAGEN
+
+             GUÍA DE TAMAÑOS BRO
+             AHORA MÁS GRANDE.
+          */
+
+          .bro-product-main-image.guia {
+            width: 100%;
+
+            max-width: 700px;
+
+            overflow: visible;
+          }
+
+          .bro-product-main-image.guia img {
+            display: block;
+
+            width: 100%;
+            max-width: 700px;
+
+            height: auto;
+
+            object-fit: contain;
+          }
+
+          /* ==================================
+             SELECTORES / MINIATURAS
+          ================================== */
+
+          .bro-product-thumbnails {
+            width: 100%;
+            max-width: 700px;
+
+            margin-top: 24px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 18px;
+
+            flex-wrap: wrap;
+          }
+
+          /*
+             MINIATURA DEL PRODUCTO
+
+             Más grande que antes.
+          */
+
+          .bro-product-thumbnail {
+            width: 92px;
+            height: 108px;
+
+            padding: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border:
+              2px solid transparent;
+
+            border-radius: 6px;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            overflow: hidden;
+
+            transition:
+              border-color 0.2s ease,
+              transform 0.2s ease,
+              opacity 0.2s ease;
+          }
+
+          .bro-product-thumbnail:hover {
+            border-color:
+              rgba(17,17,17,0.35);
+
+            transform:
+              translateY(-2px);
+          }
+
+          .bro-product-thumbnail.active {
+            border-color: #111111;
+          }
+
+          .bro-product-thumbnail img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            background: transparent;
+          }
+
+          /*
+             SEGUNDA MINIATURA
+
+             Como la guía es horizontal,
+             le damos bastante más ancho.
+          */
+
+          .bro-product-thumbnail.guia-thumb {
+            width: 150px;
+            height: 108px;
+          }
+
+          /* ==================================
+             BOTÓN CARRITO
+          ================================== */
+
           .bro-product-add-cart {
             width: 100%;
             min-height: 56px;
+
             margin-top: 8px;
+
             padding: 0 24px;
+
             border: none;
+
             border-radius: 6px;
+
             background: #111111;
+
             color: #ffffff;
-            font-family: 'DM Sans', sans-serif;
+
+            font-family:
+              'DM Sans',
+              sans-serif;
+
             font-size: 13px;
+
             font-weight: 700;
+
             letter-spacing: 0.12em;
+
             cursor: pointer;
-            transition: all 0.2s ease;
+
+            transition:
+              all 0.2s ease;
           }
 
           .bro-product-add-cart:hover {
@@ -383,81 +538,210 @@ function Producto({
 
           .bro-product-add-cart:disabled {
             background: #c8c8c8;
+
             color: #ffffff;
+
             cursor: not-allowed;
           }
 
           .bro-wallpaper-message {
             margin-top: 10px;
+
             padding: 12px 14px;
+
             border-radius: 6px;
+
             background: #f4f1ec;
+
             color: #666666;
+
             font-size: 12px;
+
             line-height: 1.5;
           }
 
-          @media (max-width: 760px) {
+          /* ==================================
+             TABLET
+          ================================== */
+
+          @media (max-width: 1050px) {
+
             .bro-product-page {
-              padding-top: 190px !important;
-              gap: 30px !important;
+              gap: 35px !important;
+            }
+
+            .bro-product-main-image.guia {
+              max-width: 620px;
+            }
+
+            .bro-product-main-image.guia img {
+              max-width: 620px;
+            }
+          }
+
+          /* ==================================
+             MOBILE
+          ================================== */
+
+          @media (max-width: 760px) {
+
+            .bro-product-page {
+              padding-top:
+                185px !important;
+
+              gap:
+                30px !important;
+            }
+
+            /*
+               El cuadro normal sigue
+               controlado.
+            */
+
+            .bro-product-main-image {
+              max-width: 320px;
+            }
+
+            .bro-product-main-image img {
+              max-width: 320px;
+            }
+
+            /*
+               La guía ocupa prácticamente
+               todo el ancho disponible.
+            */
+
+            .bro-product-main-image.guia {
+              max-width: 100%;
+            }
+
+            .bro-product-main-image.guia img {
+              max-width: 100%;
+            }
+
+            .bro-product-thumbnails {
+              max-width: 100%;
+
+              margin-top: 18px;
+
+              gap: 12px;
+            }
+
+            .bro-product-thumbnail {
+              width: 78px;
+              height: 92px;
+            }
+
+            .bro-product-thumbnail.guia-thumb {
+              width: 125px;
+              height: 92px;
             }
           }
         `}
       </style>
 
-      {/* COLUMNA IZQUIERDA */}
+      {/* ==========================
+          COLUMNA IZQUIERDA
+      ========================== */}
+
       <div
         style={{
-          flex:
-            '1 1 500px',
-          display:
-            'flex',
+          flex: '1 1 600px',
+
+          display: 'flex',
+
           alignItems:
             'flex-start',
+
           justifyContent:
             'center',
+
+          minWidth: 0,
         }}
       >
-        <div
-          style={{
-            width: '100%',
-            backgroundColor:
-              '#ffffff',
-            display: 'flex',
-            justifyContent:
-              'center',
-            alignItems:
-              'center',
-          }}
-        >
-          <img
-            src={
-              producto.imagen
-            }
-            alt={
-              producto.nombre
-            }
-            style={{
-              width: '100%',
-              maxWidth:
-                '480px',
-              height:
-                'auto',
-              objectFit:
-                'contain',
-            }}
-          />
+        <div className="bro-product-gallery">
+
+          <div
+            className={`bro-product-main-image ${
+              esGuiaTamanos
+                ? 'guia'
+                : ''
+            }`}
+          >
+            {imagenesProducto.length >
+              0 && (
+              <img
+                src={
+                  imagenesProducto[
+                    imagenActiva
+                  ]
+                }
+                alt={`${producto.nombre} - Imagen ${
+                  imagenActiva + 1
+                }`}
+              />
+            )}
+          </div>
+
+          {imagenesProducto.length >
+            0 && (
+            <div className="bro-product-thumbnails">
+
+              {imagenesProducto.map(
+                (
+                  imagen,
+                  index
+                ) => (
+                  <button
+                    key={`${producto.id}-${index}`}
+                    type="button"
+                    className={`bro-product-thumbnail ${
+                      index === 1
+                        ? 'guia-thumb'
+                        : ''
+                    } ${
+                      imagenActiva ===
+                      index
+                        ? 'active'
+                        : ''
+                    }`}
+                    onClick={() =>
+                      setImagenActiva(
+                        index
+                      )
+                    }
+                    aria-label={`Ver imagen ${
+                      index + 1
+                    } de ${
+                      producto.nombre
+                    }`}
+                  >
+                    <img
+                      src={imagen}
+                      alt=""
+                    />
+                  </button>
+                )
+              )}
+
+            </div>
+          )}
+
         </div>
       </div>
 
-      {/* COLUMNA DERECHA */}
+      {/* ==========================
+          COLUMNA DERECHA
+      ========================== */}
+
       <div
         style={{
-          flex:
-            '1 1 450px',
-          display:
-            'flex',
+          flex: '1 1 430px',
+
+          maxWidth: '500px',
+
+          display: 'flex',
+
           flexDirection:
             'column',
         }}
@@ -473,16 +757,22 @@ function Producto({
               style={{
                 backgroundColor:
                   '#111111',
+
                 color:
                   '#ffffff',
+
                 padding:
                   '5px 14px',
+
                 borderRadius:
                   '20px',
+
                 fontSize:
                   '11px',
+
                 fontWeight:
                   '700',
+
                 letterSpacing:
                   '0.05em',
               }}
@@ -494,15 +784,20 @@ function Producto({
           <p
             style={{
               color:
-                '#4a7a5e',
+                '#2d5a3d',
+
               fontWeight:
                 '700',
+
               fontSize:
                 '13px',
+
               letterSpacing:
                 '0.1em',
+
               marginTop:
                 '12px',
+
               textTransform:
                 'uppercase',
             }}
@@ -515,16 +810,22 @@ function Producto({
           style={{
             fontFamily:
               "'Syne', sans-serif",
+
             fontSize:
               '42px',
+
             fontWeight:
               '800',
+
             lineHeight:
-              '1.15',
+              '1.05',
+
             textTransform:
               'uppercase',
+
             margin:
               '15px 0 10px 0',
+
             color:
               '#111111',
           }}
@@ -536,8 +837,10 @@ function Producto({
           style={{
             color:
               '#e9b000',
+
             fontSize:
               '16px',
+
             marginBottom:
               '10px',
           }}
@@ -546,13 +849,8 @@ function Producto({
             length: 5,
           }).map(
             (_, index) => (
-              <span
-                key={
-                  index
-                }
-              >
-                {index <
-                rating
+              <span key={index}>
+                {index < rating
                   ? '★'
                   : '☆'}
               </span>
@@ -563,8 +861,10 @@ function Producto({
             style={{
               marginLeft:
                 '6px',
+
               fontSize:
                 '13px',
+
               color:
                 '#888888',
             }}
@@ -580,10 +880,13 @@ function Producto({
           style={{
             fontSize:
               '26px',
+
             fontWeight:
               '700',
+
             margin:
               '0 0 20px 0',
+
             color:
               '#111111',
           }}
@@ -600,21 +903,29 @@ function Producto({
           <div
             style={{
               backgroundColor:
-                '#e54b4b',
+                '#e84040',
+
               color:
                 '#ffffff',
+
               padding:
                 '16px 20px',
+
               borderRadius:
                 '6px',
+
               textAlign:
                 'center',
+
               fontWeight:
                 '700',
+
               fontSize:
                 '13px',
+
               lineHeight:
                 '1.4',
+
               marginBottom:
                 '30px',
             }}
@@ -628,24 +939,22 @@ function Producto({
           </div>
         )}
 
-        {/* OPCIONES */}
         <div
           style={{
             display:
               'flex',
+
             flexDirection:
               'column',
+
             gap:
               '22px',
           }}
         >
-          {/* TAMAÑO */}
           {producto.tamanos?.length >
             0 && (
             <div>
-              <label
-                className="bro-section-label"
-              >
+              <label className="bro-section-label">
                 TAMAÑO:
               </label>
 
@@ -653,8 +962,10 @@ function Producto({
                 style={{
                   display:
                     'flex',
+
                   gap:
                     '10px',
+
                   flexWrap:
                     'wrap',
                 }}
@@ -690,13 +1001,10 @@ function Producto({
             </div>
           )}
 
-          {/* MARCO */}
           {producto.marcos?.length >
             0 && (
             <div>
-              <label
-                className="bro-section-label"
-              >
+              <label className="bro-section-label">
                 MARCO:
               </label>
 
@@ -704,8 +1012,10 @@ function Producto({
                 style={{
                   display:
                     'flex',
+
                   gap:
                     '10px',
+
                   flexWrap:
                     'wrap',
                 }}
@@ -741,20 +1051,17 @@ function Producto({
             </div>
           )}
 
-          {/* WALLPAPER */}
           <div>
-            <label
-              className="bro-section-label"
-            >
+            <label className="bro-section-label">
               WALLPAPER:
             </label>
 
             <div
               style={{
-                display:
-                  'flex',
-                gap:
-                  '10px',
+                display: 'flex',
+
+                gap: '10px',
+
                 flexWrap:
                   'wrap',
               }}
@@ -792,24 +1099,17 @@ function Producto({
             </div>
 
             {wallpaper && (
-              <div
-                className="bro-wallpaper-message"
-              >
+              <div className="bro-wallpaper-message">
                 El precio de
                 Wallpaper todavía no
                 está configurado en el
-                catálogo. Primero
-                definiremos el precio
-                de Celular y Laptop.
+                catálogo.
               </div>
             )}
           </div>
 
-          {/* CANTIDAD */}
           <div>
-            <label
-              className="bro-section-label"
-            >
+            <label className="bro-section-label">
               CANTIDAD:
             </label>
 
@@ -817,14 +1117,19 @@ function Producto({
               style={{
                 display:
                   'flex',
+
                 alignItems:
                   'center',
+
                 border:
                   '1px solid #d1d1d1',
+
                 borderRadius:
                   '6px',
+
                 width:
                   'fit-content',
+
                 overflow:
                   'hidden',
               }}
@@ -839,14 +1144,19 @@ function Producto({
                 style={{
                   border:
                     'none',
+
                   background:
                     'none',
+
                   padding:
                     '10px 16px',
+
                   cursor:
                     'pointer',
+
                   fontSize:
                     '16px',
+
                   fontWeight:
                     'bold',
                 }}
@@ -858,10 +1168,13 @@ function Producto({
                 style={{
                   padding:
                     '10px 12px',
+
                   fontWeight:
                     '600',
+
                   minWidth:
                     '30px',
+
                   textAlign:
                     'center',
                 }}
@@ -879,14 +1192,19 @@ function Producto({
                 style={{
                   border:
                     'none',
+
                   background:
                     'none',
+
                   padding:
                     '10px 16px',
+
                   cursor:
                     'pointer',
+
                   fontSize:
                     '16px',
+
                   fontWeight:
                     'bold',
                 }}
@@ -896,7 +1214,6 @@ function Producto({
             </div>
           </div>
 
-          {/* AGREGAR AL CARRITO */}
           <button
             type="button"
             className="bro-product-add-cart"
