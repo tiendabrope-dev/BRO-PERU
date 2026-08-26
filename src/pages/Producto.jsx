@@ -35,8 +35,8 @@ function Producto() {
   };
 
   return (
-    {/* Agregamos padding-top de 180px para bajar toda la sección y que no choque con el header */}
-    <div className="bro-product-page" style={{ maxWidth: '1250px', margin: '0 auto', padding: '180px 20px 60px 20px', display: 'flex', gap: '50px', flexWrap: 'wrap', fontFamily: "'DM Sans', sans-serif" }}>
+    // Padding superior aumentado a 240px para que baje bastante y quede perfecto
+    <div className="bro-product-page" style={{ maxWidth: '1250px', margin: '0 auto', padding: '240px 20px 80px 20px', display: 'flex', gap: '50px', flexWrap: 'wrap', fontFamily: "'DM Sans', sans-serif" }}>
       
       <style>
         {`
@@ -73,7 +73,7 @@ function Producto() {
         `}
       </style>
 
-      {/* --- COLUMNA IZQUIERDA: IMAGEN DEL CUADRO ARREGLADA --- */}
+      {/* --- COLUMNA IZQUIERDA: IMAGEN DEL CUADRO --- */}
       <div style={{ flex: '1 1 500px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
         <div style={{ width: '100%', backgroundColor: '#ffffff', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
@@ -99,7 +99,7 @@ function Producto() {
           </p>
         </div>
 
-        {/* Título completo y limpio */}
+        {/* Título principal con espacio seguro arriba */}
         <h1 style={{ 
           fontFamily: "'Syne', sans-serif", fontSize: '42px', fontWeight: '800', 
           lineHeight: '1.15', textTransform: 'uppercase', margin: '15px 0 10px 0', color: '#111' 
