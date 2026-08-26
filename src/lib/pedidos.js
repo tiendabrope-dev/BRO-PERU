@@ -4,23 +4,71 @@ export async function crearPedidoBro({
   formulario,
   carrito,
 }) {
-  if (!carrito || carrito.length === 0) {
+  if (
+    !carrito ||
+    carrito.length === 0
+  ) {
     throw new Error(
       'El carrito no puede estar vacío.'
     );
   }
 
-  const items = carrito.map((item) => ({
-    id: String(item.id),
-    nombre: item.nombre,
-    cantidad: Number(item.cantidad),
-    precio: Number(item.precio),
-  }));
+  const items =
+    carrito.map((item) => ({
+      id:
+        String(item.id),
+
+      id_carrito:
+        item.idCarrito
+          ? String(item.idCarrito)
+          : null,
+
+      nombre:
+        item.nombre,
+
+      variante_texto:
+        item.varianteTexto ||
+        null,
+
+      tamano:
+        item.tamano ||
+        null,
+
+      tamano_id:
+        item.tamanoId ||
+        null,
+
+      marco:
+        item.marco ||
+        null,
+
+      marco_id:
+        item.marcoId ||
+        null,
+
+      tipo:
+        item.tipo ||
+        null,
+
+      cantidad:
+        Number(
+          item.cantidad
+        ),
+
+      precio:
+        Number(
+          item.precio
+        ),
+    }));
 
   const esDomicilio =
-    formulario.servicio === 'domicilio';
+    formulario.servicio ===
+    'domicilio';
 
-  const { data, error } = await supabase.rpc(
+  const {
+    data,
+    error,
+  } = await supabase.rpc(
     'crear_pedido_bro',
     {
       p_nombre_completo:
@@ -35,21 +83,25 @@ export async function crearPedidoBro({
       p_tipo_servicio:
         formulario.servicio,
 
-      p_direccion: esDomicilio
-        ? formulario.direccion.trim()
-        : null,
+      p_direccion:
+        esDomicilio
+          ? formulario.direccion.trim()
+          : null,
 
-      p_distrito: esDomicilio
-        ? formulario.distrito.trim()
-        : null,
+      p_distrito:
+        esDomicilio
+          ? formulario.distrito.trim()
+          : null,
 
       p_referencia:
-        formulario.referencia.trim() || null,
+        formulario.referencia.trim() ||
+        null,
 
       p_metodo_pago:
         formulario.metodoPago,
 
-      p_items: items,
+      p_items:
+        items,
     }
   );
 
@@ -65,7 +117,10 @@ export async function crearPedidoBro({
     );
   }
 
-  if (!data || data.length === 0) {
+  if (
+    !data ||
+    data.length === 0
+  ) {
     throw new Error(
       'Supabase no devolvió los datos del pedido.'
     );

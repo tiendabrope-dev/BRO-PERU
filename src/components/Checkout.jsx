@@ -16,6 +16,16 @@ function Checkout({
     return null;
   }
 
+  const esYapeOPlin =
+    formulario.metodoPago === 'yape' ||
+    formulario.metodoPago === 'plin';
+
+  const esTransferencia =
+    formulario.metodoPago === 'transferencia';
+
+  const esEfectivo =
+    formulario.metodoPago === 'efectivo';
+
   return (
     <>
       <div
@@ -257,8 +267,14 @@ function Checkout({
                 {[
                   ['yape', 'YAPE'],
                   ['plin', 'PLIN'],
-                  ['tarjetas', 'TARJETAS'],
-                  ['efectivo', 'CONTRAENTREGA / EFECTIVO'],
+                  [
+                    'transferencia',
+                    'TRANSFERENCIA BANCARIA',
+                  ],
+                  [
+                    'efectivo',
+                    'CONTRAENTREGA / EFECTIVO',
+                  ],
                 ].map(([valor, etiqueta]) => (
                   <label
                     key={valor}
@@ -286,19 +302,56 @@ function Checkout({
                 ))}
               </div>
 
-              <div className="payment-info-box">
-                <span>
-                  NÚMERO PARA YAPE / PLIN
-                </span>
+              {esYapeOPlin && (
+                <div className="payment-info-box">
+                  <span>
+                    NÚMERO PARA YAPE / PLIN
+                  </span>
 
-                <strong>
-                  926 555 219
-                </strong>
+                  <strong>
+                    926 555 219
+                  </strong>
 
-                <p>
-                  DIEGO LOP* VAL*
-                </p>
-              </div>
+                  <p>
+                    DIEGO LOP* VAL*
+                  </p>
+                </div>
+              )}
+
+              {esTransferencia && (
+                <div className="payment-info-box">
+                  <span>
+                    TRANSFERENCIA BANCARIA
+                  </span>
+
+                  <strong>
+                    DATOS POR WHATSAPP
+                  </strong>
+
+                  <p>
+                    Al confirmar tu pedido te enviaremos
+                    los datos bancarios para realizar
+                    la transferencia.
+                  </p>
+                </div>
+              )}
+
+              {esEfectivo && (
+                <div className="payment-info-box">
+                  <span>
+                    PAGO EN EFECTIVO
+                  </span>
+
+                  <strong>
+                    PAGO AL RECIBIR
+                  </strong>
+
+                  <p>
+                    Puedes realizar el pago en efectivo
+                    al momento de recibir tu pedido.
+                  </p>
+                </div>
+              )}
             </div>
 
             {errorCheckout && (

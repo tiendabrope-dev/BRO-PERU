@@ -44,8 +44,7 @@ function textoMetodoPago(metodo) {
   const metodos = {
     yape: 'Yape',
     plin: 'Plin',
-    transferencia: 'Transferencia',
-    tarjetas: 'Tarjetas',
+    transferencia: 'Transferencia bancaria',
     efectivo: 'Efectivo',
   };
 
@@ -76,6 +75,34 @@ function crearListadoProductos(carrito) {
       );
     })
     .join('\n');
+}
+
+function crearDatosPago(metodoPago) {
+  if (
+    metodoPago === 'yape' ||
+    metodoPago === 'plin'
+  ) {
+    return [
+      `📲 *YAPE / PLIN: ${NUMERO_PAGO}*`,
+      `Titular: ${TITULAR_PAGO}`,
+    ];
+  }
+
+  if (metodoPago === 'transferencia') {
+    return [
+      '🏦 *TRANSFERENCIA BANCARIA*',
+      'Te enviaremos los datos bancarios por WhatsApp para realizar el pago.',
+    ];
+  }
+
+  if (metodoPago === 'efectivo') {
+    return [
+      '💵 *PAGO EN EFECTIVO*',
+      'El pago se realizará al momento de la entrega.',
+    ];
+  }
+
+  return [];
 }
 
 export function crearMensajeWhatsAppBro({
@@ -131,6 +158,11 @@ export function crearMensajeWhatsAppBro({
           .filter(Boolean)
           .join('\n')
       : '';
+
+  const datosPago =
+    crearDatosPago(
+      formulario.metodoPago
+    );
 
   return [
     '👋 *Vengo de la página BRO PERU*',
@@ -197,9 +229,7 @@ export function crearMensajeWhatsAppBro({
 
     '',
 
-    `📲 *YAPE / PLIN: ${NUMERO_PAGO}*`,
-
-    `Titular: ${TITULAR_PAGO}`,
+    ...datosPago,
 
     '',
 
