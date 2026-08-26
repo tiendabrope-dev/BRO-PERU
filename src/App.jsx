@@ -15,8 +15,13 @@ import {
   productos,
 } from './data/catalogo';
 
-import { crearPedidoBro } from './lib/pedidos';
-import { abrirWhatsAppBro } from './lib/whatsapp';
+import {
+  crearPedidoBro,
+} from './lib/pedidos';
+
+import {
+  abrirWhatsAppBro,
+} from './lib/whatsapp';
 
 import Header from './components/Header';
 import Carrito from './components/Carrito';
@@ -28,6 +33,7 @@ import MiPedido from './pages/MiPedido';
 import PreguntasFrecuentes from './pages/PreguntasFrecuentes';
 import Afiliados from './pages/Afiliados';
 import Producto from './pages/Producto';
+import TodosCuadros from './pages/TodosCuadros';
 
 function App() {
   const [
@@ -40,8 +46,12 @@ function App() {
     setProductoSeleccionado,
   ] = useState(null);
 
-  function irPagina(nombrePagina) {
-    setPagina(nombrePagina);
+  function irPagina(
+    nombrePagina
+  ) {
+    setPagina(
+      nombrePagina
+    );
 
     window.scrollTo({
       top: 0,
@@ -50,33 +60,69 @@ function App() {
   }
 
   function irInicio() {
-    setProductoSeleccionado(null);
+    setProductoSeleccionado(
+      null
+    );
 
-    irPagina('inicio');
+    irPagina(
+      'inicio'
+    );
   }
 
   function irMiPedido() {
-    setProductoSeleccionado(null);
+    setProductoSeleccionado(
+      null
+    );
 
-    irPagina('pedido');
+    irPagina(
+      'pedido'
+    );
   }
 
   function irPreguntas() {
-    setProductoSeleccionado(null);
+    setProductoSeleccionado(
+      null
+    );
 
-    irPagina('preguntas');
+    irPagina(
+      'preguntas'
+    );
   }
 
   function irAfiliados() {
-    setProductoSeleccionado(null);
+    setProductoSeleccionado(
+      null
+    );
 
-    irPagina('afiliados');
+    irPagina(
+      'afiliados'
+    );
   }
 
-  function irCategoria(tipoCategoria) {
-    setPagina('inicio');
+  /*
+    NUEVA VISTA:
+    catálogo completo de cuadros.
+  */
+  function irTodosCuadros() {
+    setProductoSeleccionado(
+      null
+    );
 
-    setProductoSeleccionado(null);
+    irPagina(
+      'cuadros'
+    );
+  }
+
+  function irCategoria(
+    tipoCategoria
+  ) {
+    setPagina(
+      'inicio'
+    );
+
+    setProductoSeleccionado(
+      null
+    );
 
     setTimeout(() => {
       const seccion =
@@ -86,8 +132,11 @@ function App() {
 
       if (seccion) {
         seccion.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
+          behavior:
+            'smooth',
+
+          block:
+            'center',
         });
       }
 
@@ -99,9 +148,13 @@ function App() {
   }
 
   function irContacto() {
-    setPagina('inicio');
+    setPagina(
+      'inicio'
+    );
 
-    setProductoSeleccionado(null);
+    setProductoSeleccionado(
+      null
+    );
 
     setTimeout(() => {
       const contacto =
@@ -111,25 +164,36 @@ function App() {
 
       if (contacto) {
         contacto.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
+          behavior:
+            'smooth',
+
+          block:
+            'start',
         });
       }
     }, 80);
   }
 
-  function verProducto(producto) {
+  function verProducto(
+    producto
+  ) {
     setProductoSeleccionado(
       producto
     );
 
-    setPagina('producto');
+    setPagina(
+      'producto'
+    );
 
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   }
+
+  /*
+    HEADER
+  */
 
   const [
     headerVisible,
@@ -141,23 +205,29 @@ function App() {
 
   useEffect(() => {
     function detectarScroll() {
-      const actual = window.scrollY;
+      const actual =
+        window.scrollY;
 
-      // Si estás cerca de la parte superior, muestra el header
-      if (actual < 80) {
-        setHeaderVisible(true);
-      }
-      // Si haces scroll hacia arriba, aparece inmediatamente sin importar dónde estés
-      else if (
-        actual < lastScrollY.current
+      if (
+        actual < 80
       ) {
-        setHeaderVisible(true);
-      }
-      // Si haces scroll hacia abajo, se oculta
-      else if (
-        actual > lastScrollY.current
+        setHeaderVisible(
+          true
+        );
+      } else if (
+        actual <
+        lastScrollY.current
       ) {
-        setHeaderVisible(false);
+        setHeaderVisible(
+          true
+        );
+      } else if (
+        actual >
+        lastScrollY.current
+      ) {
+        setHeaderVisible(
+          false
+        );
       }
 
       lastScrollY.current =
@@ -180,6 +250,10 @@ function App() {
     };
   }, []);
 
+  /*
+    MENSAJE SUPERIOR
+  */
+
   const [
     mensajeSuperior,
     setMensajeSuperior,
@@ -189,7 +263,8 @@ function App() {
     setMensajeSuperior(
       (actual) =>
         actual === 0
-          ? mensajesSuperiores.length - 1
+          ? mensajesSuperiores.length -
+            1
           : actual - 1
     );
   }
@@ -198,11 +273,16 @@ function App() {
     setMensajeSuperior(
       (actual) =>
         actual ===
-        mensajesSuperiores.length - 1
+        mensajesSuperiores.length -
+          1
           ? 0
           : actual + 1
     );
   }
+
+  /*
+    CARRITO
+  */
 
   const [
     carrito,
@@ -215,7 +295,9 @@ function App() {
         );
 
       return guardado
-        ? JSON.parse(guardado)
+        ? JSON.parse(
+            guardado
+          )
         : [];
     } catch {
       return [];
@@ -230,14 +312,19 @@ function App() {
   useEffect(() => {
     localStorage.setItem(
       'bro-carrito',
-      JSON.stringify(carrito)
+      JSON.stringify(
+        carrito
+      )
     );
   }, [carrito]);
 
   const cantidadTotal =
     useMemo(() => {
       return carrito.reduce(
-        (total, item) =>
+        (
+          total,
+          item
+        ) =>
           total +
           item.cantidad,
         0
@@ -247,10 +334,14 @@ function App() {
   const subtotal =
     useMemo(() => {
       return carrito.reduce(
-        (total, item) =>
+        (
+          total,
+          item
+        ) =>
           total +
           Number(
-            item.precio || 0
+            item.precio ||
+              0
           ) *
             item.cantidad,
         0
@@ -264,76 +355,67 @@ function App() {
       productoConfigurado.idCarrito ||
       productoConfigurado.id;
 
-    setCarrito((actual) => {
-      const existente =
-        actual.find(
-          (item) =>
-            (
-              item.idCarrito ||
-              item.id
-            ) === idCarrito
-        );
+    setCarrito(
+      (actual) => {
+        const existente =
+          actual.find(
+            (item) =>
+              (
+                item.idCarrito ||
+                item.id
+              ) ===
+              idCarrito
+          );
 
-      if (existente) {
-        return actual.map(
-          (item) =>
-            (
-              item.idCarrito ||
-              item.id
-            ) === idCarrito
-              ? {
-                  ...item,
+        if (existente) {
+          return actual.map(
+            (item) =>
+              (
+                item.idCarrito ||
+                item.id
+              ) ===
+              idCarrito
+                ? {
+                    ...item,
 
-                  cantidad:
-                    item.cantidad +
-                    (
-                      productoConfigurado.cantidad ||
-                      1
-                    ),
-                }
-              : item
-        );
+                    cantidad:
+                      item.cantidad +
+                      (
+                        productoConfigurado.cantidad ||
+                        1
+                      ),
+                  }
+                : item
+          );
+        }
+
+        return [
+          ...actual,
+
+          {
+            ...productoConfigurado,
+
+            idCarrito,
+
+            cantidad:
+              productoConfigurado.cantidad ||
+              1,
+          },
+        ];
       }
+    );
 
-      return [
-        ...actual,
-        {
-          ...productoConfigurado,
-
-          idCarrito,
-
-          cantidad:
-            productoConfigurado.cantidad ||
-            1,
-        },
-      ];
-    });
-
-    setCarritoAbierto(true);
-  }
-
-  function aumentarCantidad(id) {
-    setCarrito((actual) =>
-      actual.map(
-        (item) =>
-          (
-            item.idCarrito ||
-            item.id
-          ) === id
-            ? {
-                ...item,
-                cantidad:
-                  item.cantidad + 1,
-              }
-            : item
-      )
+    setCarritoAbierto(
+      true
     );
   }
 
-  function disminuirCantidad(id) {
-    setCarrito((actual) =>
-      actual
-        .map(
+  function aumentarCantidad(
+    id
+  ) {
+    setCarrito(
+      (actual) =>
+        actual.map(
           (item) =>
             (
               item.idCarrito ||
@@ -341,33 +423,67 @@ function App() {
             ) === id
               ? {
                   ...item,
+
                   cantidad:
-                    item.cantidad - 1,
+                    item.cantidad +
+                    1,
                 }
               : item
-        )
-        .filter(
-          (item) =>
-            item.cantidad > 0
         )
     );
   }
 
-  function eliminarProducto(id) {
-    setCarrito((actual) =>
-      actual.filter(
-        (item) =>
-          (
-            item.idCarrito ||
-            item.id
-          ) !== id
-      )
+  function disminuirCantidad(
+    id
+  ) {
+    setCarrito(
+      (actual) =>
+        actual
+          .map(
+            (item) =>
+              (
+                item.idCarrito ||
+                item.id
+              ) === id
+                ? {
+                    ...item,
+
+                    cantidad:
+                      item.cantidad -
+                      1,
+                  }
+                : item
+          )
+          .filter(
+            (item) =>
+              item.cantidad >
+              0
+          )
+    );
+  }
+
+  function eliminarProducto(
+    id
+  ) {
+    setCarrito(
+      (actual) =>
+        actual.filter(
+          (item) =>
+            (
+              item.idCarrito ||
+              item.id
+            ) !== id
+        )
     );
   }
 
   function vaciarCarrito() {
     setCarrito([]);
   }
+
+  /*
+    CHECKOUT
+  */
 
   const [
     checkoutAbierto,
@@ -391,11 +507,14 @@ function App() {
     nombre: '',
     dni: '',
     telefono: '',
+
     servicio:
       'contraentrega',
+
     direccion: '',
     distrito: '',
     referencia: '',
+
     metodoPago:
       'yape',
   });
@@ -412,16 +531,23 @@ function App() {
 
   function abrirCheckout() {
     if (
-      carrito.length === 0
+      carrito.length ===
+      0
     ) {
       return;
     }
 
-    setErrorCheckout('');
+    setErrorCheckout(
+      ''
+    );
 
-    setCarritoAbierto(false);
+    setCarritoAbierto(
+      false
+    );
 
-    setCheckoutAbierto(true);
+    setCheckoutAbierto(
+      true
+    );
   }
 
   function cerrarCheckout() {
@@ -431,9 +557,13 @@ function App() {
       return;
     }
 
-    setCheckoutAbierto(false);
+    setCheckoutAbierto(
+      false
+    );
 
-    setErrorCheckout('');
+    setErrorCheckout(
+      ''
+    );
   }
 
   function volverAlCarrito() {
@@ -443,11 +573,17 @@ function App() {
       return;
     }
 
-    setCheckoutAbierto(false);
+    setCheckoutAbierto(
+      false
+    );
 
-    setCarritoAbierto(true);
+    setCarritoAbierto(
+      true
+    );
 
-    setErrorCheckout('');
+    setErrorCheckout(
+      ''
+    );
   }
 
   function actualizarCampo(
@@ -461,11 +597,15 @@ function App() {
     setFormulario(
       (actual) => ({
         ...actual,
-        [name]: value,
+
+        [name]:
+          value,
       })
     );
 
-    setErrorCheckout('');
+    setErrorCheckout(
+      ''
+    );
   }
 
   function validarCheckout() {
@@ -515,7 +655,8 @@ function App() {
     }
 
     if (
-      carrito.length === 0
+      carrito.length ===
+      0
     ) {
       return 'Tu carrito está vacío.';
     }
@@ -545,34 +686,29 @@ function App() {
       return;
     }
 
-    setErrorCheckout('');
+    setErrorCheckout(
+      ''
+    );
 
     /*
-      IMPORTANTE:
+      WhatsApp debe abrir
+      desde la acción directa
+      del usuario.
 
-      WhatsApp debe abrirse desde la
-      acción directa del usuario.
-
-      Si esperamos primero el resultado
-      de Supabase y después usamos
-      window.open(), Chrome puede
-      interpretarlo como popup y bloquearlo.
-
-      Por eso abrimos una pestaña vacía
-      ANTES del await.
+      La pestaña se abre antes
+      del await para evitar
+      bloqueos del navegador.
     */
+
     const ventanaWhatsApp =
       window.open(
         'about:blank',
         '_blank'
       );
 
-    /*
-      Si Chrome permitió abrir la pestaña,
-      mostramos un pequeño mensaje mientras
-      Supabase crea el pedido.
-    */
-    if (ventanaWhatsApp) {
+    if (
+      ventanaWhatsApp
+    ) {
       try {
         ventanaWhatsApp.document.title =
           'BRO PERU';
@@ -603,12 +739,17 @@ function App() {
             </div>
           `;
       } catch {
-        // Si el navegador no permite modificar
-        // la pestaña vacía, simplemente continuamos.
+        /*
+          Continuamos aunque
+          el navegador no permita
+          modificar la pestaña.
+        */
       }
     }
 
-    setGuardandoPedido(true);
+    setGuardandoPedido(
+      true
+    );
 
     try {
       const pedido =
@@ -650,16 +791,21 @@ function App() {
         nombre: '',
         dni: '',
         telefono: '',
+
         servicio:
           'contraentrega',
+
         direccion: '',
         distrito: '',
         referencia: '',
+
         metodoPago:
           'yape',
       });
 
-      setCheckoutAbierto(false);
+      setCheckoutAbierto(
+        false
+      );
     } catch (
       errorPedido
     ) {
@@ -667,11 +813,6 @@ function App() {
         errorPedido
       );
 
-      /*
-        Si Supabase falla, cerramos
-        la pestaña vacía para no dejar
-        una ventana inútil abierta.
-      */
       if (
         ventanaWhatsApp &&
         !ventanaWhatsApp.closed
@@ -684,9 +825,17 @@ function App() {
           'No se pudo crear el pedido. Intenta nuevamente.'
       );
     } finally {
-      setGuardandoPedido(false);
+      setGuardandoPedido(
+        false
+      );
     }
   }
+
+  /*
+    BLOQUEO DE SCROLL
+    CUANDO CARRITO O
+    CHECKOUT ESTÁ ABIERTO
+  */
 
   useEffect(() => {
     if (
@@ -769,6 +918,24 @@ function App() {
           }
           onVerProducto={
             verProducto
+          }
+          onVerTodosCuadros={
+            irTodosCuadros
+          }
+        />
+      )}
+
+      {pagina ===
+        'cuadros' && (
+        <TodosCuadros
+          productos={
+            productos
+          }
+          onVerProducto={
+            verProducto
+          }
+          onVolver={
+            irInicio
           }
         />
       )}

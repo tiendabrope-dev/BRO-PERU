@@ -48,15 +48,42 @@ function ProductCard({
   producto,
   onVerProducto,
 }) {
-  // Función para determinar la clase exacta según el texto del badge
-  const obtenerClaseBadge = (textoBadge) => {
-    if (!textoBadge) return '';
-    const t = textoBadge.toLowerCase();
-    if (t.includes('personalizable')) return 'badge-personalizable';
-    if (t.includes('vendido')) return 'badge-vendido';
-    if (t.includes('tendencia')) return 'badge-tendencia';
+  function obtenerClaseBadge(
+    textoBadge
+  ) {
+    if (!textoBadge) {
+      return '';
+    }
+
+    const texto =
+      textoBadge.toLowerCase();
+
+    if (
+      texto.includes(
+        'personalizable'
+      )
+    ) {
+      return 'badge-personalizable';
+    }
+
+    if (
+      texto.includes(
+        'vendido'
+      )
+    ) {
+      return 'badge-vendido';
+    }
+
+    if (
+      texto.includes(
+        'tendencia'
+      )
+    ) {
+      return 'badge-tendencia';
+    }
+
     return '';
-  };
+  }
 
   return (
     <article className="product-card bro-product-card">
@@ -76,7 +103,11 @@ function ProductCard({
           />
 
           {producto.badge && (
-            <span className={`sale-badge bro-product-badge ${obtenerClaseBadge(producto.badge)}`}>
+            <span
+              className={`sale-badge bro-product-badge ${obtenerClaseBadge(
+                producto.badge
+              )}`}
+            >
               {producto.badge}
             </span>
           )}
@@ -104,19 +135,11 @@ function ProductCard({
         <div className="price-row bro-price">
           <span>
             Desde S/{' '}
-            {producto.precioDesde.toFixed(2)}
+            {Number(
+              producto.precioDesde
+            ).toFixed(2)}
           </span>
         </div>
-
-        <button
-          type="button"
-          className="product-add-button bro-view-product-button"
-          onClick={() =>
-            onVerProducto(producto)
-          }
-        >
-          VER PRODUCTO
-        </button>
       </div>
     </article>
   );
