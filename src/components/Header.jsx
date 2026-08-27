@@ -73,9 +73,9 @@ function Header({
     };
   }, [lastScrollY]);
 
-  function abrirCategoria() {
+  function abrirCategoria(tipoCategoria) {
     setMenuCategorias(false);
-    onCategoria();
+    onCategoria(tipoCategoria);
   }
 
   return (
@@ -175,16 +175,47 @@ function Header({
 
             {menuCategorias && (
               <div className="bro-dropdown-menu">
-                <button type="button" onClick={abrirCategoria}>
+                <button
+                  type="button"
+                  onClick={() =>
+                    abrirCategoria(
+                      'cuadro'
+                    )
+                  }
+                >
                   Cuadros
                 </button>
-                <button type="button" onClick={abrirCategoria}>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    abrirCategoria(
+                      'case'
+                    )
+                  }
+                >
                   Cases
                 </button>
-                <button type="button" onClick={abrirCategoria}>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    abrirCategoria(
+                      'polo'
+                    )
+                  }
+                >
                   Polos
                 </button>
-                <button type="button" onClick={abrirCategoria}>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    abrirCategoria(
+                      'wallpaper'
+                    )
+                  }
+                >
                   Wallpapers
                 </button>
               </div>

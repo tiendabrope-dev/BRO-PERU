@@ -7,7 +7,9 @@ import heroCuadro from '../assets/hero/hero-cuadro.png';
 import heroCase from '../assets/hero/hero-case.png';
 import heroPolo from '../assets/hero/hero-polo.png';
 
-function Hero() {
+function Hero({
+  onVerTodosCuadros,
+}) {
   const totalSegments = 12;
 
   const [
@@ -87,6 +89,19 @@ function Hero() {
 
     return () => clearInterval(interval);
   }, [isFillingPolo]);
+
+  function abrirCuadrosConTeclado(
+    evento
+  ) {
+    if (
+      evento.key === 'Enter' ||
+      evento.key === ' '
+    ) {
+      evento.preventDefault();
+
+      onVerTodosCuadros?.();
+    }
+  }
 
   return (
     <section
@@ -314,8 +329,16 @@ function Hero() {
         >
           <img
             src={heroCuadro}
-            alt="Cuadro BRO"
+            alt="Ver todos los cuadros BRO"
             className="hero-image-hover bro-hero-center-image"
+            role="button"
+            tabIndex={0}
+            onClick={
+              onVerTodosCuadros
+            }
+            onKeyDown={
+              abrirCuadrosConTeclado
+            }
             style={{
               height: '365px',
               width: 'auto',

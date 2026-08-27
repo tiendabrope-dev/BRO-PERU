@@ -12,7 +12,11 @@ function Home({
 }) {
   return (
     <main>
-      <Hero />
+      <Hero
+        onVerTodosCuadros={
+          onVerTodosCuadros
+        }
+      />
 
       <div className="launch-ticker">
         <div className="launch-ticker-track">

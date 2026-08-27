@@ -116,6 +116,26 @@ function App() {
   function irCategoria(
     tipoCategoria
   ) {
+    if (
+      tipoCategoria ===
+        'cuadro' ||
+      tipoCategoria ===
+        'cuadros'
+    ) {
+      irTodosCuadros();
+      return;
+    }
+
+    if (
+      tipoCategoria ===
+        'wallpaper' ||
+      tipoCategoria ===
+        'wallpapers'
+    ) {
+      irTodosCuadros();
+      return;
+    }
+
     setPagina(
       'inicio'
     );
