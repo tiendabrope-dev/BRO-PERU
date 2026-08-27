@@ -3,6 +3,12 @@ import heroCase from '../assets/hero/hero-case.png';
 import heroPolo from '../assets/hero/hero-polo.png';
 
 import cuadroPersonalizado from '../assets/productos/cuadro-personalizado.png';
+import ferrari250Gto from '../assets/productos/ferrari-250-gto.png';
+import ferrari458Italia from '../assets/productos/ferrari-458-italia.png';
+import ferrariEnzo from '../assets/productos/ferrari-enzo.png';
+import ferrariF40 from '../assets/productos/ferrari-f40.png';
+import ferrariLaferrari from '../assets/productos/ferrari-laferrari.png';
+import ferrariTestarossa from '../assets/productos/ferrari-testarossa.png';
 import guiaTamanosBro from '../assets/productos/guia-tamanos-bro.png';
 
 export const DELIVERY = 15;
@@ -84,25 +90,9 @@ export const productos = [
     precioDesde:
       15,
 
-    /*
-      IMAGEN PRINCIPAL
-
-      Esta imagen aparece en:
-      - Home
-      - ProductCard
-      - Carrito
-      - Checkout
-    */
     imagen:
       cuadroPersonalizado,
 
-    /*
-      GALERÍA
-
-      REGLA FIJA BRO:
-      La guía de tamaños siempre
-      será la segunda imagen.
-    */
     imagenes: [
       cuadroPersonalizado,
       guiaTamanosBro,
@@ -467,6 +457,240 @@ export const productos = [
 
     ratingCount:
       7,
+
+    categoria:
+      'cuadros',
+
+    tamanos:
+      tamanosCuadro,
+
+    marcos:
+      marcosCuadro,
+  },
+
+  {
+    id: 11,
+
+    slug:
+      'ferrari-250-gto',
+
+    nombre:
+      'Ferrari 250 GTO',
+
+    precioDesde:
+      15,
+
+    imagen:
+      ferrari250Gto,
+
+    imagenes: [
+      ferrari250Gto,
+      guiaTamanosBro,
+    ],
+
+    badge:
+      '',
+
+    rating:
+      0,
+
+    ratingCount:
+      0,
+
+    categoria:
+      'cuadros',
+
+    tamanos:
+      tamanosCuadro,
+
+    marcos:
+      marcosCuadro,
+  },
+
+  {
+    id: 12,
+
+    slug:
+      'ferrari-458-italia',
+
+    nombre:
+      'Ferrari 458 Italia',
+
+    precioDesde:
+      15,
+
+    imagen:
+      ferrari458Italia,
+
+    imagenes: [
+      ferrari458Italia,
+      guiaTamanosBro,
+    ],
+
+    badge:
+      '',
+
+    rating:
+      0,
+
+    ratingCount:
+      0,
+
+    categoria:
+      'cuadros',
+
+    tamanos:
+      tamanosCuadro,
+
+    marcos:
+      marcosCuadro,
+  },
+
+  {
+    id: 13,
+
+    slug:
+      'ferrari-enzo',
+
+    nombre:
+      'Ferrari Enzo',
+
+    precioDesde:
+      15,
+
+    imagen:
+      ferrariEnzo,
+
+    imagenes: [
+      ferrariEnzo,
+      guiaTamanosBro,
+    ],
+
+    badge:
+      '',
+
+    rating:
+      0,
+
+    ratingCount:
+      0,
+
+    categoria:
+      'cuadros',
+
+    tamanos:
+      tamanosCuadro,
+
+    marcos:
+      marcosCuadro,
+  },
+
+  {
+    id: 14,
+
+    slug:
+      'ferrari-f40',
+
+    nombre:
+      'Ferrari F40',
+
+    precioDesde:
+      15,
+
+    imagen:
+      ferrariF40,
+
+    imagenes: [
+      ferrariF40,
+      guiaTamanosBro,
+    ],
+
+    badge:
+      '',
+
+    rating:
+      0,
+
+    ratingCount:
+      0,
+
+    categoria:
+      'cuadros',
+
+    tamanos:
+      tamanosCuadro,
+
+    marcos:
+      marcosCuadro,
+  },
+
+  {
+    id: 15,
+
+    slug:
+      'ferrari-laferrari',
+
+    nombre:
+      'Ferrari LaFerrari',
+
+    precioDesde:
+      15,
+
+    imagen:
+      ferrariLaferrari,
+
+    imagenes: [
+      ferrariLaferrari,
+      guiaTamanosBro,
+    ],
+
+    badge:
+      '',
+
+    rating:
+      0,
+
+    ratingCount:
+      0,
+
+    categoria:
+      'cuadros',
+
+    tamanos:
+      tamanosCuadro,
+
+    marcos:
+      marcosCuadro,
+  },
+
+  {
+    id: 16,
+
+    slug:
+      'ferrari-testarossa',
+
+    nombre:
+      'Ferrari Testarossa',
+
+    precioDesde:
+      15,
+
+    imagen:
+      ferrariTestarossa,
+
+    imagenes: [
+      ferrariTestarossa,
+      guiaTamanosBro,
+    ],
+
+    badge:
+      '',
+
+    rating:
+      0,
+
+    ratingCount:
+      0,
 
     categoria:
       'cuadros',
