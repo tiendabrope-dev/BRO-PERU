@@ -59,15 +59,191 @@ function Home({
         }
       />
 
+      <style>
+        {`
+          /* ========================================
+             BENEFICIOS BRO
+             Más compacto para zoom 100%
+
+             Se mantienen las fuentes originales.
+          ======================================== */
+
+          .benefits {
+            padding:
+              24px 42px !important;
+
+            min-height:
+              0 !important;
+
+            height:
+              auto !important;
+
+            box-sizing:
+              border-box;
+          }
+
+          .benefits > div {
+            min-height:
+              92px !important;
+
+            padding:
+              10px 18px !important;
+
+            justify-content:
+              center !important;
+
+            box-sizing:
+              border-box;
+          }
+
+          /* ICONOS */
+
+          .benefits svg {
+            width:
+              19px !important;
+
+            height:
+              19px !important;
+          }
+
+          .benefits > div > div {
+            margin-bottom:
+              6px !important;
+          }
+
+          /* TÍTULOS
+             Misma tipografía */
+
+          .benefits strong {
+            margin:
+              0 !important;
+
+            font-size:
+              11px !important;
+
+            line-height:
+              1.15 !important;
+
+            letter-spacing:
+              0.07em !important;
+          }
+
+          /* DESCRIPCIONES
+             Misma tipografía */
+
+          .benefits p {
+            margin:
+              7px 0 0 !important;
+
+            font-size:
+              11px !important;
+
+            line-height:
+              1.25 !important;
+          }
+
+          /* ========================================
+             TABLET
+          ======================================== */
+
+          @media (
+            max-width: 900px
+          ) {
+            .benefits {
+              padding:
+                22px 20px !important;
+            }
+
+            .benefits > div {
+              min-height:
+                88px !important;
+
+              padding:
+                10px 12px !important;
+            }
+
+            .benefits svg {
+              width:
+                18px !important;
+
+              height:
+                18px !important;
+            }
+
+            .benefits strong {
+              font-size:
+                10.5px !important;
+            }
+
+            .benefits p {
+              font-size:
+                10.5px !important;
+            }
+          }
+
+          /* ========================================
+             CELULAR
+          ======================================== */
+
+          @media (
+            max-width: 600px
+          ) {
+            .benefits {
+              padding:
+                18px 12px !important;
+            }
+
+            .benefits > div {
+              min-height:
+                82px !important;
+
+              padding:
+                9px 8px !important;
+            }
+
+            .benefits svg {
+              width:
+                18px !important;
+
+              height:
+                18px !important;
+            }
+
+            .benefits > div > div {
+              margin-bottom:
+                5px !important;
+            }
+
+            .benefits strong {
+              font-size:
+                10px !important;
+            }
+
+            .benefits p {
+              margin-top:
+                6px !important;
+
+              font-size:
+                10px !important;
+            }
+          }
+        `}
+      </style>
+
       <section className="benefits">
+        {/* ENTREGAS RÁPIDAS */}
+
         <div
           style={{
             display:
               'flex',
+
             flexDirection:
               'column',
+
             alignItems:
               'center',
+
             textAlign:
               'center',
           }}
@@ -75,18 +251,21 @@ function Home({
           <div
             style={{
               marginBottom:
-                '12px',
+                '6px',
+
               display:
                 'flex',
+
               alignItems:
                 'center',
+
               justifyContent:
                 'center',
             }}
           >
             <svg
-              width="28"
-              height="28"
+              width="19"
+              height="19"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#2d5a3d"
@@ -128,14 +307,19 @@ function Home({
           </p>
         </div>
 
+        {/* DISEÑOS BRO */}
+
         <div
           style={{
             display:
               'flex',
+
             flexDirection:
               'column',
+
             alignItems:
               'center',
+
             textAlign:
               'center',
           }}
@@ -143,18 +327,21 @@ function Home({
           <div
             style={{
               marginBottom:
-                '12px',
+                '6px',
+
               display:
                 'flex',
+
               alignItems:
                 'center',
+
               justifyContent:
                 'center',
             }}
           >
             <svg
-              width="28"
-              height="28"
+              width="19"
+              height="19"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#2d5a3d"
@@ -177,14 +364,19 @@ function Home({
           </p>
         </div>
 
+        {/* COMPRA SEGURA */}
+
         <div
           style={{
             display:
               'flex',
+
             flexDirection:
               'column',
+
             alignItems:
               'center',
+
             textAlign:
               'center',
           }}
@@ -192,18 +384,21 @@ function Home({
           <div
             style={{
               marginBottom:
-                '12px',
+                '6px',
+
               display:
                 'flex',
+
               alignItems:
                 'center',
+
               justifyContent:
                 'center',
             }}
           >
             <svg
-              width="28"
-              height="28"
+              width="19"
+              height="19"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#2d5a3d"
@@ -226,14 +421,19 @@ function Home({
           </p>
         </div>
 
+        {/* PERSONALIZABLE */}
+
         <div
           style={{
             display:
               'flex',
+
             flexDirection:
               'column',
+
             alignItems:
               'center',
+
             textAlign:
               'center',
           }}
@@ -241,18 +441,21 @@ function Home({
           <div
             style={{
               marginBottom:
-                '12px',
+                '6px',
+
               display:
                 'flex',
+
               alignItems:
                 'center',
+
               justifyContent:
                 'center',
             }}
           >
             <svg
-              width="28"
-              height="28"
+              width="19"
+              height="19"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#2d5a3d"

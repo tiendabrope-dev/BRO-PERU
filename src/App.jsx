@@ -986,18 +986,6 @@ function App() {
         }
       />
 
-      <div className="bro-currency">
-        <div className="bro-peru-flag">
-          <span />
-          <span />
-          <span />
-        </div>
-
-        <span>
-          PEN
-        </span>
-      </div>
-
       <Carrito
         abierto={
           carritoAbierto

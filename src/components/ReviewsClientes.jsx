@@ -76,6 +76,16 @@ function ReviewsClientes({
     useRef(null);
 
   const [
+    puedeAnterior,
+    setPuedeAnterior,
+  ] = useState(false);
+
+  const [
+    puedeSiguiente,
+    setPuedeSiguiente,
+  ] = useState(false);
+
+  const [
     reviews,
     setReviews,
   ] = useState([]);
@@ -130,6 +140,16 @@ function ReviewsClientes({
       );
     }, [productos]);
 
+  // En el Home trabajamos con un máximo de 10 reviews.
+  // Supabase puede seguir guardando todas las reviews históricas.
+  const reviewsVisibles =
+    useMemo(() => {
+      return reviews.slice(
+        0,
+        10
+      );
+    }, [reviews]);
+
   useEffect(() => {
     async function cargar() {
       try {
@@ -158,6 +178,60 @@ function ReviewsClientes({
 
     cargar();
   }, []);
+
+  useEffect(() => {
+    const carrusel =
+      carruselRef.current;
+
+    if (!carrusel) {
+      return;
+    }
+
+    function actualizarFlechas() {
+      const margen = 4;
+
+      setPuedeAnterior(
+        carrusel.scrollLeft >
+          margen
+      );
+
+      setPuedeSiguiente(
+        carrusel.scrollLeft +
+          carrusel.clientWidth <
+        carrusel.scrollWidth -
+          margen
+      );
+    }
+
+    requestAnimationFrame(
+      actualizarFlechas
+    );
+
+    window.addEventListener(
+      'resize',
+      actualizarFlechas
+    );
+
+    carrusel.addEventListener(
+      'scroll',
+      actualizarFlechas
+    );
+
+    return () => {
+      window.removeEventListener(
+        'resize',
+        actualizarFlechas
+      );
+
+      carrusel.removeEventListener(
+        'scroll',
+        actualizarFlechas
+      );
+    };
+  }, [
+    reviewsVisibles.length,
+    cargando,
+  ]);
 
   useEffect(() => {
     const modalAbierto =
@@ -209,7 +283,7 @@ function ReviewsClientes({
     carrusel.scrollBy({
       left:
         direccion *
-        (ancho + 14),
+        (ancho + 12),
 
       behavior:
         'smooth',
@@ -392,8 +466,8 @@ function ReviewsClientes({
         {`
           .bro-reviews-section {
             padding:
-              90px 28px
-              100px;
+              58px 28px
+              68px;
 
             background:
               #ffffff;
@@ -418,24 +492,15 @@ function ReviewsClientes({
 
           .bro-reviews-header {
             display:
-              flex;
-
-            align-items:
-              flex-end;
-
-            justify-content:
-              space-between;
-
-            gap:
-              30px;
+              block;
 
             margin-bottom:
-              38px;
+              112px;
           }
 
           .bro-reviews-eyebrow {
             margin:
-              0 0 5px;
+              0 0 6px;
 
             color:
               #2D5A3D;
@@ -445,13 +510,13 @@ function ReviewsClientes({
               sans-serif;
 
             font-size:
-              11px;
+              9px;
 
             font-weight:
               700;
 
             letter-spacing:
-              0.16em;
+              0.14em;
           }
 
           .bro-reviews-title {
@@ -464,30 +529,48 @@ function ReviewsClientes({
 
             font-size:
               clamp(
-                34px,
-                4.5vw,
-                64px
+                22px,
+                2.15vw,
+                34px
               );
 
             line-height:
-              0.95;
+              0.98;
 
             font-weight:
               800;
 
             letter-spacing:
-              -0.045em;
+              -0.04em;
           }
 
-          .bro-reviews-arrows {
-            display:
-              flex;
+          .bro-reviews-stage {
+            position:
+              relative;
 
-            gap:
-              10px;
+            width:
+              100%;
+
+            max-width:
+              1160px;
+
+            margin:
+              0 auto;
           }
 
           .bro-reviews-arrow {
+            position:
+              absolute;
+
+            top:
+              50%;
+
+            transform:
+              translateY(-50%);
+
+            z-index:
+              4;
+
             width:
               46px;
 
@@ -496,7 +579,12 @@ function ReviewsClientes({
 
             border:
               1px solid
-              #d4d4d4;
+              rgba(
+                17,
+                17,
+                17,
+                0.08
+              );
 
             border-radius:
               50%;
@@ -505,13 +593,69 @@ function ReviewsClientes({
               #ffffff;
 
             color:
-              #111111;
+              #767676;
+
+            display:
+              flex;
+
+            align-items:
+              center;
+
+            justify-content:
+              center;
+
+            padding:
+              0;
 
             font-size:
-              21px;
+              25px;
+
+            line-height:
+              1;
 
             cursor:
               pointer;
+
+            box-shadow:
+              0 5px 18px
+              rgba(
+                17,
+                17,
+                17,
+                0.10
+              );
+
+            transition:
+              color 0.2s ease,
+              opacity 0.2s ease,
+              transform 0.2s ease;
+          }
+
+          .bro-reviews-arrow:hover:not(:disabled) {
+            color:
+              #111111;
+
+            transform:
+              translateY(-50%)
+              scale(1.04);
+          }
+
+          .bro-reviews-arrow:disabled {
+            opacity:
+              0.22;
+
+            cursor:
+              default;
+          }
+
+          .bro-reviews-arrow-prev {
+            left:
+              0;
+          }
+
+          .bro-reviews-arrow-next {
+            right:
+              0;
           }
 
           .bro-reviews-carousel {
@@ -519,7 +663,16 @@ function ReviewsClientes({
               flex;
 
             gap:
-              14px;
+              12px;
+
+            width:
+              100%;
+
+            max-width:
+              1048px;
+
+            margin:
+              0 auto;
 
             overflow-x:
               auto;
@@ -548,10 +701,7 @@ function ReviewsClientes({
 
             flex:
               0 0
-              calc(
-                (100% - 56px)
-                / 5
-              );
+              200px;
 
             aspect-ratio:
               1 / 1.04;
@@ -563,7 +713,7 @@ function ReviewsClientes({
               0;
 
             border-radius:
-              18px;
+              12px;
 
             overflow:
               hidden;
@@ -635,13 +785,13 @@ function ReviewsClientes({
               2;
 
             left:
-              16px;
+              12px;
 
             right:
-              16px;
+              12px;
 
             bottom:
-              15px;
+              11px;
 
             color:
               #ffffff;
@@ -655,7 +805,7 @@ function ReviewsClientes({
               3px;
 
             font-size:
-              16px;
+              13px;
 
             font-weight:
               700;
@@ -669,7 +819,7 @@ function ReviewsClientes({
               5px;
 
             font-size:
-              10px;
+              9px;
 
             font-weight:
               600;
@@ -697,7 +847,7 @@ function ReviewsClientes({
               #F7B500;
 
             font-size:
-              17px;
+              14px;
           }
 
           .bro-review-empty {
@@ -735,10 +885,10 @@ function ReviewsClientes({
               column;
 
             gap:
-              13px;
+              10px;
 
             margin-top:
-              42px;
+              34px;
 
             text-align:
               center;
@@ -752,18 +902,18 @@ function ReviewsClientes({
               #767676;
 
             font-size:
-              13px;
+              11.5px;
           }
 
           .bro-review-publish {
             min-width:
-              240px;
+              220px;
 
             min-height:
-              50px;
+              44px;
 
             padding:
-              0 24px;
+              0 20px;
 
             border:
               1px solid
@@ -779,7 +929,7 @@ function ReviewsClientes({
               white;
 
             font-size:
-              11px;
+              10.5px;
 
             font-weight:
               700;
@@ -1331,13 +1481,20 @@ function ReviewsClientes({
           @media (
             max-width: 1000px
           ) {
+            .bro-reviews-stage {
+              max-width:
+                700px;
+            }
+
+            .bro-reviews-carousel {
+              max-width:
+                594px;
+            }
+
             .bro-review-card {
               flex:
                 0 0
-                calc(
-                  (100% - 28px)
-                  / 3
-                );
+                190px;
             }
           }
 
@@ -1346,26 +1503,59 @@ function ReviewsClientes({
           ) {
             .bro-reviews-section {
               padding:
-                70px 18px
-                80px;
+                50px 18px
+                58px;
             }
 
             .bro-reviews-header {
               align-items:
                 center;
+
+              margin-bottom:
+                72px;
             }
 
-            .bro-reviews-arrows {
-              gap:
-                6px;
+            .bro-reviews-title {
+              font-size:
+                clamp(
+                  22px,
+                  8.5vw,
+                  30px
+                );
+            }
+
+            .bro-reviews-stage {
+              max-width:
+                100%;
             }
 
             .bro-reviews-arrow {
               width:
-                40px;
+                38px;
 
               height:
-                40px;
+                38px;
+
+              font-size:
+                21px;
+            }
+
+            .bro-reviews-arrow-prev {
+              left:
+                -2px;
+            }
+
+            .bro-reviews-arrow-next {
+              right:
+                -2px;
+            }
+
+            .bro-reviews-carousel {
+              width:
+                calc(100% - 70px);
+
+              max-width:
+                none;
             }
 
             .bro-review-card {
@@ -1426,36 +1616,6 @@ function ReviewsClientes({
             </h2>
           </div>
 
-          {reviews.length >
-            1 && (
-            <div className="bro-reviews-arrows">
-              <button
-                type="button"
-                className="bro-reviews-arrow"
-                onClick={() =>
-                  moverCarrusel(
-                    -1
-                  )
-                }
-                aria-label="Reviews anteriores"
-              >
-                ←
-              </button>
-
-              <button
-                type="button"
-                className="bro-reviews-arrow"
-                onClick={() =>
-                  moverCarrusel(
-                    1
-                  )
-                }
-                aria-label="Reviews siguientes"
-              >
-                →
-              </button>
-            </div>
-          )}
         </div>
 
         {cargando && (
@@ -1479,57 +1639,97 @@ function ReviewsClientes({
         {!cargando &&
           reviews.length >
             0 && (
-            <div
-              ref={
-                carruselRef
-              }
-              className="bro-reviews-carousel"
-            >
-              {reviews.map(
-                (
-                  review
-                ) => (
-                  <button
-                    type="button"
-                    key={
-                      review.id
-                    }
-                    className="bro-review-card"
-                    onClick={() =>
-                      setModalReview(
-                        review
-                      )
-                    }
-                  >
-                    <img
-                      src={
-                        review.fotoUrl
+            <div className="bro-reviews-stage">
+              {reviewsVisibles.length >
+                5 && (
+                <button
+                  type="button"
+                  className="bro-reviews-arrow bro-reviews-arrow-prev"
+                  onClick={() =>
+                    moverCarrusel(
+                      -1
+                    )
+                  }
+                  disabled={
+                    !puedeAnterior
+                  }
+                  aria-label="Reviews anteriores"
+                >
+                  ‹
+                </button>
+              )}
+
+              <div
+                ref={
+                  carruselRef
+                }
+                className="bro-reviews-carousel"
+              >
+                {reviewsVisibles.map(
+                  (
+                    review
+                  ) => (
+                    <button
+                      type="button"
+                      key={
+                        review.id
                       }
-                      alt={`Review de ${review.nombre}`}
-                      loading="lazy"
-                    />
-
-                    <span className="bro-review-card-info">
-                      <span className="bro-review-card-name">
-                        {
-                          review.nombre
+                      className="bro-review-card"
+                      onClick={() =>
+                        setModalReview(
+                          review
+                        )
+                      }
+                    >
+                      <img
+                        src={
+                          review.fotoUrl
                         }
-                      </span>
-
-                      <span className="bro-review-card-product">
-                        {
-                          review.producto_nombre
-                        }
-                      </span>
-
-                      <Estrellas
-                        valor={
-                          review.rating
-                        }
+                        alt={`Review de ${review.nombre}`}
+                        loading="lazy"
                       />
-                    </span>
-                  </button>
-                )
+
+                      <span className="bro-review-card-info">
+                        <span className="bro-review-card-name">
+                          {
+                            review.nombre
+                          }
+                        </span>
+
+                        <span className="bro-review-card-product">
+                          {
+                            review.producto_nombre
+                          }
+                        </span>
+
+                        <Estrellas
+                          valor={
+                            review.rating
+                          }
+                        />
+                      </span>
+                    </button>
+                  )
+                )}
+              </div>
+
+              {reviewsVisibles.length >
+                5 && (
+                <button
+                  type="button"
+                  className="bro-reviews-arrow bro-reviews-arrow-next"
+                  onClick={() =>
+                    moverCarrusel(
+                      1
+                    )
+                  }
+                  disabled={
+                    !puedeSiguiente
+                  }
+                  aria-label="Reviews siguientes"
+                >
+                  ›
+                </button>
               )}
             </div>
           )}
