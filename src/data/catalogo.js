@@ -3,18 +3,18 @@ import heroCase from '../assets/hero/hero-case.png';
 import heroPolo from '../assets/hero/hero-polo.png';
 
 import cuadroPersonalizado from '../assets/productos/cuadro-personalizado.png';
-import ferrari250Gto from '../assets/productos/ferrari-250-gto.png';
-import ferrari458Italia from '../assets/productos/ferrari-458-italia.png';
-import ferrariEnzo from '../assets/productos/ferrari-enzo.png';
-import ferrariF40 from '../assets/productos/ferrari-f40.png';
-import ferrariLaferrari from '../assets/productos/ferrari-laferrari.png';
-import ferrariTestarossa from '../assets/productos/ferrari-testarossa.png';
+import ferrari250Gto from '../assets/productos/ferrari-250-gto.webp';
+import ferrari458Italia from '../assets/productos/ferrari-458-italia.webp';
+import ferrariEnzo from '../assets/productos/ferrari-enzo.webp';
+import ferrariF40 from '../assets/productos/ferrari-f40.webp';
+import ferrariLaferrari from '../assets/productos/ferrari-laferrari.webp';
+import ferrariTestarossa from '../assets/productos/ferrari-testarossa.webp';
 import guiaTamanosBro from '../assets/productos/guia-tamanos-bro.png';
 
 export const DELIVERY = 15;
 
 export const mensajesSuperiores = [
-  'ENVÍOS A TODO EL PERÚ',
+  'ENVÃOS A TODO EL PERÃš',
   'PRODUCTOS DESDE S/ 7',
   'COMPRA SEGURA',
 ];
@@ -138,7 +138,7 @@ export const productos = [
     ],
 
     badge:
-      'MÁS VENDIDO',
+      'MÃS VENDIDO',
 
     rating:
       5,
@@ -333,7 +333,7 @@ export const productos = [
     ],
 
     badge:
-      'ICÓNICO',
+      'ICÃ“NICO',
 
     rating:
       5,
@@ -436,7 +436,7 @@ export const productos = [
       'lamborghini-huracan',
 
     nombre:
-      'Lamborghini Huracán',
+      'Lamborghini HuracÃ¡n',
 
     precioDesde:
       15,
