@@ -46,6 +46,135 @@ function App() {
     setProductoSeleccionado,
   ] = useState(null);
 
+  function crearEstadoHistorial(
+    nombrePagina,
+    producto = null
+  ) {
+    return {
+      bro: true,
+      pagina:
+        nombrePagina,
+      productoId:
+        producto?.id ??
+        null,
+      productoSlug:
+        producto?.slug ??
+        null,
+    };
+  }
+
+  function registrarHistorial(
+    nombrePagina,
+    producto = null
+  ) {
+    const siguienteEstado =
+      crearEstadoHistorial(
+        nombrePagina,
+        producto
+      );
+
+    const estadoActual =
+      window.history.state;
+
+    const esLaMismaVista =
+      estadoActual?.bro ===
+        true &&
+      estadoActual.pagina ===
+        siguienteEstado.pagina &&
+      estadoActual.productoId ===
+        siguienteEstado.productoId;
+
+    if (esLaMismaVista) {
+      return;
+    }
+
+    window.history.pushState(
+      siguienteEstado,
+      '',
+      window.location.href
+    );
+  }
+
+  function aplicarVistaHistorial(
+    estado
+  ) {
+    if (!estado?.bro) {
+      return;
+    }
+
+    if (
+      estado.pagina ===
+      'producto'
+    ) {
+      const productoHistorial =
+        productos.find(
+          (producto) =>
+            producto.id ===
+              estado.productoId ||
+            producto.slug ===
+              estado.productoSlug
+        ) || null;
+
+      setProductoSeleccionado(
+        productoHistorial
+      );
+
+      setPagina(
+        productoHistorial
+          ? 'producto'
+          : 'inicio'
+      );
+    } else {
+      setProductoSeleccionado(
+        null
+      );
+
+      setPagina(
+        estado.pagina ||
+          'inicio'
+      );
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
+  }
+
+  useEffect(() => {
+    window.history.replaceState(
+      crearEstadoHistorial(
+        'inicio'
+      ),
+      '',
+      window.location.href
+    );
+
+    function manejarRetroceso(
+      evento
+    ) {
+      if (!evento.state?.bro) {
+        return;
+      }
+
+      aplicarVistaHistorial(
+        evento.state
+      );
+    }
+
+    window.addEventListener(
+      'popstate',
+      manejarRetroceso
+    );
+
+    return () => {
+      window.removeEventListener(
+        'popstate',
+        manejarRetroceso
+      );
+    };
+  }, []);
+
   function irPagina(
     nombrePagina
   ) {
@@ -53,10 +182,18 @@ function App() {
       nombrePagina
     );
 
+    registrarHistorial(
+      nombrePagina
+    );
+
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
+  }
+
+  function volverAtras() {
+    window.history.back();
   }
 
   function irInicio() {
@@ -136,12 +273,12 @@ function App() {
       return;
     }
 
-    setPagina(
-      'inicio'
-    );
-
     setProductoSeleccionado(
       null
+    );
+
+    irPagina(
+      'inicio'
     );
 
     setTimeout(() => {
@@ -168,12 +305,12 @@ function App() {
   }
 
   function irContacto() {
-    setPagina(
-      'inicio'
-    );
-
     setProductoSeleccionado(
       null
+    );
+
+    irPagina(
+      'inicio'
     );
 
     setTimeout(() => {
@@ -203,6 +340,11 @@ function App() {
 
     setPagina(
       'producto'
+    );
+
+    registrarHistorial(
+      'producto',
+      producto
     );
 
     window.scrollTo({
@@ -924,6 +1066,77 @@ function App() {
         }
       />
 
+      {pagina !==
+        'inicio' &&
+        pagina !==
+          'cuadros' && (
+        <button
+          type="button"
+          onClick={
+            volverAtras
+          }
+          aria-label="Volver a la página anterior"
+          title="Volver"
+          style={{
+            position:
+              'fixed',
+
+            top:
+              '155px',
+
+            left:
+              '18px',
+
+            width:
+              '42px',
+
+            height:
+              '42px',
+
+            padding:
+              0,
+
+            display:
+              'grid',
+
+            placeItems:
+              'center',
+
+            border:
+              '1px solid #d8d3ca',
+
+            borderRadius:
+              '50%',
+
+            background:
+              '#ffffff',
+
+            color:
+              '#111111',
+
+            fontSize:
+              '22px',
+
+            fontWeight:
+              '700',
+
+            lineHeight:
+              1,
+
+            cursor:
+              'pointer',
+
+            zIndex:
+              1500,
+
+            boxShadow:
+              '0 4px 14px rgba(17,17,17,0.10)',
+          }}
+        >
+          ←
+        </button>
+      )}
+
       {pagina ===
         'inicio' && (
         <Home
@@ -955,8 +1168,8 @@ function App() {
             verProducto
           }
           onVolver={
-            irInicio
-          }
+              volverAtras
+            }
         />
       )}
 
@@ -968,7 +1181,7 @@ function App() {
               productoSeleccionado
             }
             onVolver={
-              irInicio
+              volverAtras
             }
             onAgregarAlCarrito={
               agregarAlCarrito
