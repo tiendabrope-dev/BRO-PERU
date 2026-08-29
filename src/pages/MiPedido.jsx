@@ -361,8 +361,7 @@ function MiPedido() {
         justifyContent:
           'center',
 
-        padding:
-          '90px 20px',
+        padding: '215px 20px 35px',
 
         overflow:
           'hidden',
@@ -461,8 +460,7 @@ function MiPedido() {
           width:
             '100%',
 
-          maxWidth:
-            '720px',
+          maxWidth: '350px',
 
           boxSizing:
             'border-box',
@@ -475,8 +473,7 @@ function MiPedido() {
             width:
               '100%',
 
-            padding:
-              '50px 60px',
+            padding: '8px 10px',
 
             background:
               '#ffffff',
@@ -501,14 +498,11 @@ function MiPedido() {
 
           <div
             style={{
-              width:
-                '64px',
+              width: '32px',
 
-              height:
-                '64px',
+              height: '32px',
 
-              margin:
-                '0 auto 22px',
+              margin: '0 auto 12px',
 
               background:
                 '#E8F0EA',
@@ -561,8 +555,7 @@ function MiPedido() {
               fontFamily:
                 'Syne, sans-serif',
 
-              fontSize:
-                '32px',
+              fontSize: '16px',
 
               fontWeight:
                 '800',
@@ -582,8 +575,7 @@ function MiPedido() {
 
           <p
             style={{
-              margin:
-                '0 0 32px',
+              margin: '0 0 12px',
 
               fontFamily:
                 'DM Sans, sans-serif',
@@ -606,8 +598,7 @@ function MiPedido() {
               display:
                 'grid',
 
-              gap:
-                '22px',
+              gap: '12px',
 
               textAlign:
                 'left',
@@ -618,11 +609,9 @@ function MiPedido() {
                 display:
                   'grid',
 
-                gridTemplateColumns:
-                  'repeat(auto-fit, minmax(210px, 1fr))',
+                gridTemplateColumns: '1fr 1fr',
 
-                gap:
-                  '16px',
+                gap: '8px',
               }}
             >
               {/* NOMBRE */}
@@ -728,11 +717,9 @@ function MiPedido() {
                       width:
                         '100%',
 
-                      height:
-                        '52px',
+                      height: '28px',
 
-                      padding:
-                        '0 16px 0 44px',
+                      padding: '0 14px 0 42px',
 
                       border:
                         '1px solid #cccccc',
@@ -881,11 +868,9 @@ function MiPedido() {
                       width:
                         '100%',
 
-                      height:
-                        '52px',
+                      height: '28px',
 
-                      padding:
-                        '0 16px 0 44px',
+                      padding: '0 14px 0 42px',
 
                       border:
                         '1px solid #cccccc',
@@ -1030,11 +1015,9 @@ function MiPedido() {
                     width:
                       '100%',
 
-                    height:
-                      '52px',
+                    height: '28px',
 
-                    padding:
-                      '0 16px 0 44px',
+                    padding: '0 14px 0 42px',
 
                     border:
                       '1px solid #cccccc',
@@ -1124,8 +1107,7 @@ function MiPedido() {
                 width:
                   '100%',
 
-                height:
-                  '52px',
+                height: '28px',
 
                 marginTop:
                   '4px',
@@ -1177,8 +1159,7 @@ function MiPedido() {
                 position:
                   'relative',
 
-                marginTop:
-                  '24px',
+                marginTop: '10px',
 
                 textAlign:
                   'center',
@@ -1265,8 +1246,7 @@ function MiPedido() {
 
             <p
               style={{
-                margin:
-                  '14px 0 0',
+                margin: '4px 0 0',
 
                 fontSize:
                   '13px',
@@ -1274,8 +1254,7 @@ function MiPedido() {
                 color:
                   '#555555',
 
-                lineHeight:
-                  '1.6',
+                lineHeight: '1.25',
 
                 textAlign:
                   'center',
