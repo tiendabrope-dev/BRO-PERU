@@ -1,6 +1,7 @@
 import {
   useState,
   useEffect,
+  useRef,
 } from 'react';
 
 function SearchIcon() {
@@ -48,6 +49,59 @@ function Header({
   const [menuCategorias, setMenuCategorias] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickFuera(
+      evento
+    ) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(
+          evento.target
+        )
+      ) {
+        setMenuCategorias(
+          false
+        );
+      }
+    }
+
+    function handleEscape(
+      evento
+    ) {
+      if (
+        evento.key ===
+        'Escape'
+      ) {
+        setMenuCategorias(
+          false
+        );
+      }
+    }
+
+    document.addEventListener(
+      'mousedown',
+      handleClickFuera
+    );
+
+    document.addEventListener(
+      'keydown',
+      handleEscape
+    );
+
+    return () => {
+      document.removeEventListener(
+        'mousedown',
+        handleClickFuera
+      );
+
+      document.removeEventListener(
+        'keydown',
+        handleEscape
+      );
+    };
+  }, []);
 
   useEffect(() => {
     function handleScroll() {
@@ -163,7 +217,7 @@ function Header({
             Inicio
           </button>
 
-          <div className="bro-category-dropdown">
+          <div ref={dropdownRef} className="bro-category-dropdown">
             <button
               type="button"
               className="bro-nav-dropdown-button"
