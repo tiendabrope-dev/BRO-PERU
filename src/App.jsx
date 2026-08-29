@@ -5,6 +5,11 @@ import {
   useState,
 } from 'react';
 
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
+
 import './App.css';
 import './styles/bro-ui.css';
 
@@ -36,155 +41,213 @@ import Producto from './pages/Producto';
 import TodosCuadros from './pages/TodosCuadros';
 
 function App() {
-  const [
-    pagina,
-    setPagina,
-  ] = useState('inicio');
+  const navigate =
+    useNavigate();
 
-  const [
-    productoSeleccionado,
-    setProductoSeleccionado,
-  ] = useState(null);
+  const location =
+    useLocation();
 
-  function crearEstadoHistorial(
-    nombrePagina,
-    producto = null
-  ) {
-    return {
-      bro: true,
-      pagina:
-        nombrePagina,
-      productoId:
-        producto?.id ??
-        null,
-      productoSlug:
-        producto?.slug ??
-        null,
-    };
-  }
+  /*
+    ==================================
+    RUTAS REALES DE BRO
+    ==================================
+  */
 
-  function registrarHistorial(
-    nombrePagina,
-    producto = null
-  ) {
-    const siguienteEstado =
-      crearEstadoHistorial(
-        nombrePagina,
-        producto
-      );
+  const rutaActual =
+    useMemo(() => {
+      const pathname =
+        location.pathname.replace(
+          /\/+$/,
+          ''
+        ) || '/';
 
-    const estadoActual =
-      window.history.state;
+      if (
+        pathname === '/'
+      ) {
+        return {
+          pagina: 'inicio',
+          producto: null,
+          valida: true,
+        };
+      }
 
-    const esLaMismaVista =
-      estadoActual?.bro ===
-        true &&
-      estadoActual.pagina ===
-        siguienteEstado.pagina &&
-      estadoActual.productoId ===
-        siguienteEstado.productoId;
+      if (
+        pathname ===
+        '/cuadros'
+      ) {
+        return {
+          pagina: 'cuadros',
+          producto: null,
+          valida: true,
+        };
+      }
 
-    if (esLaMismaVista) {
-      return;
-    }
+      if (
+        pathname ===
+        '/mi-pedido'
+      ) {
+        return {
+          pagina: 'pedido',
+          producto: null,
+          valida: true,
+        };
+      }
 
-    window.history.pushState(
-      siguienteEstado,
-      '',
-      window.location.href
-    );
-  }
+      if (
+        pathname ===
+        '/preguntas-frecuentes'
+      ) {
+        return {
+          pagina:
+            'preguntas',
+          producto: null,
+          valida: true,
+        };
+      }
 
-  function aplicarVistaHistorial(
-    estado
-  ) {
-    if (!estado?.bro) {
-      return;
-    }
+      if (
+        pathname ===
+        '/afiliados'
+      ) {
+        return {
+          pagina:
+            'afiliados',
+          producto: null,
+          valida: true,
+        };
+      }
 
+      if (
+        pathname.startsWith(
+          '/producto/'
+        )
+      ) {
+        let slug = '';
+
+        try {
+          slug =
+            decodeURIComponent(
+              pathname.slice(
+                '/producto/'.length
+              )
+            );
+        } catch {
+          slug = '';
+        }
+
+        const producto =
+          productos.find(
+            (item) =>
+              item.slug === slug
+          ) || null;
+
+        if (producto) {
+          return {
+            pagina:
+              'producto',
+
+            producto,
+
+            valida: true,
+          };
+        }
+      }
+
+      return {
+        pagina: 'inicio',
+        producto: null,
+        valida: false,
+      };
+    }, [
+      location.pathname,
+    ]);
+
+  const pagina =
+    rutaActual.pagina;
+
+  const productoSeleccionado =
+    rutaActual.producto;
+
+  /*
+    Si alguien escribe una URL
+    que no existe, vuelve al Home.
+  */
+  useEffect(() => {
     if (
-      estado.pagina ===
-      'producto'
+      !rutaActual.valida
     ) {
-      const productoHistorial =
-        productos.find(
-          (producto) =>
-            producto.id ===
-              estado.productoId ||
-            producto.slug ===
-              estado.productoSlug
-        ) || null;
-
-      setProductoSeleccionado(
-        productoHistorial
-      );
-
-      setPagina(
-        productoHistorial
-          ? 'producto'
-          : 'inicio'
-      );
-    } else {
-      setProductoSeleccionado(
-        null
-      );
-
-      setPagina(
-        estado.pagina ||
-          'inicio'
+      navigate(
+        '/',
+        {
+          replace: true,
+        }
       );
     }
+  }, [
+    rutaActual.valida,
+    navigate,
+  ]);
 
+  /*
+    Cada nueva página empieza arriba.
+  */
+  useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: 'auto',
     });
-  }
+  }, [
+    location.pathname,
+  ]);
 
-  useEffect(() => {
-    window.history.replaceState(
-      crearEstadoHistorial(
-        'inicio'
-      ),
-      '',
-      window.location.href
-    );
+  function obtenerRuta(
+    nombrePagina
+  ) {
+    const rutas = {
+      inicio:
+        '/',
 
-    function manejarRetroceso(
-      evento
-    ) {
-      if (!evento.state?.bro) {
-        return;
-      }
+      cuadros:
+        '/cuadros',
 
-      aplicarVistaHistorial(
-        evento.state
-      );
-    }
+      pedido:
+        '/mi-pedido',
 
-    window.addEventListener(
-      'popstate',
-      manejarRetroceso
-    );
+      preguntas:
+        '/preguntas-frecuentes',
 
-    return () => {
-      window.removeEventListener(
-        'popstate',
-        manejarRetroceso
-      );
+      afiliados:
+        '/afiliados',
     };
-  }, []);
+
+    return (
+      rutas[nombrePagina] ||
+      '/'
+    );
+  }
 
   function irPagina(
     nombrePagina
   ) {
-    setPagina(
-      nombrePagina
-    );
+    const destino =
+      obtenerRuta(
+        nombrePagina
+      );
 
-    registrarHistorial(
-      nombrePagina
-    );
+    if (
+      location.pathname !==
+      destino
+    ) {
+      navigate(
+        destino,
+        {
+          state: {
+            broInternal:
+              true,
+          },
+        }
+      );
+    }
 
     window.scrollTo({
       top: 0,
@@ -192,59 +255,67 @@ function App() {
     });
   }
 
+  /*
+    Flecha visible de BRO.
+
+    Si llegamos desde otra pantalla
+    interna, volvemos realmente atrás.
+
+    Si abrimos una URL directamente,
+    usamos una ruta segura dentro de BRO.
+  */
   function volverAtras() {
-    window.history.back();
+    if (
+      location.state
+        ?.broInternal
+    ) {
+      navigate(-1);
+      return;
+    }
+
+    const destino =
+      pagina ===
+      'producto'
+        ? '/cuadros'
+        : '/';
+
+    navigate(
+      destino,
+      {
+        replace: true,
+      }
+    );
   }
 
   function irInicio() {
-    setProductoSeleccionado(
-      null
-    );
-
     irPagina(
       'inicio'
     );
   }
 
   function irMiPedido() {
-    setProductoSeleccionado(
-      null
-    );
-
     irPagina(
       'pedido'
     );
   }
 
   function irPreguntas() {
-    setProductoSeleccionado(
-      null
-    );
-
     irPagina(
       'preguntas'
     );
   }
 
   function irAfiliados() {
-    setProductoSeleccionado(
-      null
-    );
-
     irPagina(
       'afiliados'
     );
   }
 
   /*
-    NUEVA VISTA:
-    catálogo completo de cuadros.
+    CATÁLOGO COMPLETO
+    DE CUADROS
   */
   function irTodosCuadros() {
-    setProductoSeleccionado(
-      null
-    );
-
     irPagina(
       'cuadros'
     );
@@ -272,10 +343,6 @@ function App() {
       irTodosCuadros();
       return;
     }
-
-    setProductoSeleccionado(
-      null
-    );
 
     irPagina(
       'inicio'
@@ -305,10 +372,6 @@ function App() {
   }
 
   function irContacto() {
-    setProductoSeleccionado(
-      null
-    );
-
     irPagina(
       'inicio'
     );
@@ -334,17 +397,26 @@ function App() {
   function verProducto(
     producto
   ) {
-    setProductoSeleccionado(
-      producto
-    );
+    if (
+      !producto?.slug
+    ) {
+      return;
+    }
 
-    setPagina(
-      'producto'
-    );
+    const destinoProducto =
+      '/producto/' +
+      encodeURIComponent(
+        producto.slug
+      );
 
-    registrarHistorial(
-      'producto',
-      producto
+    navigate(
+      destinoProducto,
+      {
+        state: {
+          broInternal:
+            true,
+        },
+      }
     );
 
     window.scrollTo({
