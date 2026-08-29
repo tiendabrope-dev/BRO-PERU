@@ -850,19 +850,24 @@ function App() {
     }
 
     if (
-      !/^\d{8}$/.test(
+      !/^[A-Za-z0-9-]{5,20}$/.test(
         formulario.dni.trim()
       )
     ) {
-      return 'Ingresa un DNI válido de 8 dígitos.';
+      return 'Ingresa un documento de identidad v\u00e1lido de 5 a 20 caracteres.';
     }
 
+    const telefonoValidacion =
+      formulario.telefono
+        .trim()
+        .replace(/[\s()-]/g, '');
+
     if (
-      !/^\d{9}$/.test(
-        formulario.telefono.trim()
+      !/^\+?\d{9,15}$/.test(
+        telefonoValidacion
       )
     ) {
-      return 'Ingresa un número de teléfono válido de 9 dígitos.';
+      return 'Ingresa un n\u00famero de tel\u00e9fono v\u00e1lido de 9 a 15 d\u00edgitos.';
     }
 
     if (

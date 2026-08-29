@@ -1704,3 +1704,883 @@ img {
     min-height: 350px;
   }
 }
+
+
+
+
+/* BRO CHECKOUT FIT SCREEN START */
+
+@media (min-width: 1100px) {
+
+  .checkout-topbar {
+    height: 52px;
+    padding: 0 26px;
+  }
+
+  .checkout-back-button {
+    font-size: 8px;
+  }
+
+  .checkout-logo {
+    font-size: 24px;
+  }
+
+  .checkout-close {
+    width: 34px;
+    height: 34px;
+    font-size: 24px;
+  }
+
+  .checkout-layout {
+    grid-template-columns:
+      minmax(0, 1.08fr)
+      minmax(390px, 0.92fr);
+  }
+
+  /* =========================
+     LADO IZQUIERDO
+  ========================= */
+
+  .checkout-form {
+    padding: 16px 30px 20px;
+  }
+
+  .checkout-title {
+    max-width: none;
+    margin-bottom: 14px;
+  }
+
+  .checkout-title > .eyebrow {
+    margin-bottom: 5px;
+    font-size: 8px;
+  }
+
+  .checkout-title h1 {
+    font-size: 30px;
+    letter-spacing: -1.8px;
+    line-height: 0.9;
+  }
+
+  .checkout-title > p:last-child {
+    max-width: none;
+    margin-top: 7px;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .checkout-block {
+    max-width: none;
+    padding: 10px 0;
+  }
+
+  .checkout-block-title {
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  .checkout-block-title span {
+    width: 22px;
+    height: 22px;
+    font-size: 7px;
+  }
+
+  .checkout-block-title h2 {
+    font-size: 13px;
+    letter-spacing: -0.3px;
+  }
+
+  /*
+    NOMBRE + DNI + TEL?FONO
+    EN UNA SOLA FILA
+  */
+  .checkout-fields {
+    grid-template-columns:
+      1.45fr 0.65fr 0.9fr;
+    gap: 8px;
+  }
+
+  .checkout-field.full {
+    grid-column: auto;
+  }
+
+  .checkout-field {
+    gap: 4px;
+  }
+
+  .checkout-field > span {
+    font-size: 7.5px;
+    letter-spacing: 1px;
+  }
+
+  .checkout-field input {
+    height: 34px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  /*
+    DIRECCI?N + DISTRITO + REFERENCIA
+    TAMBI?N EN UNA SOLA FILA
+  */
+  .address-fields {
+    margin-top: 8px;
+    grid-template-columns:
+      1.5fr 0.75fr 1fr;
+  }
+
+  /* SERVICIO */
+
+  .checkout-options {
+    gap: 7px;
+  }
+
+  .checkout-option {
+    min-height: 44px;
+    padding: 7px 9px;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .checkout-option input {
+    margin-top: 0;
+  }
+
+  .checkout-option div {
+    gap: 2px;
+  }
+
+  .checkout-option strong {
+    font-size: 9.5px;
+  }
+
+  .checkout-option span {
+    font-size: 8.5px;
+    line-height: 1.2;
+  }
+
+  /* PAGOS EN UNA SOLA FILA */
+
+  .payment-options {
+    grid-template-columns:
+      repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .payment-option {
+    min-height: 34px;
+    padding: 0 7px;
+    gap: 5px;
+  }
+
+  .payment-option strong {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /*
+    DATOS YAPE/PLIN
+    EN UNA SOLA L?NEA
+  */
+  .payment-info-box {
+    margin-top: 8px;
+    padding: 8px 10px;
+
+    display: grid;
+    grid-template-columns:
+      auto auto 1fr;
+
+    align-items: center;
+    gap: 10px;
+  }
+
+  .payment-info-box span {
+    margin-bottom: 0;
+    font-size: 7px;
+  }
+
+  .payment-info-box strong {
+    font-size: 15px;
+  }
+
+  .payment-info-box p {
+    margin-top: 0;
+    font-size: 9px;
+  }
+
+  .checkout-error {
+    margin-bottom: 8px;
+    padding: 8px 10px;
+  }
+
+  .checkout-confirm-button {
+    min-height: 38px;
+    font-size: 9px;
+  }
+
+  /* =========================
+     RESUMEN DERECHO
+  ========================= */
+
+  .checkout-summary {
+    min-height:
+      calc(100vh - 52px);
+
+    top: 52px;
+  }
+
+  .checkout-summary-inner {
+    padding: 20px 24px;
+  }
+
+  .checkout-summary-inner > .eyebrow {
+    font-size: 8px;
+  }
+
+  .checkout-summary h2 {
+    margin-bottom: 12px;
+    font-size: 22px;
+    letter-spacing: -1px;
+  }
+
+  .checkout-summary-product {
+    padding: 8px 0;
+
+    grid-template-columns:
+      72px 1fr auto;
+
+    gap: 10px;
+  }
+
+  /*
+    La imagen no queda diminuta,
+    pero se muestra COMPLETA.
+  */
+  .checkout-summary-image {
+    width: 72px;
+    height: 86px;
+  }
+
+  .checkout-summary-image img {
+    object-fit: contain;
+  }
+
+  .checkout-summary-product h3 {
+    margin-bottom: 3px;
+    font-size: 11px;
+  }
+
+  .checkout-summary-product p {
+    font-size: 9px;
+  }
+
+  .checkout-summary-product > strong {
+    font-size: 11px;
+  }
+
+  .checkout-totals {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+
+  .checkout-totals > div {
+    padding: 4px 0;
+  }
+
+  .checkout-totals span {
+    font-size: 8px;
+  }
+
+  .checkout-totals strong {
+    font-size: 11px;
+  }
+
+  .checkout-total-final {
+    margin-top: 6px;
+    padding-top: 10px !important;
+  }
+
+  .checkout-total-final span {
+    font-size: 11px;
+  }
+
+  .checkout-total-final strong {
+    font-size: 26px;
+  }
+
+  .checkout-payment-status {
+    margin-top: 12px;
+    padding: 11px 12px;
+  }
+
+  .checkout-payment-status span {
+    font-size: 7px;
+  }
+
+  .checkout-payment-status strong {
+    font-size: 11px;
+  }
+}
+
+/* BRO CHECKOUT FIT SCREEN END */
+
+
+/* BRO CHECKOUT NARROW COLUMNS START */
+
+@media (min-width: 1100px) {
+
+  .checkout-layout {
+    grid-template-columns:
+      minmax(0, 650px)
+      minmax(320px, 390px);
+
+    justify-content: space-between;
+    column-gap: clamp(110px, 10vw, 190px);
+
+    width: 100%;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .checkout-form {
+    width: 100%;
+    justify-self: start;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+  }
+
+  .checkout-summary {
+    width: 100%;
+    justify-self: end;
+  }
+
+  .checkout-summary-inner {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+}
+
+/* BRO CHECKOUT NARROW COLUMNS END */
+
+
+/* BRO CHECKOUT STEPS START */
+
+.checkout-stepper {
+  width: 100%;
+  max-width: 650px;
+  margin: 8px 0 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid #d8d3ca;
+  border-bottom: 1px solid #d8d3ca;
+}
+
+.checkout-step {
+  min-height: 48px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-right: 1px solid #d8d3ca;
+  background: transparent;
+  color: #77736d;
+  cursor: pointer;
+}
+
+.checkout-step:last-child {
+  border-right: 0;
+}
+
+.checkout-step:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.checkout-step span {
+  width: 21px;
+  height: 21px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #9d9890;
+  border-radius: 50%;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.checkout-step strong {
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.checkout-step.active {
+  color: #2D5A3D;
+}
+
+.checkout-step.active span {
+  background: #2D5A3D;
+  border-color: #2D5A3D;
+  color: #fff;
+}
+
+.checkout-step.completed span {
+  background: #E8F0EA;
+  border-color: #2D5A3D;
+  color: #2D5A3D;
+}
+
+.checkout-step-panel {
+  padding-top: 14px !important;
+  padding-bottom: 8px !important;
+}
+
+.checkout-step-actions {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.checkout-step-actions.end {
+  justify-content: flex-end;
+}
+
+.checkout-step-back,
+.checkout-step-next {
+  min-width: 135px;
+  height: 38px;
+  padding: 0 18px;
+  border: 1px solid #2D5A3D;
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.checkout-step-back {
+  background: transparent;
+  color: #2D5A3D;
+}
+
+.checkout-step-next {
+  background: #2D5A3D;
+  color: #fff;
+}
+
+.checkout-step-confirm {
+  width: auto;
+  min-width: 190px;
+  min-height: 38px;
+  margin: 0;
+}
+
+@media (min-width: 1100px) {
+  .checkout-step-panel {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 700px) {
+  .checkout-step strong {
+    font-size: 7px;
+  }
+
+  .checkout-step-actions {
+    flex-direction: column;
+  }
+
+  .checkout-step-back,
+  .checkout-step-next,
+  .checkout-step-confirm {
+    width: 100%;
+  }
+}
+
+/* BRO CHECKOUT STEPS END */
+
+
+/* BRO CHECKOUT ORDERED START */
+
+@media (min-width: 1100px) {
+
+  /*
+    CONTENEDOR GENERAL
+  */
+
+  .checkout-layout {
+    grid-template-columns:
+      minmax(0, 600px)
+      minmax(340px, 380px);
+
+    justify-content: space-between;
+    column-gap: clamp(120px, 12vw, 220px);
+
+    padding: 0 28px;
+  }
+
+  .checkout-form {
+    width: 100%;
+    padding:
+      24px 14px
+      34px;
+  }
+
+  .checkout-title {
+    max-width: 560px;
+    margin-bottom: 18px;
+  }
+
+  .checkout-title h1 {
+    font-size: 38px;
+    line-height: 0.92;
+    letter-spacing: -2px;
+  }
+
+  .checkout-title > p:last-child {
+    margin-top: 9px;
+    font-size: 12px;
+  }
+
+  /*
+    STEPPER
+  */
+
+  .checkout-stepper {
+    max-width: 560px;
+    margin:
+      14px 0
+      18px;
+  }
+
+  .checkout-step {
+    min-height: 52px;
+  }
+
+  .checkout-step span {
+    width: 24px;
+    height: 24px;
+  }
+
+  /*
+    PANEL ACTUAL
+  */
+
+  .checkout-step-panel {
+    width: 100%;
+    max-width: 560px;
+    min-height: 0;
+    padding:
+      18px 0
+      12px !important;
+  }
+
+  .checkout-block-title {
+    margin-bottom: 16px;
+  }
+
+  .checkout-block-title span {
+    width: 28px;
+    height: 28px;
+  }
+
+  .checkout-block-title h2 {
+    font-size: 16px;
+  }
+
+  /*
+    ==========================
+    PASO 1
+    UNO DEBAJO DEL OTRO
+    ==========================
+  */
+
+  .checkout-step-panel .checkout-fields {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .checkout-step-panel .checkout-field.full {
+    grid-column: auto;
+  }
+
+  .checkout-field {
+    gap: 6px;
+  }
+
+  .checkout-field > span {
+    font-size: 8px;
+    letter-spacing: 1.2px;
+  }
+
+  .checkout-field input {
+    height: 44px;
+    padding: 0 13px;
+    font-size: 12px;
+  }
+
+  /*
+    ==========================
+    PASO 2
+    SERVICIOS VERTICALES
+    ==========================
+  */
+
+  .checkout-step-panel .checkout-options {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .checkout-step-panel .checkout-option {
+    width: 100%;
+    min-height: 58px;
+
+    padding:
+      10px
+      14px;
+
+    gap: 10px;
+  }
+
+  .checkout-option strong {
+    font-size: 11px;
+  }
+
+  .checkout-option span {
+    margin-top: 2px;
+    font-size: 9px;
+  }
+
+  /*
+    DIRECCI?N TAMBI?N ORDENADA
+    VERTICALMENTE
+  */
+
+  .checkout-step-panel .address-fields {
+    margin-top: 14px;
+
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  /*
+    ==========================
+    PASO 3
+    PAGOS EN 2 x 2
+    ==========================
+  */
+
+  .checkout-step-panel .payment-options {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 10px;
+  }
+
+  .checkout-step-panel .payment-option {
+    min-height: 54px;
+
+    padding:
+      0
+      14px;
+
+    gap: 9px;
+  }
+
+  .checkout-step-panel .payment-option strong {
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  /*
+    INFORMACI?N DE PAGO
+  */
+
+  .checkout-step-panel .payment-info-box {
+    margin-top: 14px;
+    padding: 14px 16px;
+
+    display: block;
+  }
+
+  .checkout-step-panel .payment-info-box span {
+    margin-bottom: 5px;
+  }
+
+  .checkout-step-panel .payment-info-box strong {
+    font-size: 19px;
+  }
+
+  .checkout-step-panel .payment-info-box p {
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  /*
+    BOTONES INFERIORES
+  */
+
+  .checkout-step-actions {
+    margin-top: 20px;
+  }
+
+  .checkout-step-back,
+  .checkout-step-next {
+    min-width: 150px;
+    height: 42px;
+  }
+
+  .checkout-step-confirm {
+    min-width: 210px;
+    min-height: 42px;
+  }
+
+  /*
+    ==========================
+    RESUMEN DERECHO
+    ==========================
+  */
+
+  .checkout-summary {
+    width: 100%;
+    max-width: 380px;
+    justify-self: end;
+  }
+
+  .checkout-summary-inner {
+    padding:
+      28px
+      22px;
+  }
+
+  .checkout-summary h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+  }
+
+  .checkout-summary-product {
+    grid-template-columns:
+      78px
+      1fr
+      auto;
+
+    gap: 12px;
+  }
+
+  .checkout-summary-image {
+    width: 78px;
+    height: 94px;
+  }
+
+  .checkout-summary-image img {
+    object-fit: contain;
+  }
+
+  .checkout-payment-status {
+    margin-top: 16px;
+    padding: 14px;
+  }
+
+}
+
+/* BRO CHECKOUT ORDERED END */
+
+
+/* BRO CHECKOUT FONT FIX START */
+
+/*
+  T?tulos de cada paso:
+  m?s limpios y menos achatados.
+*/
+.checkout-block-title h2 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1.15;
+}
+
+/*
+  Opciones de entrega.
+*/
+.checkout-option strong {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+
+.checkout-option span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/*
+  Opciones de pago.
+*/
+.payment-option strong,
+.checkout-step-panel .payment-option strong {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1.25;
+}
+
+/*
+  Caja con los datos de Yape / Plin.
+*/
+.payment-info-box span,
+.checkout-step-panel .payment-info-box span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+/*
+  N?MERO DE YAPE:
+  dejamos de usar la tipograf?a display
+  que lo hac?a verse aplastado.
+*/
+.payment-info-box strong,
+.checkout-step-panel .payment-info-box strong {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+
+/*
+  Nombre del titular / textos informativos.
+*/
+.payment-info-box p,
+.checkout-step-panel .payment-info-box p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  line-height: 1.4;
+}
+
+/* BRO CHECKOUT FONT FIX END */
+
+
+/* BRO CHECKOUT STEP VALIDATION START */
+
+.checkout-step-error {
+  max-width: none;
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* BRO CHECKOUT STEP VALIDATION END */
