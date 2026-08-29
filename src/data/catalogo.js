@@ -14,7 +14,7 @@ import guiaTamanosBro from '../assets/productos/guia-tamanos-bro.png';
 export const DELIVERY = 15;
 
 export const mensajesSuperiores = [
-  'ENVÃOS A TODO EL PERÃš',
+  'ENVÍOS A TODO EL PERÚ',
   'PRODUCTOS DESDE S/ 7',
   'COMPRA SEGURA',
 ];
@@ -138,7 +138,7 @@ export const productos = [
     ],
 
     badge:
-      'MÃS VENDIDO',
+      'MÁS VENDIDO',
 
     rating:
       5,
@@ -333,7 +333,7 @@ export const productos = [
     ],
 
     badge:
-      'ICÃ“NICO',
+      'ICÓNICO',
 
     rating:
       5,
@@ -436,7 +436,7 @@ export const productos = [
       'lamborghini-huracan',
 
     nombre:
-      'Lamborghini HuracÃ¡n',
+      'Lamborghini Huracán',
 
     precioDesde:
       15,

@@ -147,3 +147,13 @@
 /* --- 8. BENEFICIOS --- */
 .benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 60px 4vw; background: #f4f1ec; }
 .benefits p { margin: 0; font-size: 14px; color: #555; }
+
+/* BRO CART COUNTER CENTER FIX */
+.bro-cart-new > span {
+  display: inline-grid;
+  place-items: center;
+  text-align: center;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+}
