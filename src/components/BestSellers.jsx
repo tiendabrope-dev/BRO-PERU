@@ -67,23 +67,28 @@ function BestSellers({
       return;
     }
 
-    const actualizar = () => {
+    function reiniciarCarrusel() {
+      carrusel.scrollTo({
+        left: 0,
+        behavior: 'auto',
+      });
+
       actualizarFlechas();
-    };
+    }
 
     requestAnimationFrame(
-      actualizar
+      reiniciarCarrusel
     );
 
     window.addEventListener(
       'resize',
-      actualizar
+      reiniciarCarrusel
     );
 
     return () => {
       window.removeEventListener(
         'resize',
-        actualizar
+        reiniciarCarrusel
       );
     };
   }, [cuadros.length]);
@@ -116,7 +121,7 @@ function BestSellers({
       parseFloat(
         estilos.columnGap ||
           estilos.gap
-      ) || 12;
+      ) || 14;
 
     const anchoTarjeta =
       primeraTarjeta
@@ -126,7 +131,10 @@ function BestSellers({
     carrusel.scrollBy({
       left:
         direccion *
-        (anchoTarjeta + gap),
+        (
+          anchoTarjeta +
+          gap
+        ),
 
       behavior:
         'smooth',
@@ -140,9 +148,10 @@ function BestSellers({
     >
       <style>
         {`
-          /* ========================================
-             SECCIÓN
-          ======================================== */
+          /* ==========================================
+             MÁS VENDIDOS
+             DESKTOP
+          ========================================== */
 
           .bro-best-sellers-v2 {
             padding:
@@ -153,6 +162,7 @@ function BestSellers({
               hidden;
           }
 
+          .bro-best-sellers-v2
           .bro-best-container-v2 {
             width:
               100%;
@@ -164,10 +174,11 @@ function BestSellers({
               0 auto;
           }
 
-          /* ========================================
+          /* ==========================================
              ENCABEZADO
-          ======================================== */
+          ========================================== */
 
+          .bro-best-sellers-v2
           .bro-best-top-v2 {
             width:
               100%;
@@ -187,12 +198,6 @@ function BestSellers({
             margin:
               0 !important;
 
-            margin-left:
-              0 !important;
-
-            margin-right:
-              0 !important;
-
             padding:
               0 !important;
 
@@ -205,55 +210,85 @@ function BestSellers({
 
           .bro-best-sellers-v2
           .bro-best-small {
-            margin-left:
+            margin:
+              0 0 7px
+              !important;
+
+            padding:
               0 !important;
 
-            margin-bottom:
-              7px !important;
+            color:
+              #111111;
 
-            padding-left:
-              0 !important;
-
-            text-align:
-              left !important;
+            font-family:
+              'DM Sans',
+              sans-serif;
 
             font-size:
               12px !important;
 
+            font-weight:
+              700;
+
+            line-height:
+              1;
+
             letter-spacing:
               0.18em !important;
+
+            text-align:
+              left !important;
           }
 
           .bro-best-sellers-v2
           .bro-best-heading h2 {
-            margin-left:
+            margin:
               0 !important;
 
-            padding-left:
+            padding:
               0 !important;
 
-            text-align:
-              left !important;
+            color:
+              #111111;
 
-            transform:
-              none !important;
+            font-family:
+              'Syne',
+              sans-serif;
 
             font-size:
               clamp(
                 34px,
                 3.4vw,
                 46px
-              ) !important;
+              )
+              !important;
+
+            font-weight:
+              800;
 
             line-height:
-              0.95 !important;
+              0.95
+              !important;
+
+            letter-spacing:
+              -0.045em;
+
+            text-align:
+              left !important;
+
+            transform:
+              none !important;
           }
 
-          /* ========================================
-             ZONA DEL CARRUSEL
-          ======================================== */
+          /* ==========================================
+             ESCENARIO DEL CARRUSEL
+          ========================================== */
 
+          .bro-best-sellers-v2
           .bro-carousel-stage-v2 {
+            position:
+              relative;
+
             width:
               100%;
 
@@ -262,17 +297,16 @@ function BestSellers({
 
             margin:
               0 auto;
-
-            position:
-              relative;
           }
 
+          /* ==========================================
+             CARRUSEL DESKTOP
+          ========================================== */
+
+          .bro-best-sellers-v2
           .bro-carousel-window-v2 {
             display:
               flex;
-
-            gap:
-              12px;
 
             width:
               100%;
@@ -282,6 +316,15 @@ function BestSellers({
 
             margin:
               0 auto;
+
+            padding:
+              0 0 6px;
+
+            box-sizing:
+              border-box;
+
+            gap:
+              12px;
 
             overflow-x:
               auto;
@@ -295,28 +338,23 @@ function BestSellers({
             scroll-snap-type:
               x mandatory;
 
+            scroll-padding-left:
+              0;
+
             scrollbar-width:
               none;
 
             -ms-overflow-style:
               none;
-
-            padding-bottom:
-              6px;
           }
 
+          .bro-best-sellers-v2
           .bro-carousel-window-v2::-webkit-scrollbar {
             display:
               none;
           }
 
-          /*
-            4 PRODUCTOS VISIBLES.
-
-            4 tarjetas +
-            3 espacios de 12px.
-          */
-
+          .bro-best-sellers-v2
           .bro-carousel-window-v2
           > .bro-product-card {
             flex:
@@ -338,6 +376,9 @@ function BestSellers({
             margin:
               0 !important;
 
+            padding:
+              0 !important;
+
             scroll-snap-align:
               start;
 
@@ -345,113 +386,15 @@ function BestSellers({
               transparent !important;
 
             border:
-              none !important;
+              0 !important;
 
             box-shadow:
               none !important;
           }
 
-          /* ========================================
-             FLECHAS AL COSTADO
-          ======================================== */
-
-          .bro-carousel-arrow-v2 {
-            position:
-              absolute;
-
-            top:
-              39%;
-
-            transform:
-              translateY(-50%);
-
-            z-index:
-              5;
-
-            width:
-              40px;
-
-            height:
-              40px;
-
-            border:
-              1px solid
-              rgba(
-                17,
-                17,
-                17,
-                0.22
-              );
-
-            border-radius:
-              50%;
-
-            background:
-              #f4f1ec;
-
-            color:
-              #111111;
-
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            justify-content:
-              center;
-
-            cursor:
-              pointer;
-
-            font-size:
-              18px;
-
-            transition:
-              background 0.2s ease,
-              color 0.2s ease,
-              border-color 0.2s ease,
-              opacity 0.2s ease;
-          }
-
-          .bro-carousel-arrow-prev-v2 {
-            left:
-              0;
-          }
-
-          .bro-carousel-arrow-next-v2 {
-            right:
-              0;
-          }
-
-          .bro-carousel-arrow-v2:hover:not(:disabled) {
-            background:
-              #111111;
-
-            color:
-              #ffffff;
-
-            border-color:
-              #111111;
-          }
-
-          .bro-carousel-arrow-v2:disabled {
-            opacity:
-              0.22;
-
-            cursor:
-              default;
-          }
-
-          /* ========================================
-             IMAGEN DEL PRODUCTO
-
-             Aumentamos el porcentaje porque
-             la columna ahora es más estrecha.
-
-             Así mantenemos prácticamente
-             el mismo tamaño visual del cuadro.
-          ======================================== */
+          /* ==========================================
+             IMAGEN DESKTOP
+          ========================================== */
 
           .bro-best-sellers-v2
           .bro-product-image-button {
@@ -498,11 +441,15 @@ function BestSellers({
               hidden;
 
             background:
-              transparent !important;
+              transparent
+              !important;
           }
 
           .bro-best-sellers-v2
           .bro-product-image img {
+            display:
+              block;
+
             width:
               100%;
 
@@ -512,24 +459,27 @@ function BestSellers({
             object-fit:
               contain;
 
-            display:
-              block;
-
             transition:
               transform
               0.3s ease;
           }
 
-          .bro-best-sellers-v2
-          .bro-product-image-button:hover
-          img {
-            transform:
-              scale(1.025);
+          @media (
+            hover: hover
+          ) {
+            .bro-best-sellers-v2
+            .bro-product-image-button:hover
+            img {
+              transform:
+                scale(
+                  1.025
+                );
+            }
           }
 
-          /* ========================================
-             INFORMACIÓN
-          ======================================== */
+          /* ==========================================
+             INFORMACIÓN PRODUCTO
+          ========================================== */
 
           .bro-best-sellers-v2
           .bro-product-info {
@@ -540,21 +490,26 @@ function BestSellers({
               0 auto;
 
             padding:
-              11px 2px 0 !important;
+              11px 2px 0
+              !important;
+
+            box-sizing:
+              border-box;
 
             background:
-              transparent !important;
+              transparent
+              !important;
           }
 
           .bro-best-sellers-v2
           .bro-product-name-button {
-            border:
+            margin:
               0;
 
             padding:
               0;
 
-            margin:
+            border:
               0;
 
             background:
@@ -599,10 +554,112 @@ function BestSellers({
               14px;
           }
 
-          /* ========================================
-             BOTÓN VER TODOS
-          ======================================== */
+          /* ==========================================
+             FLECHAS DESKTOP
+          ========================================== */
 
+          .bro-best-sellers-v2
+          .bro-carousel-arrow-v2 {
+            position:
+              absolute;
+
+            top:
+              39%;
+
+            z-index:
+              5;
+
+            width:
+              40px;
+
+            height:
+              40px;
+
+            padding:
+              0;
+
+            border:
+              1px solid
+              rgba(
+                17,
+                17,
+                17,
+                0.22
+              );
+
+            border-radius:
+              50%;
+
+            background:
+              #f4f1ec;
+
+            color:
+              #111111;
+
+            display:
+              flex;
+
+            align-items:
+              center;
+
+            justify-content:
+              center;
+
+            font-size:
+              18px;
+
+            cursor:
+              pointer;
+
+            transform:
+              translateY(
+                -50%
+              );
+
+            transition:
+              background
+                0.2s ease,
+              color
+                0.2s ease,
+              opacity
+                0.2s ease;
+          }
+
+          .bro-best-sellers-v2
+          .bro-carousel-arrow-prev-v2 {
+            left:
+              0;
+          }
+
+          .bro-best-sellers-v2
+          .bro-carousel-arrow-next-v2 {
+            right:
+              0;
+          }
+
+          .bro-best-sellers-v2
+          .bro-carousel-arrow-v2:hover:not(:disabled) {
+            background:
+              #111111;
+
+            color:
+              #ffffff;
+          }
+
+          .bro-best-sellers-v2
+          .bro-carousel-arrow-v2:disabled {
+            opacity:
+              0.2;
+
+            cursor:
+              default;
+          }
+
+          /* ==========================================
+             BOTÓN VER TODOS
+          ========================================== */
+
+          .bro-best-sellers-v2
           .bro-carousel-bottom-v2 {
             display:
               flex;
@@ -614,6 +671,7 @@ function BestSellers({
               38px;
           }
 
+          .bro-best-sellers-v2
           .bro-view-all-v2 {
             min-width:
               240px;
@@ -652,12 +710,9 @@ function BestSellers({
 
             cursor:
               pointer;
-
-            transition:
-              background 0.2s ease,
-              color 0.2s ease;
           }
 
+          .bro-best-sellers-v2
           .bro-view-all-v2:hover {
             background:
               #2D5A3D;
@@ -666,21 +721,31 @@ function BestSellers({
               #2D5A3D;
           }
 
-          /* ========================================
+          /* ==========================================
              TABLET
-          ======================================== */
+          ========================================== */
 
           @media (
-            max-width: 900px
+            max-width:
+              900px
+          ) and (
+            min-width:
+              601px
           ) {
+
+            .bro-best-sellers-v2
             .bro-carousel-stage-v2 {
               max-width:
                 100%;
             }
 
+            .bro-best-sellers-v2
             .bro-carousel-window-v2 {
               width:
-                calc(100% - 100px);
+                calc(
+                  100% - 100px
+                )
+                !important;
 
               max-width:
                 none;
@@ -689,6 +754,7 @@ function BestSellers({
                 16px;
             }
 
+            .bro-best-sellers-v2
             .bro-carousel-window-v2
             > .bro-product-card {
               flex:
@@ -696,25 +762,12 @@ function BestSellers({
                 calc(
                   (100% - 16px)
                   / 2
-                );
-            }
-
-            .bro-carousel-arrow-prev-v2 {
-              left:
-                6px;
-            }
-
-            .bro-carousel-arrow-next-v2 {
-              right:
-                6px;
+                )
+                !important;
             }
 
             .bro-best-sellers-v2
-            .bro-product-image-button {
-              width:
-                90%;
-            }
-
+            .bro-product-image-button,
             .bro-best-sellers-v2
             .bro-product-info {
               width:
@@ -722,97 +775,384 @@ function BestSellers({
             }
           }
 
-          /* ========================================
+          /* ==========================================
              CELULAR
-          ======================================== */
+          ========================================== */
 
           @media (
-            max-width: 600px
+            max-width:
+              600px
           ) {
+
+            /*
+              Margen general:
+              18px desde el borde.
+            */
+
             .bro-best-sellers-v2 {
               padding:
-                58px 14px
-                68px;
+                52px 18px
+                62px
+                !important;
             }
 
+            .bro-best-sellers-v2
             .bro-best-top-v2 {
               margin-bottom:
-                24px;
+                25px
+                !important;
+            }
+
+            .bro-best-sellers-v2
+            .bro-best-small {
+              font-size:
+                11px
+                !important;
             }
 
             .bro-best-sellers-v2
             .bro-best-heading h2 {
               font-size:
-                32px !important;
+                36px
+                !important;
+
+              line-height:
+                0.95
+                !important;
+
+              letter-spacing:
+                -0.045em
+                !important;
             }
 
+            /* ======================================
+               STAGE
+
+               100% del espacio interior.
+            ====================================== */
+
+            .bro-best-sellers-v2
             .bro-carousel-stage-v2 {
+              position:
+                relative;
+
+              width:
+                100%
+                !important;
+
               max-width:
-                100%;
+                none
+                !important;
+
+              margin:
+                0
+                !important;
+
+              padding:
+                0
+                !important;
             }
 
+            /* ======================================
+               TRACK
+
+               ESTE ES EL CAMBIO PRINCIPAL.
+
+               Empieza exactamente en x = 0
+               dentro de la sección.
+
+               Se extiende 18px a la derecha para
+               producir el efecto de carrusel
+               abierto.
+            ====================================== */
+
+            .bro-best-sellers-v2
             .bro-carousel-window-v2 {
+              position:
+                relative;
+
+              left:
+                0
+                !important;
+
               width:
-                calc(100% - 82px);
+                calc(
+                  100% + 18px
+                )
+                !important;
 
               max-width:
-                none;
+                none
+                !important;
+
+              margin:
+                0 -18px
+                0 0
+                !important;
+
+              padding:
+                0 18px
+                6px 0
+                !important;
+
+              box-sizing:
+                border-box
+                !important;
+
+              display:
+                flex
+                !important;
+
+              justify-content:
+                flex-start
+                !important;
 
               gap:
-                14px;
+                14px
+                !important;
+
+              overflow-x:
+                auto
+                !important;
+
+              overflow-y:
+                hidden
+                !important;
+
+              scroll-behavior:
+                smooth;
+
+              scroll-snap-type:
+                x mandatory;
+
+              scroll-padding-left:
+                0
+                !important;
+
+              scrollbar-width:
+                none;
             }
 
+            /* ======================================
+               TARJETAS
+
+               No usamos 68% porque App.css
+               estaba forzándolo.
+
+               Usamos un ancho real controlado.
+               En 360px ≈ 166px.
+            ====================================== */
+
+            .bro-best-sellers-v2
             .bro-carousel-window-v2
             > .bro-product-card {
               flex:
                 0 0
-                100%;
+                clamp(
+                  160px,
+                  46vw,
+                  175px
+                )
+                !important;
+
+              width:
+                clamp(
+                  160px,
+                  46vw,
+                  175px
+                )
+                !important;
+
+              max-width:
+                none
+                !important;
+
+              min-width:
+                0
+                !important;
+
+              margin:
+                0
+                !important;
+
+              padding:
+                0
+                !important;
+
+              scroll-snap-align:
+                start;
+
+              scroll-snap-stop:
+                always;
             }
 
-            .bro-carousel-arrow-v2 {
-              width:
-                34px;
+            /* ======================================
+               IMAGEN
 
-              height:
-                34px;
+               Conservamos el tamaño compacto,
+               PERO YA NO SE CENTRA DENTRO
+               DE LA TARJETA.
+
+               Su borde izquierdo coincide
+               con el inicio del carrusel.
+            ====================================== */
+
+            .bro-best-sellers-v2
+            .bro-carousel-window-v2
+            .bro-product-card
+            .bro-product-image-button {
+              width:
+                82%
+                !important;
+
+              max-width:
+                none
+                !important;
+
+              margin:
+                0 auto 0 0
+                !important;
+
+              padding:
+                0
+                !important;
+            }
+
+            /* ======================================
+               INFORMACIÓN
+
+               Exactamente alineada con
+               el cuadro.
+            ====================================== */
+
+            .bro-best-sellers-v2
+            .bro-carousel-window-v2
+            .bro-product-card
+            .bro-product-info {
+              width:
+                82%
+                !important;
+
+              max-width:
+                none
+                !important;
+
+              margin:
+                0 auto 0 0
+                !important;
+
+              padding:
+                12px 0 0
+                !important;
+
+              box-sizing:
+                border-box
+                !important;
+            }
+
+            .bro-best-sellers-v2
+            .bro-product-name-button
+            h3 {
+              min-height:
+                0
+                !important;
 
               font-size:
-                16px;
+                13px
+                !important;
+            }
+
+            .bro-best-sellers-v2
+            .bro-price {
+              font-size:
+                15px
+                !important;
+            }
+
+            /* ======================================
+               FLECHAS
+
+               Dejamos únicamente la flecha
+               disponible.
+
+               La izquierda desaparece cuando
+               estamos al inicio.
+            ====================================== */
+
+            .bro-best-sellers-v2
+            .bro-carousel-arrow-v2 {
+              width:
+                34px
+                !important;
+
+              height:
+                34px
+                !important;
+
+              font-size:
+                16px
+                !important;
 
               top:
                 40%;
             }
 
+            .bro-best-sellers-v2
             .bro-carousel-arrow-prev-v2 {
               left:
-                2px;
+                0
+                !important;
             }
 
+            .bro-best-sellers-v2
             .bro-carousel-arrow-next-v2 {
               right:
-                2px;
+                0
+                !important;
             }
 
             .bro-best-sellers-v2
-            .bro-product-image-button {
-              width:
-                82%;
+            .bro-carousel-arrow-v2:disabled {
+              opacity:
+                0
+                !important;
+
+              pointer-events:
+                none
+                !important;
             }
+
+            /* ======================================
+               BOTÓN
+            ====================================== */
 
             .bro-best-sellers-v2
-            .bro-product-info {
-              width:
-                82%;
-            }
-
             .bro-carousel-bottom-v2 {
               margin-top:
-                30px;
+                32px
+                !important;
             }
 
+            .bro-best-sellers-v2
             .bro-view-all-v2 {
               width:
-                100%;
+                min(
+                  250px,
+                  100%
+                )
+                !important;
+
+              min-width:
+                0
+                !important;
+
+              height:
+                48px
+                !important;
+
+              border-radius:
+                24px
+                !important;
             }
           }
         `}
@@ -833,7 +1173,7 @@ function BestSellers({
           </div>
         </div>
 
-        {/* CARRUSEL + FLECHAS */}
+        {/* CARRUSEL */}
         <div className="bro-carousel-stage-v2">
 
           <button
@@ -851,7 +1191,9 @@ function BestSellers({
           </button>
 
           <div
-            ref={carruselRef}
+            ref={
+              carruselRef
+            }
             className="bro-carousel-window-v2"
             onScroll={
               actualizarFlechas
@@ -860,7 +1202,9 @@ function BestSellers({
             {cuadros.map(
               (producto) => (
                 <ProductCard
-                  key={producto.id}
+                  key={
+                    producto.id
+                  }
                   producto={
                     producto
                   }
@@ -888,7 +1232,7 @@ function BestSellers({
 
         </div>
 
-        {/* BOTÓN */}
+        {/* VER TODOS */}
         <div className="bro-carousel-bottom-v2">
           <button
             type="button"

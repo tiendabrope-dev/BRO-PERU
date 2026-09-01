@@ -1,241 +1,1324 @@
-/* src/styles/producto.css */
-.producto-page {
-  padding: 120px 20px 60px; /* Espacio para el header fijo */
-  max-width: 1200px;
-  margin: 0 auto;
-  font-family: 'DM Sans', sans-serif;
-  color: #111111;
+/* ==========================================================
+   BRO PERÚ
+   FICHA DE PRODUCTO
+========================================================== */
+
+@import url(
+  'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@500;600;700&display=swap'
+);
+
+.bro-product-page,
+.bro-product-page * {
+  box-sizing: border-box;
 }
 
-.producto-container {
+.bro-product-page {
+  position: relative;
+
+  width: 100%;
+  max-width: 1320px;
+
+  margin: 0 auto;
+
+  padding:
+    215px 20px
+    90px;
+
+  color: #111111;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  overflow-x: hidden;
+}
+
+/* ==========================================================
+   LAYOUT
+========================================================== */
+
+.bro-product-layout {
+  width: 100%;
+
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+
+  grid-template-columns:
+    minmax(0, 1.18fr)
+    minmax(380px, 0.82fr);
+
+  gap: 45px;
+
   align-items: start;
 }
 
-.producto-volver {
-  display: inline-block;
-  margin-bottom: 20px;
-  color: #111111;
-  text-decoration: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
+.bro-product-gallery-column {
+  min-width: 0;
 
-.producto-volver:hover {
-  color: #2D5A3D;
-}
-
-/* Sección de Imagen */
-.producto-galeria {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.producto-imagen-principal {
+.bro-product-info-panel {
   width: 100%;
-  aspect-ratio: 4/5;
-  background-color: #F4F1EC;
-  border-radius: 8px;
-  overflow: hidden;
+  max-width: 500px;
+
+  min-width: 0;
+
   display: flex;
+
+  flex-direction: column;
+}
+
+/* ==========================================================
+   GALERÍA
+========================================================== */
+
+.bro-product-gallery {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+.bro-product-main-image {
+  width: 100%;
+  max-width: 390px;
+
+  display: flex;
+
   align-items: center;
   justify-content: center;
-  padding: 20px;
+
+  overflow: hidden;
+
+  background: transparent;
 }
 
-.producto-imagen-principal img {
+.bro-product-main-image img {
+  display: block;
+
   width: 100%;
-  height: 100%;
+  max-width: 390px;
+
+  height: auto;
+
   object-fit: contain;
 }
 
-/* Sección de Información */
-.producto-info {
+/* GUÍA DE TAMAÑOS */
+
+.bro-product-main-image.guia {
+  max-width: 700px;
+
+  overflow: visible;
+}
+
+.bro-product-main-image.guia img {
+  width: 100%;
+  max-width: 700px;
+
+  height: auto;
+
+  object-fit: contain;
+}
+
+/* ==========================================================
+   MINIATURAS
+========================================================== */
+
+.bro-product-thumbnails {
+  width: 100%;
+  max-width: 700px;
+
+  margin-top: 24px;
+
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
 
-.producto-badge {
-  background-color: #111111;
-  color: #F4F1EC;
-  padding: 4px 12px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  border-radius: 20px;
-  align-self: flex-start;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.producto-categoria {
-  color: #4A8C60;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-}
-
-.producto-nombre {
-  font-family: 'Syne', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 0;
-  line-height: 1.1;
-  text-transform: uppercase;
-}
-
-.producto-rating {
-  color: #D4C4A8;
-  font-size: 1.2rem;
-}
-
-.producto-precio {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #111111;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-/* Selectores de Tamaño y Marco */
-.producto-opciones {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.opcion-grupo {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.opcion-grupo label {
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-}
-
-.selector-botones {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.btn-selector {
-  background-color: #F4F1EC;
-  border: 2px solid #D4C4A8;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #111111;
-}
-
-.btn-selector:hover {
-  border-color: #111111;
-}
-
-.btn-selector.activo {
-  background-color: #111111;
-  border-color: #111111;
-  color: #F4F1EC;
-}
-
-/* Selector de Cantidad */
-.selector-cantidad {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background-color: #F4F1EC;
-  width: fit-content;
-  border-radius: 8px;
-  border: 2px solid #D4C4A8;
-  padding: 5px;
-}
-
-.selector-cantidad button {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  display: flex;
   align-items: center;
   justify-content: center;
-  color: #111111;
+
+  flex-wrap: wrap;
+
+  gap: 18px;
 }
 
-.selector-cantidad span {
-  font-weight: bold;
-  font-size: 1.1rem;
-  min-width: 20px;
-  text-align: center;
-}
+.bro-product-thumbnail {
+  width: 92px;
+  height: 108px;
 
-/* Botón Agregar al Carrito */
-.btn-agregar-carrito {
-  background-color: #2D5A3D;
-  color: white;
-  border: none;
-  padding: 18px 24px;
-  font-family: 'Syne', sans-serif;
-  font-size: 1.1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 30px;
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border:
+    2px solid
+    transparent;
+
+  border-radius: 6px;
+
+  background: transparent;
+
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-top: 10px;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bro-product-thumbnail:hover {
+  border-color:
+    rgba(
+      17,
+      17,
+      17,
+      0.35
+    );
+
+  transform:
+    translateY(-2px);
+}
+
+.bro-product-thumbnail.active {
+  border-color:
+    #111111;
+}
+
+.bro-product-thumbnail img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.bro-product-thumbnail.guia-thumb {
+  width: 150px;
+  height: 108px;
+}
+
+/* ==========================================================
+   CABECERA PRODUCTO
+========================================================== */
+
+.bro-product-heading {
+  min-width: 0;
+}
+
+.bro-product-badge-detail {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 30px;
+
+  padding:
+    5px 14px;
+
+  border-radius:
+    999px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    0.05em;
+
+  text-transform:
+    uppercase;
+}
+
+.bro-product-category-detail {
+  margin:
+    14px 0 0;
+
+  color:
+    #2D5A3D;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.1em;
+
+  text-transform:
+    uppercase;
+}
+
+.bro-product-title-detail {
+  width: 100%;
+
+  margin:
+    17px 0
+    10px;
+
+  color:
+    #111111;
+
+  font-family:
+    'Syne',
+    sans-serif;
+
+  font-size:
+    42px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.02;
+
+  letter-spacing:
+    -0.04em;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    normal;
+}
+
+.bro-product-rating-detail {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom:
+    8px;
+}
+
+.bro-product-stars-detail {
+  display: flex;
+
+  gap: 1px;
+
+  color:
+    #E9B000;
+
+  font-size:
+    16px;
+}
+
+.bro-product-rating-count-detail {
+  color:
+    #888888;
+
+  font-size:
+    13px;
+}
+
+.bro-product-price-detail {
+  margin:
+    0 0 22px;
+
+  color:
+    #111111;
+
+  font-size:
+    26px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.1;
+}
+
+/* ==========================================================
+   MENSAJE PERSONALIZADO
+========================================================== */
+
+.bro-product-custom-note {
+  width: 100%;
+
+  margin-bottom:
+    30px;
+
+  padding:
+    16px 20px;
+
+  border-radius:
+    6px;
+
+  background:
+    #E84040;
+
+  color:
+    #ffffff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.4;
+
+  letter-spacing:
+    0.02em;
+
+  text-align:
+    center;
+
+  text-transform:
+    uppercase;
+}
+
+/* ==========================================================
+   OPCIONES
+========================================================== */
+
+.bro-product-options {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 22px;
+}
+
+.bro-product-option-group {
   width: 100%;
 }
 
-.btn-agregar-carrito:hover {
-  background-color: #1a3a26;
+.bro-section-label {
+  display: block;
+
+  margin-bottom:
+    10px;
+
+  color:
+    #111111;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    0.08em;
+
+  text-transform:
+    uppercase;
 }
 
-/* Nota Cuadro Personalizado */
-.nota-personalizada {
-  background-color: #E84040;
-  color: white;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-weight: bold;
+.bro-option-row {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+}
+
+.bro-btn-option {
+  min-height: 48px;
+
+  padding:
+    10px 22px;
+
+  border:
+    1px solid
+    #D1D1D1;
+
+  border-radius:
+    6px;
+
+  background:
+    #ffffff;
+
+  color:
+    #111111;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size:
+    14px;
+
+  font-weight:
+    600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.bro-btn-option:hover {
+  border-color:
+    #111111;
+}
+
+.bro-btn-option.active {
+  border-color:
+    #111111;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+}
+
+.bro-btn-option:disabled {
+  opacity: 0.55;
+
+  cursor:
+    not-allowed;
+}
+
+/* ==========================================================
+   WALLPAPER
+========================================================== */
+
+.bro-wallpaper-message {
+  margin-top:
+    10px;
+
+  padding:
+    12px 14px;
+
+  border-radius:
+    6px;
+
+  background:
+    #E8F0EA;
+
+  color:
+    #555555;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.5;
+}
+
+/* ==========================================================
+   CANTIDAD
+========================================================== */
+
+.bro-product-quantity {
+  width: fit-content;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #D1D1D1;
+
+  border-radius:
+    6px;
+
+  background:
+    #ffffff;
+}
+
+.bro-product-quantity button {
+  width: 46px;
+  height: 46px;
+
+  padding: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  color:
+    #111111;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size:
+    17px;
+
+  font-weight:
+    700;
+
+  cursor: pointer;
+}
+
+.bro-product-quantity button:disabled {
+  opacity:
+    0.28;
+
+  cursor:
+    default;
+}
+
+.bro-product-quantity span {
+  min-width: 42px;
+
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+
+  font-size:
+    15px;
+
+  font-weight:
+    700;
 }
 
-/* Responsive Móvil */
-@media (max-width: 768px) {
-  .producto-container {
-    grid-template-columns: 1fr;
-    gap: 30px;
+/* ==========================================================
+   CTA
+========================================================== */
+
+.bro-product-add-cart {
+  width: 100%;
+
+  min-height:
+    56px;
+
+  margin-top:
+    4px;
+
+  padding:
+    0 24px;
+
+  border:
+    0;
+
+  border-radius:
+    6px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.3;
+
+  letter-spacing:
+    0.12em;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.2s ease;
+}
+
+.bro-product-add-cart:hover {
+  background:
+    #2D5A3D;
+}
+
+.bro-product-add-cart:disabled {
+  background:
+    #C8C8C8;
+
+  color:
+    #ffffff;
+
+  cursor:
+    not-allowed;
+}
+
+/* ==========================================================
+   PRODUCTO NO ENCONTRADO
+========================================================== */
+
+.bro-product-not-found {
+  min-height:
+    100vh;
+
+  padding:
+    240px 20px
+    80px;
+
+  text-align:
+    center;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+}
+
+.bro-product-not-found h1 {
+  margin: 0;
+
+  color:
+    #111111;
+
+  font-family:
+    'Syne',
+    sans-serif;
+
+  font-size:
+    36px;
+
+  font-weight:
+    800;
+}
+
+.bro-product-not-found button {
+  margin-top:
+    25px;
+
+  padding:
+    14px 24px;
+
+  border:
+    0;
+
+  border-radius:
+    6px;
+
+  background:
+    #111111;
+
+  color:
+    #ffffff;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (
+  max-width: 1050px
+) {
+  .bro-product-layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(340px, 0.85fr);
+
+    gap:
+      35px;
   }
 
-  .producto-nombre {
-    font-size: 2rem;
+  .bro-product-main-image.guia,
+  .bro-product-main-image.guia img {
+    max-width:
+      620px;
+  }
+}
+
+/* ==========================================================
+   MÓVIL
+========================================================== */
+
+@media (
+  max-width: 760px
+) {
+  .bro-product-page {
+    max-width:
+      none;
+
+    padding:
+      152px
+      18px
+      58px;
+
+    overflow-x:
+      hidden;
   }
 
-  .producto-page {
-    padding-top: 100px;
+  /* ======================================================
+     FLECHA FLOTANTE GLOBAL
+
+     La flecha realmente vive en App.jsx.
+     Aquí solamente modificamos su aspecto
+     mientras estamos dentro de Producto.
+
+     Se convierte en una pestaña lateral pequeña.
+  ====================================================== */
+
+  body:has(.bro-product-page)
+  button[aria-label="Volver a la página anterior"] {
+    position:
+      fixed
+      !important;
+
+    top:
+      152px
+      !important;
+
+    left:
+      0
+      !important;
+
+    right:
+      auto
+      !important;
+
+    width:
+      34px
+      !important;
+
+    min-width:
+      34px
+      !important;
+
+    height:
+      46px
+      !important;
+
+    margin:
+      0
+      !important;
+
+    padding:
+      0
+      !important;
+
+    display:
+      flex
+      !important;
+
+    align-items:
+      center
+      !important;
+
+    justify-content:
+      center
+      !important;
+
+    border:
+      1px solid
+      rgba(
+        17,
+        17,
+        17,
+        0.12
+      )
+      !important;
+
+    border-left:
+      0
+      !important;
+
+    border-radius:
+      0 23px
+      23px 0
+      !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.90
+      )
+      !important;
+
+    color:
+      #111111
+      !important;
+
+    font-size:
+      14px
+      !important;
+
+    font-weight:
+      600
+      !important;
+
+    line-height:
+      1
+      !important;
+
+    box-shadow:
+      0 4px 12px
+      rgba(
+        17,
+        17,
+        17,
+        0.08
+      )
+      !important;
+
+    backdrop-filter:
+      blur(7px);
+
+    -webkit-backdrop-filter:
+      blur(7px);
+
+    opacity:
+      0.92;
+
+    transform:
+      none
+      !important;
+
+    z-index:
+      1200
+      !important;
+  }
+
+  body:has(.bro-product-page)
+  button[aria-label="Volver a la página anterior"]:active {
+    background:
+      #ffffff
+      !important;
+
+    opacity:
+      1;
+
+    transform:
+      scale(0.96)
+      !important;
+  }
+
+  /* ==========================================
+     UNA SOLA COLUMNA
+  ========================================== */
+
+  .bro-product-layout {
+    display:
+      flex;
+
+    flex-direction:
+      column;
+
+    gap:
+      27px;
+  }
+
+  .bro-product-gallery-column,
+  .bro-product-info-panel {
+    width:
+      100%;
+
+    max-width:
+      none;
+
+    min-width:
+      0;
+  }
+
+  /* ==========================================
+     GALERÍA
+  ========================================== */
+
+  .bro-product-gallery {
+    width:
+      100%;
+
+    padding-top:
+      16px;
+  }
+
+  .bro-product-main-image {
+    width:
+      min(
+        78vw,
+        290px
+      );
+
+    max-width:
+      290px;
+
+    margin:
+      0 auto;
+  }
+
+  .bro-product-main-image img {
+    width:
+      100%;
+
+    max-width:
+      290px;
+
+    height:
+      auto;
+  }
+
+  .bro-product-main-image.guia {
+    width:
+      min(
+        100%,
+        340px
+      );
+
+    max-width:
+      340px;
+  }
+
+  .bro-product-main-image.guia img {
+    width:
+      100%;
+
+    max-width:
+      340px;
+  }
+
+  /* ==========================================
+     MINIATURAS
+  ========================================== */
+
+  .bro-product-thumbnails {
+    width:
+      100%;
+
+    max-width:
+      320px;
+
+    margin:
+      13px auto
+      0;
+
+    gap:
+      10px;
+  }
+
+  .bro-product-thumbnail {
+    width:
+      58px;
+
+    height:
+      68px;
+
+    border-width:
+      1px;
+
+    border-radius:
+      5px;
+  }
+
+  .bro-product-thumbnail.active {
+    border-width:
+      2px;
+  }
+
+  .bro-product-thumbnail.guia-thumb {
+    width:
+      94px;
+
+    height:
+      68px;
+  }
+
+  /* ==========================================
+     INFORMACIÓN
+  ========================================== */
+
+  .bro-product-info-panel {
+    padding:
+      0 12px;
+  }
+
+  .bro-product-badge-detail {
+    min-height:
+      28px;
+
+    padding:
+      5px 12px;
+
+    font-size:
+      10px;
+  }
+
+  .bro-product-category-detail {
+    margin-top:
+      13px;
+
+    font-size:
+      11px;
+  }
+
+  /* ==========================================
+     TÍTULO MÓVIL
+  ========================================== */
+
+  .bro-product-title-detail {
+    width:
+      100%;
+
+    max-width:
+      100%;
+
+    margin:
+      15px 0
+      10px;
+
+    font-size:
+      clamp(
+        25px,
+        7.3vw,
+        29px
+      );
+
+    line-height:
+      0.96;
+
+    letter-spacing:
+      -0.045em;
+
+    white-space:
+      normal;
+
+    overflow-wrap:
+      normal;
+
+    word-break:
+      normal;
+  }
+
+  .bro-product-rating-detail {
+    margin-bottom:
+      8px;
+  }
+
+  .bro-product-stars-detail {
+    font-size:
+      15px;
+  }
+
+  .bro-product-rating-count-detail {
+    font-size:
+      12px;
+  }
+
+  .bro-product-price-detail {
+    margin:
+      0 0
+      19px;
+
+    font-size:
+      24px;
+  }
+
+  /* ==========================================
+     AVISO ROJO
+  ========================================== */
+
+  .bro-product-custom-note {
+    margin-bottom:
+      24px;
+
+    padding:
+      13px 14px;
+
+    border-radius:
+      5px;
+
+    font-size:
+      10.5px;
+
+    line-height:
+      1.45;
+
+    letter-spacing:
+      0.015em;
+  }
+
+  /* ==========================================
+     OPCIONES
+  ========================================== */
+
+  .bro-product-options {
+    gap:
+      22px;
+  }
+
+  .bro-section-label {
+    margin-bottom:
+      10px;
+
+    font-size:
+      11px;
+
+    letter-spacing:
+      0.11em;
+  }
+
+  .bro-option-row {
+    gap:
+      8px;
+  }
+
+  .bro-btn-option {
+    min-width:
+      72px;
+
+    min-height:
+      48px;
+
+    padding:
+      9px 16px;
+
+    border-radius:
+      5px;
+
+    font-size:
+      13px;
+  }
+
+  .bro-product-option-group
+  .bro-btn-option {
+    max-width:
+      100%;
+  }
+
+  /* ==========================================
+     CANTIDAD
+  ========================================== */
+
+  .bro-product-quantity {
+    height:
+      48px;
+
+    border-radius:
+      5px;
+  }
+
+  .bro-product-quantity button {
+    width:
+      44px;
+
+    height:
+      46px;
+
+    font-size:
+      16px;
+  }
+
+  .bro-product-quantity span {
+    min-width:
+      38px;
+
+    font-size:
+      14px;
+  }
+
+  /* ==========================================
+     CARRITO
+  ========================================== */
+
+  .bro-product-add-cart {
+    width:
+      100%;
+
+    min-height:
+      56px;
+
+    margin-top:
+      2px;
+
+    padding:
+      0 14px;
+
+    border-radius:
+      5px;
+
+    font-size:
+      10.5px;
+
+    letter-spacing:
+      0.11em;
+  }
+
+  .bro-wallpaper-message {
+    font-size:
+      11px;
+  }
+}
+
+/* ==========================================================
+   CELULARES PEQUEÑOS
+========================================================== */
+
+@media (
+  max-width: 380px
+) {
+  .bro-product-page {
+    padding-left:
+      14px;
+
+    padding-right:
+      14px;
+  }
+
+  .bro-product-info-panel {
+    padding-left:
+      8px;
+
+    padding-right:
+      8px;
+  }
+
+  .bro-product-title-detail {
+    font-size:
+      24px;
+  }
+
+  .bro-btn-option {
+    min-width:
+      68px;
+
+    padding-left:
+      13px;
+
+    padding-right:
+      13px;
   }
 }
