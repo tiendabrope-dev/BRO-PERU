@@ -1561,7 +1561,7 @@ function ReviewsClientes({
             .bro-review-card {
               flex:
                 0 0
-                82%;
+                68%;
             }
 
             .bro-review-overlay {

@@ -1,4 +1,8 @@
-﻿import { useEffect, useState } from 'react';
+﻿import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 function Checkout({
   abierto,
@@ -14,8 +18,16 @@ function Checkout({
   onActualizarCampo,
   onConfirmarPedido,
 }) {
-  const [paso, setPaso] = useState(1);
-  const [errorPaso, setErrorPaso] = useState('');
+  const [paso, setPaso] =
+    useState(1);
+
+  const [
+    errorPaso,
+    setErrorPaso,
+  ] = useState('');
+
+  const formularioRef =
+    useRef(null);
 
   useEffect(() => {
     if (abierto) {
@@ -29,18 +41,27 @@ function Checkout({
   }
 
   const esYapeOPlin =
-    formulario.metodoPago === 'yape' ||
-    formulario.metodoPago === 'plin';
+    formulario.metodoPago ===
+      'yape' ||
+    formulario.metodoPago ===
+      'plin';
 
   const esTransferencia =
-    formulario.metodoPago === 'transferencia';
+    formulario.metodoPago ===
+    'transferencia';
 
   const esEfectivo =
-    formulario.metodoPago === 'efectivo';
+    formulario.metodoPago ===
+    'efectivo';
 
-  function manejarCambioCampo(evento) {
+  function manejarCambioCampo(
+    evento
+  ) {
     setErrorPaso('');
-    onActualizarCampo(evento);
+
+    onActualizarCampo(
+      evento
+    );
   }
 
   function validarPasoActual() {
@@ -54,9 +75,14 @@ function Checkout({
       const telefono =
         formulario.telefono
           .trim()
-          .replace(/[\s()-]/g, '');
+          .replace(
+            /[\s()-]/g,
+            ''
+          );
 
-      if (nombre.length < 2) {
+      if (
+        nombre.length < 2
+      ) {
         return 'Ingresa tu nombre completo.';
       }
 
@@ -78,7 +104,9 @@ function Checkout({
     }
 
     if (paso === 2) {
-      if (!formulario.servicio) {
+      if (
+        !formulario.servicio
+      ) {
         return 'Selecciona un tipo de servicio.';
       }
 
@@ -87,15 +115,17 @@ function Checkout({
         'domicilio'
       ) {
         if (
-          formulario.direccion.trim().length <
-          3
+          formulario.direccion
+            .trim()
+            .length < 3
         ) {
           return 'Ingresa la dirección de entrega.';
         }
 
         if (
-          formulario.distrito.trim().length <
-          2
+          formulario.distrito
+            .trim()
+            .length < 2
         ) {
           return 'Ingresa el distrito.';
         }
@@ -117,43 +147,61 @@ function Checkout({
       validarPasoActual();
 
     if (error) {
-      setErrorPaso(error);
+      setErrorPaso(
+        error
+      );
+
       return;
     }
 
     setErrorPaso('');
 
-    setPaso((actual) =>
-      Math.min(actual + 1, 3)
+    setPaso(
+      (actual) =>
+        Math.min(
+          actual + 1,
+          3
+        )
     );
   }
 
   function retrocederPaso() {
     setErrorPaso('');
 
-    setPaso((actual) =>
-      Math.max(actual - 1, 1)
+    setPaso(
+      (actual) =>
+        Math.max(
+          actual - 1,
+          1
+        )
     );
   }
 
-  function seleccionarPaso(numero) {
+  function seleccionarPaso(
+    numero
+  ) {
     /*
-      Las pestañas superiores NO sirven
-      para adelantarse.
+      Las pestañas superiores
+      no sirven para adelantarse.
 
-      Solo permiten regresar a un paso
-      anterior ya realizado.
+      Solo permiten regresar.
     */
+
     if (
       numero < paso &&
       !guardandoPedido
     ) {
       setErrorPaso('');
-      setPaso(numero);
+
+      setPaso(
+        numero
+      );
     }
   }
 
-  function manejarSubmit(evento) {
+  function manejarSubmit(
+    evento
+  ) {
     evento.preventDefault();
 
     if (paso < 3) {
@@ -165,29 +213,194 @@ function Checkout({
       validarPasoActual();
 
     if (error) {
-      setErrorPaso(error);
+      setErrorPaso(
+        error
+      );
+
       return;
     }
 
     setErrorPaso('');
 
-    onConfirmarPedido(evento);
+    onConfirmarPedido(
+      evento
+    );
+  }
+
+  function bajarADatos() {
+    formularioRef.current
+      ?.scrollIntoView({
+        behavior:
+          'smooth',
+
+        block:
+          'start',
+      });
   }
 
   return (
     <>
+      <style>
+        {`
+          /*
+            Indicador de scroll del checkout.
+
+            Escritorio:
+            oculto.
+
+            Móvil:
+            aparece debajo del resumen.
+          */
+
+          .checkout-mobile-scroll-cue {
+            display:
+              none;
+          }
+
+          @media (max-width:760px) {
+
+            .checkout-form {
+              scroll-margin-top:
+                72px;
+            }
+
+            .checkout-mobile-scroll-cue {
+              width:
+                100%;
+
+              margin:
+                20px 0
+                0;
+
+              padding:
+                15px 0
+                2px;
+
+              display:
+                flex;
+
+              flex-direction:
+                column;
+
+              align-items:
+                center;
+
+              justify-content:
+                center;
+
+              gap:
+                6px;
+
+              border:
+                0;
+
+              border-top:
+                1px solid
+                #ece9e4;
+
+              background:
+                transparent;
+
+              color:
+                #2D5A3D;
+
+              cursor:
+                pointer;
+            }
+
+            .checkout-mobile-scroll-cue
+            span {
+              font-family:
+                'DM Sans',
+                sans-serif;
+
+              font-size:
+                8px;
+
+              font-weight:
+                700;
+
+              line-height:
+                1;
+
+              letter-spacing:
+                .13em;
+
+              text-transform:
+                uppercase;
+            }
+
+            .checkout-mobile-scroll-cue
+            strong {
+              display:
+                block;
+
+              font-family:
+                'DM Sans',
+                sans-serif;
+
+              font-size:
+                25px;
+
+              font-weight:
+                500;
+
+              line-height:
+                1;
+
+              animation:
+                broCheckoutArrow
+                1.4s ease-in-out
+                infinite;
+            }
+
+            @keyframes broCheckoutArrow {
+              0%,
+              100% {
+                transform:
+                  translateY(0);
+              }
+
+              50% {
+                transform:
+                  translateY(5px);
+              }
+            }
+
+            @media (
+              prefers-reduced-motion:
+              reduce
+            ) {
+              .checkout-mobile-scroll-cue
+              strong {
+                animation:
+                  none;
+              }
+            }
+          }
+        `}
+      </style>
+
       <div
         className="checkout-backdrop"
-        onClick={onCerrar}
+        onClick={
+          onCerrar
+        }
       />
 
       <section className="checkout-page">
+
         <div className="checkout-topbar">
+
           <button
             type="button"
             className="checkout-back-button"
-            onClick={onVolverCarrito}
-            disabled={guardandoPedido}
+            onClick={
+              onVolverCarrito
+            }
+            disabled={
+              guardandoPedido
+            }
           >
             ← VOLVER AL CARRITO
           </button>
@@ -199,20 +412,33 @@ function Checkout({
           <button
             type="button"
             className="checkout-close"
-            onClick={onCerrar}
-            disabled={guardandoPedido}
+            onClick={
+              onCerrar
+            }
+            disabled={
+              guardandoPedido
+            }
             aria-label="Cerrar checkout"
           >
             ×
           </button>
+
         </div>
 
         <div className="checkout-layout">
+
           <form
+            ref={
+              formularioRef
+            }
             className="checkout-form"
-            onSubmit={manejarSubmit}
+            onSubmit={
+              manejarSubmit
+            }
           >
+
             <div className="checkout-title">
+
               <p className="eyebrow dark">
                 FINALIZA TU PEDIDO
               </p>
@@ -224,51 +450,83 @@ function Checkout({
               </h1>
 
               <p>
-                Completa tu compra en 3 pasos.
+                Completa tu compra
+                en 3 pasos.
               </p>
+
             </div>
 
             <div className="checkout-stepper">
+
               {[
-                [1, 'DATOS'],
-                [2, 'ENTREGA'],
-                [3, 'PAGO'],
+                [
+                  1,
+                  'DATOS',
+                ],
+                [
+                  2,
+                  'ENTREGA',
+                ],
+                [
+                  3,
+                  'PAGO',
+                ],
               ].map(
-                ([numero, etiqueta]) => (
+                ([
+                  numero,
+                  etiqueta,
+                ]) => (
                   <button
                     type="button"
-                    key={numero}
+                    key={
+                      numero
+                    }
                     className={
-                      paso === numero
+                      paso ===
+                      numero
                         ? 'checkout-step active'
-                        : numero < paso
+                        : numero <
+                            paso
                           ? 'checkout-step completed'
                           : 'checkout-step'
                     }
                     onClick={() =>
-                      seleccionarPaso(numero)
+                      seleccionarPaso(
+                        numero
+                      )
                     }
                     disabled={
                       guardandoPedido ||
-                      numero >= paso
+                      numero >=
+                        paso
                     }
                   >
                     <span>
-                      {numero}
+                      {
+                        numero
+                      }
                     </span>
 
                     <strong>
-                      {etiqueta}
+                      {
+                        etiqueta
+                      }
                     </strong>
                   </button>
                 )
               )}
+
             </div>
+
+            {/* PASO 1 */}
 
             {paso === 1 && (
               <div className="checkout-block checkout-step-panel">
+
                 <div className="checkout-block-title">
-                  <span>01</span>
+                  <span>
+                    01
+                  </span>
 
                   <h2>
                     DATOS DEL CLIENTE
@@ -276,6 +534,7 @@ function Checkout({
                 </div>
 
                 <div className="checkout-fields">
+
                   <label className="checkout-field full">
                     <span>
                       NOMBRE COMPLETO
@@ -284,10 +543,16 @@ function Checkout({
                     <input
                       type="text"
                       name="nombre"
-                      value={formulario.nombre}
-                      onChange={manejarCambioCampo}
+                      value={
+                        formulario.nombre
+                      }
+                      onChange={
+                        manejarCambioCampo
+                      }
                       autoComplete="name"
-                      disabled={guardandoPedido}
+                      disabled={
+                        guardandoPedido
+                      }
                     />
                   </label>
 
@@ -299,13 +564,23 @@ function Checkout({
                     <input
                       type="text"
                       name="dni"
-                      value={formulario.dni}
-                      onChange={manejarCambioCampo}
-                      minLength={5}
-                      maxLength={20}
+                      value={
+                        formulario.dni
+                      }
+                      onChange={
+                        manejarCambioCampo
+                      }
+                      minLength={
+                        5
+                      }
+                      maxLength={
+                        20
+                      }
                       placeholder="DNI / CE / PASAPORTE"
                       autoComplete="off"
-                      disabled={guardandoPedido}
+                      disabled={
+                        guardandoPedido
+                      }
                     />
                   </label>
 
@@ -317,20 +592,31 @@ function Checkout({
                     <input
                       type="tel"
                       name="telefono"
-                      value={formulario.telefono}
-                      onChange={manejarCambioCampo}
-                      maxLength={18}
+                      value={
+                        formulario.telefono
+                      }
+                      onChange={
+                        manejarCambioCampo
+                      }
+                      maxLength={
+                        18
+                      }
                       inputMode="tel"
                       placeholder="Ej. 926555219"
                       autoComplete="tel"
-                      disabled={guardandoPedido}
+                      disabled={
+                        guardandoPedido
+                      }
                     />
                   </label>
+
                 </div>
 
                 {errorPaso && (
                   <div className="checkout-error checkout-step-error">
-                    {errorPaso}
+                    {
+                      errorPaso
+                    }
                   </div>
                 )}
 
@@ -338,19 +624,29 @@ function Checkout({
                   <button
                     type="button"
                     className="checkout-step-next"
-                    onClick={avanzarPaso}
-                    disabled={guardandoPedido}
+                    onClick={
+                      avanzarPaso
+                    }
+                    disabled={
+                      guardandoPedido
+                    }
                   >
                     CONTINUAR →
                   </button>
                 </div>
+
               </div>
             )}
 
+            {/* PASO 2 */}
+
             {paso === 2 && (
               <div className="checkout-block checkout-step-panel">
+
                 <div className="checkout-block-title">
-                  <span>02</span>
+                  <span>
+                    02
+                  </span>
 
                   <h2>
                     TIPO DE SERVICIO
@@ -358,6 +654,7 @@ function Checkout({
                 </div>
 
                 <div className="checkout-options">
+
                   <label
                     className={
                       formulario.servicio ===
@@ -374,8 +671,12 @@ function Checkout({
                         formulario.servicio ===
                         'contraentrega'
                       }
-                      onChange={manejarCambioCampo}
-                      disabled={guardandoPedido}
+                      onChange={
+                        manejarCambioCampo
+                      }
+                      disabled={
+                        guardandoPedido
+                      }
                     />
 
                     <div>
@@ -405,8 +706,12 @@ function Checkout({
                         formulario.servicio ===
                         'domicilio'
                       }
-                      onChange={manejarCambioCampo}
-                      disabled={guardandoPedido}
+                      onChange={
+                        manejarCambioCampo
+                      }
+                      disabled={
+                        guardandoPedido
+                      }
                     />
 
                     <div>
@@ -419,11 +724,13 @@ function Checkout({
                       </span>
                     </div>
                   </label>
+
                 </div>
 
                 {formulario.servicio ===
                   'domicilio' && (
                   <div className="checkout-fields address-fields">
+
                     <label className="checkout-field full">
                       <span>
                         DIRECCIÓN
@@ -432,9 +739,15 @@ function Checkout({
                       <input
                         type="text"
                         name="direccion"
-                        value={formulario.direccion}
-                        onChange={manejarCambioCampo}
-                        disabled={guardandoPedido}
+                        value={
+                          formulario.direccion
+                        }
+                        onChange={
+                          manejarCambioCampo
+                        }
+                        disabled={
+                          guardandoPedido
+                        }
                       />
                     </label>
 
@@ -446,9 +759,15 @@ function Checkout({
                       <input
                         type="text"
                         name="distrito"
-                        value={formulario.distrito}
-                        onChange={manejarCambioCampo}
-                        disabled={guardandoPedido}
+                        value={
+                          formulario.distrito
+                        }
+                        onChange={
+                          manejarCambioCampo
+                        }
+                        disabled={
+                          guardandoPedido
+                        }
                       />
                     </label>
 
@@ -460,26 +779,40 @@ function Checkout({
                       <input
                         type="text"
                         name="referencia"
-                        value={formulario.referencia}
-                        onChange={manejarCambioCampo}
-                        disabled={guardandoPedido}
+                        value={
+                          formulario.referencia
+                        }
+                        onChange={
+                          manejarCambioCampo
+                        }
+                        disabled={
+                          guardandoPedido
+                        }
                       />
                     </label>
+
                   </div>
                 )}
 
                 {errorPaso && (
                   <div className="checkout-error checkout-step-error">
-                    {errorPaso}
+                    {
+                      errorPaso
+                    }
                   </div>
                 )}
 
                 <div className="checkout-step-actions">
+
                   <button
                     type="button"
                     className="checkout-step-back"
-                    onClick={retrocederPaso}
-                    disabled={guardandoPedido}
+                    onClick={
+                      retrocederPaso
+                    }
+                    disabled={
+                      guardandoPedido
+                    }
                   >
                     ← ATRÁS
                   </button>
@@ -487,19 +820,30 @@ function Checkout({
                   <button
                     type="button"
                     className="checkout-step-next"
-                    onClick={avanzarPaso}
-                    disabled={guardandoPedido}
+                    onClick={
+                      avanzarPaso
+                    }
+                    disabled={
+                      guardandoPedido
+                    }
                   >
                     CONTINUAR →
                   </button>
+
                 </div>
+
               </div>
             )}
 
+            {/* PASO 3 */}
+
             {paso === 3 && (
               <div className="checkout-block checkout-step-panel">
+
                 <div className="checkout-block-title">
-                  <span>03</span>
+                  <span>
+                    03
+                  </span>
 
                   <h2>
                     MÉTODO DE PAGO
@@ -507,9 +851,16 @@ function Checkout({
                 </div>
 
                 <div className="payment-options">
+
                   {[
-                    ['yape', 'YAPE'],
-                    ['plin', 'PLIN'],
+                    [
+                      'yape',
+                      'YAPE',
+                    ],
+                    [
+                      'plin',
+                      'PLIN',
+                    ],
                     [
                       'transferencia',
                       'TRANSFERENCIA BANCARIA',
@@ -519,9 +870,14 @@ function Checkout({
                       'CONTRAENTREGA / EFECTIVO',
                     ],
                   ].map(
-                    ([valor, etiqueta]) => (
+                    ([
+                      valor,
+                      etiqueta,
+                    ]) => (
                       <label
-                        key={valor}
+                        key={
+                          valor
+                        }
                         className={
                           formulario.metodoPago ===
                           valor
@@ -532,25 +888,35 @@ function Checkout({
                         <input
                           type="radio"
                           name="metodoPago"
-                          value={valor}
+                          value={
+                            valor
+                          }
                           checked={
                             formulario.metodoPago ===
                             valor
                           }
-                          onChange={manejarCambioCampo}
-                          disabled={guardandoPedido}
+                          onChange={
+                            manejarCambioCampo
+                          }
+                          disabled={
+                            guardandoPedido
+                          }
                         />
 
                         <strong>
-                          {etiqueta}
+                          {
+                            etiqueta
+                          }
                         </strong>
                       </label>
                     )
                   )}
+
                 </div>
 
                 {esYapeOPlin && (
                   <div className="payment-info-box">
+
                     <span>
                       NÚMERO PARA YAPE / PLIN
                     </span>
@@ -562,11 +928,13 @@ function Checkout({
                     <p>
                       DIEGO LOP* VAL*
                     </p>
+
                   </div>
                 )}
 
                 {esTransferencia && (
                   <div className="payment-info-box">
+
                     <span>
                       TRANSFERENCIA BANCARIA
                     </span>
@@ -576,15 +944,19 @@ function Checkout({
                     </strong>
 
                     <p>
-                      Al confirmar tu pedido te
-                      enviaremos los datos bancarios
-                      para realizar la transferencia.
+                      Al confirmar tu
+                      pedido te enviaremos
+                      los datos bancarios
+                      para realizar la
+                      transferencia.
                     </p>
+
                   </div>
                 )}
 
                 {esEfectivo && (
                   <div className="payment-info-box">
+
                     <span>
                       PAGO EN EFECTIVO
                     </span>
@@ -594,31 +966,42 @@ function Checkout({
                     </strong>
 
                     <p>
-                      Puedes realizar el pago en
-                      efectivo al momento de recibir
+                      Puedes realizar el
+                      pago en efectivo al
+                      momento de recibir
                       tu pedido.
                     </p>
+
                   </div>
                 )}
 
                 {errorPaso && (
                   <div className="checkout-error checkout-step-error">
-                    {errorPaso}
+                    {
+                      errorPaso
+                    }
                   </div>
                 )}
 
                 {errorCheckout && (
                   <div className="checkout-error">
-                    {errorCheckout}
+                    {
+                      errorCheckout
+                    }
                   </div>
                 )}
 
                 <div className="checkout-step-actions">
+
                   <button
                     type="button"
                     className="checkout-step-back"
-                    onClick={retrocederPaso}
-                    disabled={guardandoPedido}
+                    onClick={
+                      retrocederPaso
+                    }
+                    disabled={
+                      guardandoPedido
+                    }
                   >
                     ← ATRÁS
                   </button>
@@ -626,19 +1009,28 @@ function Checkout({
                   <button
                     type="submit"
                     className="checkout-confirm-button checkout-step-confirm"
-                    disabled={guardandoPedido}
+                    disabled={
+                      guardandoPedido
+                    }
                   >
                     {guardandoPedido
                       ? 'CREANDO PEDIDO...'
                       : 'CONFIRMAR PEDIDO'}
                   </button>
+
                 </div>
+
               </div>
             )}
+
           </form>
 
+          {/* RESUMEN */}
+
           <aside className="checkout-summary">
+
             <div className="checkout-summary-inner">
+
               <p className="eyebrow dark">
                 TU PEDIDO
               </p>
@@ -648,69 +1040,95 @@ function Checkout({
               </h2>
 
               <div className="checkout-summary-products">
-                {carrito.map((item) => {
-                  const claveItem =
-                    item.idCarrito ||
-                    item.id;
 
-                  return (
-                    <div
-                      className="checkout-summary-product"
-                      key={claveItem}
-                    >
-                      <div className="checkout-summary-image">
-                        <img
-                          src={item.imagen}
-                          alt={item.nombre}
-                        />
+                {carrito.map(
+                  (item) => {
+                    const claveItem =
+                      item.idCarrito ||
+                      item.id;
 
-                        <span>
-                          {item.cantidad}
-                        </span>
-                      </div>
+                    return (
+                      <div
+                        className="checkout-summary-product"
+                        key={
+                          claveItem
+                        }
+                      >
+                        <div className="checkout-summary-image">
+                          <img
+                            src={
+                              item.imagen
+                            }
+                            alt={
+                              item.nombre
+                            }
+                          />
 
-                      <div>
-                        <h3>
-                          {item.nombre}
-                        </h3>
+                          <span>
+                            {
+                              item.cantidad
+                            }
+                          </span>
+                        </div>
 
-                        {item.varianteTexto && (
-                          <p className="checkout-summary-variant">
-                            {item.varianteTexto}
+                        <div>
+                          <h3>
+                            {
+                              item.nombre
+                            }
+                          </h3>
+
+                          {item.varianteTexto && (
+                            <p className="checkout-summary-variant">
+                              {
+                                item.varianteTexto
+                              }
+                            </p>
+                          )}
+
+                          <p>
+                            {
+                              item.cantidad
+                            }
+                            {' × S/ '}
+                            {Number(
+                              item.precio
+                            ).toFixed(
+                              2
+                            )}
                           </p>
-                        )}
+                        </div>
 
-                        <p>
-                          {item.cantidad}
-                          {' × S/ '}
-                          {Number(
-                            item.precio
-                          ).toFixed(2)}
-                        </p>
+                        <strong>
+                          S/{' '}
+                          {(
+                            Number(
+                              item.precio
+                            ) *
+                            item.cantidad
+                          ).toFixed(
+                            2
+                          )}
+                        </strong>
                       </div>
+                    );
+                  }
+                )}
 
-                      <strong>
-                        S/{' '}
-                        {(
-                          Number(
-                            item.precio
-                          ) *
-                          item.cantidad
-                        ).toFixed(2)}
-                      </strong>
-                    </div>
-                  );
-                })}
               </div>
 
               <div className="checkout-totals">
+
                 <div>
                   <span>
                     SUBTOTAL
                   </span>
 
                   <strong>
-                    S/ {subtotal.toFixed(2)}
+                    S/{' '}
+                    {subtotal.toFixed(
+                      2
+                    )}
                   </strong>
                 </div>
 
@@ -720,7 +1138,10 @@ function Checkout({
                   </span>
 
                   <strong>
-                    S/ {costoDelivery.toFixed(2)}
+                    S/{' '}
+                    {costoDelivery.toFixed(
+                      2
+                    )}
                   </strong>
                 </div>
 
@@ -730,9 +1151,13 @@ function Checkout({
                   </span>
 
                   <strong>
-                    S/ {total.toFixed(2)}
+                    S/{' '}
+                    {total.toFixed(
+                      2
+                    )}
                   </strong>
                 </div>
+
               </div>
 
               <div className="checkout-payment-status">
@@ -744,9 +1169,32 @@ function Checkout({
                   NO PAGADO
                 </strong>
               </div>
+
+              {/* SOLO MÓVIL */}
+
+              <button
+                type="button"
+                className="checkout-mobile-scroll-cue"
+                onClick={
+                  bajarADatos
+                }
+                aria-label="Continuar hacia los datos del pedido"
+              >
+                <span>
+                  CONTINÚA CON TUS DATOS
+                </span>
+
+                <strong>
+                  ↓
+                </strong>
+              </button>
+
             </div>
+
           </aside>
+
         </div>
+
       </section>
     </>
   );

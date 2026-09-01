@@ -1,14 +1,17 @@
+import '../styles/product-card.css';
+
 function RatingStars({
   rating = 0,
   count = 0,
 }) {
-  const estrellasLlenas = Math.max(
-    0,
-    Math.min(
-      5,
-      Math.round(rating)
-    )
-  );
+  const estrellasLlenas =
+    Math.max(
+      0,
+      Math.min(
+        5,
+        Math.round(rating)
+      )
+    );
 
   return (
     <div
@@ -20,7 +23,8 @@ function RatingStars({
           length: 5,
         }).map((_, index) => {
           const llena =
-            index < estrellasLlenas;
+            index <
+            estrellasLlenas;
 
           return (
             <span
@@ -31,7 +35,9 @@ function RatingStars({
                   : 'bro-star empty'
               }
             >
-              {llena ? '★' : '☆'}
+              {llena
+                ? '★'
+                : '☆'}
             </span>
           );
         })}
@@ -119,7 +125,9 @@ function ProductCard({
           type="button"
           className="bro-product-name-button"
           onClick={() =>
-            onVerProducto(producto)
+            onVerProducto(
+              producto
+            )
           }
         >
           <h3>
@@ -128,8 +136,12 @@ function ProductCard({
         </button>
 
         <RatingStars
-          rating={producto.rating}
-          count={producto.ratingCount}
+          rating={
+            producto.rating
+          }
+          count={
+            producto.ratingCount
+          }
         />
 
         <div className="price-row bro-price">

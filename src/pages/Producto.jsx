@@ -4,6 +4,12 @@ import {
   useState,
 } from 'react';
 
+import {
+  PRECIOS_MARCO_CUADRO,
+  PRECIOS_TAMANOS_CUADRO,
+  WALLPAPERS_BRO,
+} from '../data/precios';
+
 import '../styles/producto.css';
 
 function Producto({
@@ -17,11 +23,15 @@ function Producto({
   const [frame, setFrame] =
     useState(null);
 
-  const [wallpaper, setWallpaper] =
-    useState(null);
+  const [
+    wallpaper,
+    setWallpaper,
+  ] = useState(null);
 
-  const [quantity, setQuantity] =
-    useState(1);
+  const [
+    quantity,
+    setQuantity,
+  ] = useState(1);
 
   const [
     imagenActiva,
@@ -73,19 +83,52 @@ function Producto({
 
   const precioActual =
     useMemo(() => {
+      /*
+        WALLPAPER
+
+        Celular = S/ 7
+        Laptop = S/ 15
+      */
       if (wallpaper) {
-        return null;
+        return Number(
+          wallpaper.precio
+        );
+      }
+
+      /*
+        CUADRO
+
+        A4 = S/ 15
+        A3 = S/ 25
+        A2 = S/ 30
+
+        Marco = + S/ 25
+      */
+
+      if (!size) {
+        return 0;
       }
 
       const precioTamano =
+        PRECIOS_TAMANOS_CUADRO[
+          size.id
+        ] ??
         Number(
-          size?.precio || 0
+          size.precio || 0
         );
 
       const adicionalMarco =
-        Number(
-          frame?.adicional || 0
-        );
+        frame
+          ? (
+              PRECIOS_MARCO_CUADRO[
+                frame.id
+              ] ??
+              Number(
+                frame.adicional ||
+                  0
+              )
+            )
+          : 0;
 
       return (
         precioTamano +
@@ -100,10 +143,19 @@ function Producto({
   const esGuiaTamanos =
     imagenActiva === 1;
 
+  const configuracionValida =
+    Boolean(wallpaper) ||
+    Boolean(
+      size &&
+      frame
+    );
+
   function handleSizeSelect(
     selectedSize
   ) {
-    setSize(selectedSize);
+    setSize(
+      selectedSize
+    );
 
     setWallpaper(null);
 
@@ -170,20 +222,23 @@ function Producto({
   function handleAddToCart() {
     if (
       !producto ||
-      !size ||
-      !frame ||
-      wallpaper
+      !configuracionValida
     ) {
       return;
     }
 
+    const esWallpaper =
+      Boolean(wallpaper);
+
     const idCarrito =
-      `${producto.id}` +
-      `-${size.id}` +
-      `-${frame.id}`;
+      esWallpaper
+        ? `${producto.id}-wallpaper-${wallpaper.id}`
+        : `${producto.id}-${size.id}-${frame.id}`;
 
     const varianteTexto =
-      `${size.nombre} · ${frame.nombre}`;
+      esWallpaper
+        ? `Wallpaper · ${wallpaper.nombre}`
+        : `${size.nombre} · ${frame.nombre}`;
 
     const productoConfigurado = {
       id:
@@ -209,20 +264,40 @@ function Producto({
 
       varianteTexto,
 
+      tipo:
+        esWallpaper
+          ? 'digital'
+          : 'fisico',
+
       tamano:
-        size.nombre,
+        esWallpaper
+          ? null
+          : size.nombre,
 
       tamanoId:
-        size.id,
+        esWallpaper
+          ? null
+          : size.id,
 
       marco:
-        frame.nombre,
+        esWallpaper
+          ? null
+          : frame.nombre,
 
       marcoId:
-        frame.id,
+        esWallpaper
+          ? null
+          : frame.id,
 
-      tipo:
-        'fisico',
+      wallpaper:
+        esWallpaper
+          ? wallpaper.nombre
+          : null,
+
+      wallpaperId:
+        esWallpaper
+          ? wallpaper.id
+          : null,
     };
 
     onAgregarAlCarrito(
@@ -233,7 +308,6 @@ function Producto({
   if (!producto) {
     return (
       <main className="bro-product-not-found">
-
         <h1>
           PRODUCTO NO ENCONTRADO
         </h1>
@@ -246,7 +320,6 @@ function Producto({
         >
           VOLVER AL INICIO
         </button>
-
       </main>
     );
   }
@@ -267,15 +340,106 @@ function Producto({
 
   return (
     <main className="bro-product-page">
+      <style>
+        {`
+          /*
+            Solo ajustes móviles nuevos.
+
+            No modificamos el diseño
+            aprobado de escritorio.
+          */
+
+          @media (max-width:760px) {
+
+            /*
+              BADGE DE LA FICHA
+            */
+
+            .bro-product-page
+            .bro-product-badge-detail {
+              min-height:
+                22px !important;
+
+              padding:
+                3px 8px
+                !important;
+
+              font-size:
+                8px !important;
+
+              line-height:
+                1 !important;
+
+              letter-spacing:
+                .035em
+                !important;
+            }
+
+            /*
+              GUÍA DE TAMAÑOS
+
+              La segunda imagen aprovecha
+              prácticamente todo el ancho
+              real del teléfono.
+            */
+
+            .bro-product-page
+            .bro-product-main-image.guia {
+              width:
+                calc(
+                  100vw - 10px
+                )
+                !important;
+
+              max-width:
+                460px
+                !important;
+
+              margin-left:
+                50%
+                !important;
+
+              margin-right:
+                0
+                !important;
+
+              transform:
+                translateX(-50%)
+                !important;
+
+              overflow:
+                visible
+                !important;
+            }
+
+            .bro-product-page
+            .bro-product-main-image.guia
+            img {
+              width:
+                100%
+                !important;
+
+              max-width:
+                none
+                !important;
+
+              height:
+                auto
+                !important;
+
+              object-fit:
+                contain
+                !important;
+            }
+          }
+        `}
+      </style>
 
       <div className="bro-product-layout">
 
-        {/* =====================================
-            GALERÍA
-        ===================================== */}
+        {/* GALERÍA */}
 
         <section className="bro-product-gallery-column">
-
           <div className="bro-product-gallery">
 
             <div
@@ -304,7 +468,6 @@ function Producto({
             {imagenesProducto.length >
               0 && (
               <div className="bro-product-thumbnails">
-
                 {imagenesProducto.map(
                   (
                     imagen,
@@ -343,17 +506,13 @@ function Producto({
                     </button>
                   )
                 )}
-
               </div>
             )}
 
           </div>
-
         </section>
 
-        {/* =====================================
-            INFORMACIÓN
-        ===================================== */}
+        {/* INFORMACIÓN */}
 
         <section className="bro-product-info-panel">
 
@@ -382,14 +541,10 @@ function Producto({
             <div className="bro-product-rating-detail">
 
               <span className="bro-product-stars-detail">
-
                 {Array.from({
                   length: 5,
                 }).map(
-                  (
-                    _,
-                    index
-                  ) => (
+                  (_, index) => (
                     <span
                       key={
                         index
@@ -402,7 +557,6 @@ function Producto({
                     </span>
                   )
                 )}
-
               </span>
 
               <span className="bro-product-rating-count-detail">
@@ -417,14 +571,10 @@ function Producto({
             </div>
 
             <p className="bro-product-price-detail">
-
-              {precioActual !==
-              null
-                ? `S/ ${precioActual.toFixed(
-                    2
-                  )}`
-                : 'WALLPAPER'}
-
+              S/{' '}
+              {Number(
+                precioActual
+              ).toFixed(2)}
             </p>
 
           </div>
@@ -434,22 +584,15 @@ function Producto({
           {producto.slug ===
             'cuadro-personalizado' && (
             <div className="bro-product-custom-note">
-
               <strong>
                 DISEÑO PERSONALIZADO:
               </strong>{' '}
-
               TRAS EL PEDIDO NOS
               CONTACTAREMOS PARA
               PEDIRTE LA FOTO DE TU
               AUTO.
-
             </div>
           )}
-
-          {/* =================================
-              OPCIONES
-          ================================= */}
 
           <div className="bro-product-options">
 
@@ -464,7 +607,6 @@ function Producto({
                 </span>
 
                 <div className="bro-option-row">
-
                   {producto.tamanos.map(
                     (
                       tamano
@@ -492,7 +634,6 @@ function Producto({
                       </button>
                     )
                   )}
-
                 </div>
 
               </div>
@@ -509,7 +650,6 @@ function Producto({
                 </span>
 
                 <div className="bro-option-row">
-
                   {producto.marcos.map(
                     (
                       marco
@@ -537,7 +677,6 @@ function Producto({
                       </button>
                     )
                   )}
-
                 </div>
 
               </div>
@@ -553,49 +692,35 @@ function Producto({
 
               <div className="bro-option-row">
 
-                {[
-                  'Celular',
-                  'Laptop',
-                ].map(
+                {WALLPAPERS_BRO.map(
                   (
-                    tipoWallpaper
+                    opcionWallpaper
                   ) => (
                     <button
                       key={
-                        tipoWallpaper
+                        opcionWallpaper.id
                       }
                       type="button"
                       className={`bro-btn-option ${
-                        wallpaper ===
-                        tipoWallpaper
+                        wallpaper?.id ===
+                        opcionWallpaper.id
                           ? 'active'
                           : ''
                       }`}
                       onClick={() =>
                         handleWallpaperSelect(
-                          tipoWallpaper
+                          opcionWallpaper
                         )
                       }
                     >
                       {
-                        tipoWallpaper
+                        opcionWallpaper.nombre
                       }
                     </button>
                   )
                 )}
 
               </div>
-
-              {wallpaper && (
-                <div className="bro-wallpaper-message">
-
-                  El precio de
-                  Wallpaper todavía no
-                  está configurado en el
-                  catálogo.
-
-                </div>
-              )}
 
             </div>
 
@@ -655,21 +780,14 @@ function Producto({
                 handleAddToCart
               }
               disabled={
-                Boolean(
-                  wallpaper
-                ) ||
-                !size ||
-                !frame
+                !configuracionValida
               }
             >
-              {wallpaper
-                ? 'PRECIO DE WALLPAPER PENDIENTE'
-                : `AGREGAR AL CARRITO · S/ ${(
-                    precioActual *
-                    quantity
-                  ).toFixed(
-                    2
-                  )}`}
+              AGREGAR AL CARRITO · S/{' '}
+              {(
+                precioActual *
+                quantity
+              ).toFixed(2)}
             </button>
 
           </div>
@@ -677,7 +795,6 @@ function Producto({
         </section>
 
       </div>
-
     </main>
   );
 }
