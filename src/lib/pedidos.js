@@ -46,6 +46,14 @@ export async function crearPedidoBro({
         item.marcoId ||
         null,
 
+      wallpaper:
+        item.wallpaper ||
+        null,
+
+      wallpaper_id:
+        item.wallpaperId ||
+        null,
+
       tipo:
         item.tipo ||
         null,
@@ -55,6 +63,14 @@ export async function crearPedidoBro({
           item.cantidad
         ),
 
+      /*
+        Este precio todavía viaja por compatibilidad
+        con el frontend.
+
+        IMPORTANTE:
+        Supabase dejará de confiar en este valor.
+        El precio oficial será recalculado en servidor.
+      */
       precio:
         Number(
           item.precio
@@ -81,7 +97,10 @@ export async function crearPedidoBro({
         formulario.telefono.trim(),
 
       p_tipo_servicio:
-        formulario.servicio,
+        formulario.servicio ===
+        'digital'
+          ? 'contraentrega'
+          : formulario.servicio,
 
       p_direccion:
         esDomicilio

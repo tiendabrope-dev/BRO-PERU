@@ -1,4 +1,4 @@
-﻿import {
+import {
   useEffect,
   useState,
 } from 'react';
@@ -87,6 +87,7 @@ function Header({
   onPreguntas,
   onContacto,
   onAfiliados,
+  onAdmin,
   onAbrirCarrito,
 }) {
   const [
@@ -276,6 +277,7 @@ function Header({
             <button
               type="button"
               className="bro-icon-button bro-user-button"
+              onClick={() => onAdmin?.()}
               aria-label="Usuario"
             >
               <UserIcon />

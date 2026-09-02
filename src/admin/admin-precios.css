@@ -1,0 +1,157 @@
+.admin-precios {
+  width: 100%;
+}
+
+.admin-precios-heading {
+  margin-bottom: 24px;
+}
+
+.admin-precios-heading > span {
+  display: block;
+  margin-bottom: 6px;
+  color: #2d5a3d;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.admin-precios-heading h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.admin-precios-heading p {
+  margin: 7px 0 0;
+  color: #767676;
+  line-height: 1.4;
+}
+
+.admin-precios-success,
+.admin-precios-error {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-precios-success {
+  background: #e8f0ea;
+  color: #2d5a3d;
+}
+
+.admin-precios-error {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.admin-precios-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-precio-card {
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #dfdad2;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.admin-precio-card small {
+  display: block;
+  margin-bottom: 5px;
+  color: #767676;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-precio-card strong {
+  display: block;
+  font-size: 16px;
+}
+
+.admin-precio-editor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-precio-editor > span {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.admin-precio-editor input {
+  width: 110px;
+  height: 42px;
+  padding: 0 10px;
+
+  border: 1px solid #ccc6bd;
+  border-radius: 7px;
+
+  background: #fff;
+  color: #111;
+
+  font: inherit;
+  font-weight: 800;
+}
+
+.admin-precio-editor input:focus {
+  outline: 2px solid #2d5a3d;
+  outline-offset: 1px;
+}
+
+.admin-precio-editor button {
+  height: 42px;
+  padding: 0 16px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: #2d5a3d;
+  color: #fff;
+
+  cursor: pointer;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.admin-precio-editor button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.admin-precios-status {
+  padding: 30px 0;
+  font-weight: 800;
+}
+
+@media (max-width: 650px) {
+  .admin-precio-card {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .admin-precio-editor {
+    width: 100%;
+  }
+
+  .admin-precio-editor input {
+    flex: 1;
+    width: auto;
+  }
+
+  .admin-precio-editor button {
+    min-width: 100px;
+  }
+}

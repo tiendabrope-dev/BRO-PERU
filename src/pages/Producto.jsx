@@ -4,11 +4,7 @@ import {
   useState,
 } from 'react';
 
-import {
-  PRECIOS_MARCO_CUADRO,
-  PRECIOS_TAMANOS_CUADRO,
-  WALLPAPERS_BRO,
-} from '../data/precios';
+import usePreciosPublicos from '../hooks/usePreciosPublicos';
 
 import '../styles/producto.css';
 
@@ -17,6 +13,8 @@ function Producto({
   onVolver,
   onAgregarAlCarrito,
 }) {
+  const { precios } =
+    usePreciosPublicos();
   const [size, setSize] =
     useState(null);
 
@@ -110,7 +108,7 @@ function Producto({
       }
 
       const precioTamano =
-        PRECIOS_TAMANOS_CUADRO[
+        precios.tamanos[
           size.id
         ] ??
         Number(
@@ -120,7 +118,7 @@ function Producto({
       const adicionalMarco =
         frame
           ? (
-              PRECIOS_MARCO_CUADRO[
+              precios.marcos[
                 frame.id
               ] ??
               Number(
@@ -692,7 +690,7 @@ function Producto({
 
               <div className="bro-option-row">
 
-                {WALLPAPERS_BRO.map(
+                {precios.wallpapers.map(
                   (
                     opcionWallpaper
                   ) => (

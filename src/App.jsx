@@ -14,11 +14,13 @@ import './App.css';
 import './styles/bro-ui.css';
 
 import {
-  DELIVERY,
   categorias,
   mensajesSuperiores,
-  productos,
+  productos as productosCatalogo,
 } from './data/catalogo';
+import useProductosPublicos from './hooks/useProductosPublicos';
+import usePreciosPublicos from './hooks/usePreciosPublicos';
+import { sincronizarPreciosCarrito } from './lib/preciosCarrito';
 
 import {
   crearPedidoBro,
@@ -39,8 +41,17 @@ import PreguntasFrecuentes from './pages/PreguntasFrecuentes';
 import Afiliados from './pages/Afiliados';
 import Producto from './pages/Producto';
 import TodosCuadros from './pages/TodosCuadros';
+import AdminApp from './admin/AdminApp';
 
 function App() {
+  const productos =
+    useProductosPublicos(
+      productosCatalogo
+    );
+
+  const { precios } =
+    usePreciosPublicos();
+
   const navigate =
     useNavigate();
 
@@ -118,6 +129,16 @@ function App() {
       }
 
       if (
+        pathname === '/admin' ||
+        pathname.startsWith('/admin/')
+      ) {
+        return {
+          pagina: 'admin',
+          producto: null,
+          valida: true,
+        };
+      }
+      if (
         pathname.startsWith(
           '/producto/'
         )
@@ -160,6 +181,7 @@ function App() {
       };
     }, [
       location.pathname,
+    productos,
     ]);
 
   const pagina =
@@ -552,6 +574,16 @@ function App() {
     );
   }, [carrito]);
 
+  useEffect(() => {
+    setCarrito(
+      (actual) =>
+        sincronizarPreciosCarrito(
+          actual,
+          precios
+        )
+    );
+  }, [precios]);
+
   const cantidadTotal =
     useMemo(() => {
       return carrito.reduce(
@@ -734,6 +766,14 @@ function App() {
     setGuardandoPedido,
   ] = useState(false);
 
+  const esCarritoSoloDigital =
+    carrito.length > 0 &&
+    carrito.every(
+      (item) =>
+        item.tipo === 'digital' ||
+        Boolean(item.wallpaperId)
+    );
+
   const [
     formulario,
     setFormulario,
@@ -754,9 +794,12 @@ function App() {
   });
 
   const costoDelivery =
+    !esCarritoSoloDigital &&
     formulario.servicio ===
-    'domicilio'
-      ? DELIVERY
+      'domicilio'
+      ? Number(
+          precios.delivery || 0
+        )
       : 0;
 
   const total =
@@ -773,6 +816,43 @@ function App() {
 
     setErrorCheckout(
       ''
+    );
+
+    setFormulario(
+      (actual) => {
+        if (esCarritoSoloDigital) {
+          return {
+            ...actual,
+
+            servicio:
+              'digital',
+
+            direccion: '',
+            distrito: '',
+            referencia: '',
+
+            metodoPago:
+              actual.metodoPago ===
+              'efectivo'
+                ? 'yape'
+                : actual.metodoPago,
+          };
+        }
+
+        if (
+          actual.servicio ===
+          'digital'
+        ) {
+          return {
+            ...actual,
+
+            servicio:
+              'contraentrega',
+          };
+        }
+
+        return actual;
+      }
     );
 
     setCarritoAbierto(
@@ -871,6 +951,19 @@ function App() {
     }
 
     if (
+      !esCarritoSoloDigital &&
+      ![
+        'contraentrega',
+        'domicilio',
+      ].includes(
+        formulario.servicio
+      )
+    ) {
+      return 'Selecciona un tipo de servicio.';
+    }
+
+    if (
+      !esCarritoSoloDigital &&
       formulario.servicio ===
       'domicilio'
     ) {
@@ -885,6 +978,14 @@ function App() {
       ) {
         return 'Ingresa el distrito.';
       }
+    }
+
+    if (
+      esCarritoSoloDigital &&
+      formulario.metodoPago ===
+      'efectivo'
+    ) {
+      return 'Selecciona Yape, Plin o transferencia para productos digitales.';
     }
 
     if (
@@ -1101,6 +1202,10 @@ function App() {
     checkoutAbierto,
   ]);
 
+  if (pagina === 'admin') {
+    return <AdminApp />;
+  }
+
   return (
     <div className="site">
       <Header
@@ -1140,6 +1245,7 @@ function App() {
         onAfiliados={
           irAfiliados
         }
+        onAdmin={() => navigate('/admin')}
         onAbrirCarrito={() =>
           setCarritoAbierto(
             true
@@ -1338,6 +1444,9 @@ function App() {
       <Checkout
         abierto={
           checkoutAbierto
+        }
+        esCarritoSoloDigital={
+          esCarritoSoloDigital
         }
         carrito={
           carrito

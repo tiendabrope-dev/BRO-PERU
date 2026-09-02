@@ -1,4 +1,4 @@
-﻿import {
+import {
   useEffect,
   useRef,
   useState,
@@ -6,6 +6,7 @@
 
 function Checkout({
   abierto,
+  esCarritoSoloDigital,
   carrito,
   subtotal,
   costoDelivery,
@@ -103,7 +104,10 @@ function Checkout({
       }
     }
 
-    if (paso === 2) {
+    if (
+      paso === 2 &&
+      !esCarritoSoloDigital
+    ) {
       if (
         !formulario.servicio
       ) {
@@ -137,6 +141,15 @@ function Checkout({
       !formulario.metodoPago
     ) {
       return 'Selecciona un método de pago.';
+    }
+
+    if (
+      paso === 3 &&
+      esCarritoSoloDigital &&
+      formulario.metodoPago ===
+        'efectivo'
+    ) {
+      return 'Selecciona Yape, Plin o transferencia para productos digitales.';
     }
 
     return '';
@@ -649,150 +662,176 @@ function Checkout({
                   </span>
 
                   <h2>
-                    TIPO DE SERVICIO
+                    {esCarritoSoloDigital
+                      ? 'ENTREGA DIGITAL'
+                      : 'TIPO DE SERVICIO'}
                   </h2>
                 </div>
+                {esCarritoSoloDigital ? (
+                  <div className="checkout-options">
 
-                <div className="checkout-options">
+                    <div className="checkout-option active">
 
-                  <label
-                    className={
-                      formulario.servicio ===
-                      'contraentrega'
-                        ? 'checkout-option active'
-                        : 'checkout-option'
-                    }
-                  >
-                    <input
-                      type="radio"
-                      name="servicio"
-                      value="contraentrega"
-                      checked={
-                        formulario.servicio ===
-                        'contraentrega'
-                      }
-                      onChange={
-                        manejarCambioCampo
-                      }
-                      disabled={
-                        guardandoPedido
-                      }
-                    />
+                      <div>
+                        <strong>
+                          ENTREGA DIGITAL
+                        </strong>
 
-                    <div>
-                      <strong>
-                        CONTRAENTREGA
-                      </strong>
+                        <span>
+                          Tu Wallpaper se entrega digitalmente. No necesitas dirección ni pagar delivery.
+                        </span>
+                      </div>
 
-                      <span>
-                        Coordina la entrega.
-                      </span>
                     </div>
-                  </label>
-
-                  <label
-                    className={
-                      formulario.servicio ===
-                      'domicilio'
-                        ? 'checkout-option active'
-                        : 'checkout-option'
-                    }
-                  >
-                    <input
-                      type="radio"
-                      name="servicio"
-                      value="domicilio"
-                      checked={
-                        formulario.servicio ===
-                        'domicilio'
-                      }
-                      onChange={
-                        manejarCambioCampo
-                      }
-                      disabled={
-                        guardandoPedido
-                      }
-                    />
-
-                    <div>
-                      <strong>
-                        DOMICILIO
-                      </strong>
-
-                      <span>
-                        Delivery S/15.00.
-                      </span>
-                    </div>
-                  </label>
-
-                </div>
-
-                {formulario.servicio ===
-                  'domicilio' && (
-                  <div className="checkout-fields address-fields">
-
-                    <label className="checkout-field full">
-                      <span>
-                        DIRECCIÓN
-                      </span>
-
-                      <input
-                        type="text"
-                        name="direccion"
-                        value={
-                          formulario.direccion
-                        }
-                        onChange={
-                          manejarCambioCampo
-                        }
-                        disabled={
-                          guardandoPedido
-                        }
-                      />
-                    </label>
-
-                    <label className="checkout-field">
-                      <span>
-                        DISTRITO
-                      </span>
-
-                      <input
-                        type="text"
-                        name="distrito"
-                        value={
-                          formulario.distrito
-                        }
-                        onChange={
-                          manejarCambioCampo
-                        }
-                        disabled={
-                          guardandoPedido
-                        }
-                      />
-                    </label>
-
-                    <label className="checkout-field">
-                      <span>
-                        REFERENCIA
-                      </span>
-
-                      <input
-                        type="text"
-                        name="referencia"
-                        value={
-                          formulario.referencia
-                        }
-                        onChange={
-                          manejarCambioCampo
-                        }
-                        disabled={
-                          guardandoPedido
-                        }
-                      />
-                    </label>
 
                   </div>
+                ) : (
+                  <>
+
+                    <div className="checkout-options">
+
+                      <label
+                        className={
+                          formulario.servicio ===
+                          'contraentrega'
+                            ? 'checkout-option active'
+                            : 'checkout-option'
+                        }
+                      >
+                        <input
+                          type="radio"
+                          name="servicio"
+                          value="contraentrega"
+                          checked={
+                            formulario.servicio ===
+                            'contraentrega'
+                          }
+                          onChange={
+                            manejarCambioCampo
+                          }
+                          disabled={
+                            guardandoPedido
+                          }
+                        />
+
+                        <div>
+                          <strong>
+                            CONTRAENTREGA
+                          </strong>
+
+                          <span>
+                            Coordina la entrega.
+                          </span>
+                        </div>
+                      </label>
+
+                      <label
+                        className={
+                          formulario.servicio ===
+                          'domicilio'
+                            ? 'checkout-option active'
+                            : 'checkout-option'
+                        }
+                      >
+                        <input
+                          type="radio"
+                          name="servicio"
+                          value="domicilio"
+                          checked={
+                            formulario.servicio ===
+                            'domicilio'
+                          }
+                          onChange={
+                            manejarCambioCampo
+                          }
+                          disabled={
+                            guardandoPedido
+                          }
+                        />
+
+                        <div>
+                          <strong>
+                            DOMICILIO
+                          </strong>
+
+                          <span>
+                            Delivery según tarifa vigente.
+                          </span>
+                        </div>
+                      </label>
+
+                    </div>
+
+                    {formulario.servicio ===
+                      'domicilio' && (
+                      <div className="checkout-fields address-fields">
+
+                        <label className="checkout-field full">
+                          <span>
+                            DIRECCIÓN
+                          </span>
+
+                          <input
+                            type="text"
+                            name="direccion"
+                            value={
+                              formulario.direccion
+                            }
+                            onChange={
+                              manejarCambioCampo
+                            }
+                            disabled={
+                              guardandoPedido
+                            }
+                          />
+                        </label>
+
+                        <label className="checkout-field">
+                          <span>
+                            DISTRITO
+                          </span>
+
+                          <input
+                            type="text"
+                            name="distrito"
+                            value={
+                              formulario.distrito
+                            }
+                            onChange={
+                              manejarCambioCampo
+                            }
+                            disabled={
+                              guardandoPedido
+                            }
+                          />
+                        </label>
+
+                        <label className="checkout-field">
+                          <span>
+                            REFERENCIA
+                          </span>
+
+                          <input
+                            type="text"
+                            name="referencia"
+                            value={
+                              formulario.referencia
+                            }
+                            onChange={
+                              manejarCambioCampo
+                            }
+                            disabled={
+                              guardandoPedido
+                            }
+                          />
+                        </label>
+
+                      </div>
+                    )}
+
+                  </>
                 )}
+
 
                 {errorPaso && (
                   <div className="checkout-error checkout-step-error">
@@ -865,10 +904,17 @@ function Checkout({
                       'transferencia',
                       'TRANSFERENCIA BANCARIA',
                     ],
-                    [
-                      'efectivo',
-                      'CONTRAENTREGA / EFECTIVO',
-                    ],
+
+                    ...(
+                      esCarritoSoloDigital
+                        ? []
+                        : [
+                            [
+                              'efectivo',
+                              'CONTRAENTREGA / EFECTIVO',
+                            ],
+                          ]
+                    ),
                   ].map(
                     ([
                       valor,
@@ -1132,18 +1178,20 @@ function Checkout({
                   </strong>
                 </div>
 
-                <div>
-                  <span>
-                    DELIVERY
-                  </span>
+                {!esCarritoSoloDigital && (
+                  <div>
+                    <span>
+                      DELIVERY
+                    </span>
 
-                  <strong>
-                    S/{' '}
-                    {costoDelivery.toFixed(
-                      2
-                    )}
-                  </strong>
-                </div>
+                    <strong>
+                      S/{' '}
+                      {costoDelivery.toFixed(
+                        2
+                      )}
+                    </strong>
+                  </div>
+                )}
 
                 <div className="checkout-total-final">
                   <span>
