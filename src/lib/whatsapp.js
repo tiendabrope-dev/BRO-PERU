@@ -13,12 +13,22 @@ function formatearFecha(fecha) {
     ? new Date(fecha)
     : new Date();
 
-  return new Intl.DateTimeFormat('es-PE', {
-    timeZone: 'America/Lima',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  }).format(fechaPedido);
+  return new Intl.DateTimeFormat(
+    'es-PE',
+    {
+      timeZone:
+        'America/Lima',
+
+      day:
+        '2-digit',
+
+      month:
+        '2-digit',
+
+      year:
+        'numeric',
+    }
+  ).format(fechaPedido);
 }
 
 function formatearHora(fecha) {
@@ -26,42 +36,104 @@ function formatearHora(fecha) {
     ? new Date(fecha)
     : new Date();
 
-  return new Intl.DateTimeFormat('es-PE', {
-    timeZone: 'America/Lima',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }).format(fechaPedido);
+  return new Intl.DateTimeFormat(
+    'es-PE',
+    {
+      timeZone:
+        'America/Lima',
+
+      hour:
+        '2-digit',
+
+      minute:
+        '2-digit',
+
+      hour12:
+        true,
+    }
+  ).format(fechaPedido);
 }
 
-function textoServicio(servicio) {
-  return servicio === 'domicilio'
+function textoServicio(
+  servicio
+) {
+  return servicio ===
+    'domicilio'
     ? 'Domicilio'
     : 'Contraentrega';
 }
 
-function textoMetodoPago(metodo) {
+function textoMetodoPago(
+  metodo
+) {
   const metodos = {
-    yape: 'Yape',
-    plin: 'Plin',
-    transferencia: 'Transferencia bancaria',
-    efectivo: 'Efectivo',
+    yape:
+      'Yape',
+
+    plin:
+      'Plin',
+
+    transferencia:
+      'Transferencia bancaria',
+
+    efectivo:
+      'Efectivo',
   };
 
-  return metodos[metodo] || metodo;
+  return (
+    metodos[metodo] ||
+    metodo
+  );
 }
 
-function crearListadoProductos(carrito) {
+function esDispositivoMovil() {
+  if (
+    typeof window ===
+      'undefined' ||
+    typeof navigator ===
+      'undefined'
+  ) {
+    return false;
+  }
+
+  const agente =
+    navigator.userAgent ||
+    '';
+
+  const porAgente =
+    /Android|iPhone|iPad|iPod|Mobile/i.test(
+      agente
+    );
+
+  const porPantalla =
+    window.matchMedia?.(
+      '(max-width: 760px)'
+    )?.matches;
+
+  return Boolean(
+    porAgente ||
+    porPantalla
+  );
+}
+
+function crearListadoProductos(
+  carrito
+) {
   return carrito
     .map((item) => {
       const cantidad =
-        Number(item.cantidad);
+        Number(
+          item.cantidad
+        );
 
       const precio =
-        Number(item.precio);
+        Number(
+          item.precio
+        );
 
       const totalLinea =
-        cantidad * precio;
+        cantidad *
+        precio;
 
       const variante =
         item.varianteTexto
@@ -70,17 +142,23 @@ function crearListadoProductos(carrito) {
 
       return (
         `🛒 *X${cantidad} ${item.nombre.toUpperCase()}*` +
-        ` — *${formatearDinero(totalLinea)}*` +
+        ` — *${formatearDinero(
+          totalLinea
+        )}*` +
         variante
       );
     })
     .join('\n');
 }
 
-function crearDatosPago(metodoPago) {
+function crearDatosPago(
+  metodoPago
+) {
   if (
-    metodoPago === 'yape' ||
-    metodoPago === 'plin'
+    metodoPago ===
+      'yape' ||
+    metodoPago ===
+      'plin'
   ) {
     return [
       `📲 *YAPE / PLIN: ${NUMERO_PAGO}*`,
@@ -88,14 +166,20 @@ function crearDatosPago(metodoPago) {
     ];
   }
 
-  if (metodoPago === 'transferencia') {
+  if (
+    metodoPago ===
+    'transferencia'
+  ) {
     return [
       '🏦 *TRANSFERENCIA BANCARIA*',
       'Te enviaremos los datos bancarios por WhatsApp para realizar el pago.',
     ];
   }
 
-  if (metodoPago === 'efectivo') {
+  if (
+    metodoPago ===
+    'efectivo'
+  ) {
     return [
       '💵 *PAGO EN EFECTIVO*',
       'El pago se realizará al momento de la entrega.',
@@ -111,7 +195,8 @@ export function crearMensajeWhatsAppBro({
   carrito,
 }) {
   const codigoPedido =
-    pedido.codigo_pedido || '';
+    pedido.codigo_pedido ||
+    '';
 
   const fecha =
     formatearFecha(
@@ -165,7 +250,7 @@ export function crearMensajeWhatsAppBro({
     );
 
   return [
-    '👋 *Vengo de la página BRO PERU*',
+    '👋 *Vengo de la página BRO PERÚ*',
 
     '',
 
@@ -175,7 +260,7 @@ export function crearMensajeWhatsAppBro({
 
     '',
 
-    `🚛 *Tipo de servicio: ${textoServicio(
+    `🚚 *Tipo de servicio: ${textoServicio(
       formulario.servicio
     )}*`,
 
@@ -187,9 +272,10 @@ export function crearMensajeWhatsAppBro({
 
     `Teléfono: ${formulario.telefono.trim()}`,
 
-    `DNI: ${formulario.dni.trim()}`,
+    `Documento: ${formulario.dni.trim()}`,
 
-    datosEntrega || null,
+    datosEntrega ||
+      null,
 
     '',
 
@@ -262,37 +348,70 @@ export function abrirWhatsAppBro({
       mensaje
     );
 
-  const url =
+  const movil =
+    esDispositivoMovil();
+
+  /*
+    MÓVIL
+
+    wa.me funciona como enlace universal
+    de WhatsApp.
+
+    Si WhatsApp está instalado,
+    Android/iOS pueden entregar el enlace
+    directamente a la aplicación.
+  */
+  if (movil) {
+    const urlMovil =
+      `https://wa.me/${WHATSAPP_PEDIDOS}` +
+      `?text=${texto}`;
+
+    /*
+      Si por alguna razón App.jsx hubiera
+      creado una pestaña auxiliar, la
+      cerramos. En móvil no la queremos.
+    */
+    if (
+      ventanaWhatsApp &&
+      !ventanaWhatsApp.closed
+    ) {
+      ventanaWhatsApp.close();
+    }
+
+    window.location.assign(
+      urlMovil
+    );
+
+    return;
+  }
+
+  /*
+    ESCRITORIO
+
+    Aquí sí utilizamos WhatsApp Web.
+  */
+  const urlEscritorio =
     `https://web.whatsapp.com/send` +
     `?phone=${WHATSAPP_PEDIDOS}` +
     `&text=${texto}`;
 
   /*
-    Si App.jsx ya abrió una pestaña
-    en el momento exacto en que el
-    usuario presionó CONFIRMAR PEDIDO,
-    reutilizamos esa pestaña.
-
-    De esta forma Chrome no bloquea
-    WhatsApp como popup.
+    App.jsx abre previamente esta pestaña
+    para evitar que Chrome bloquee el popup
+    después de esperar la respuesta de
+    Supabase.
   */
   if (
     ventanaWhatsApp &&
     !ventanaWhatsApp.closed
   ) {
     ventanaWhatsApp.location.href =
-      url;
+      urlEscritorio;
 
     return;
   }
 
-  /*
-    Si por alguna razón Chrome no
-    permitió crear una pestaña nueva,
-    abrimos WhatsApp en la pestaña
-    actual para que el cliente nunca
-    se quede detenido.
-  */
-  window.location.href =
-    url;
+  window.location.assign(
+    urlEscritorio
+  );
 }

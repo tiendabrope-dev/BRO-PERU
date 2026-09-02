@@ -939,11 +939,21 @@ function App() {
       bloqueos del navegador.
     */
 
+    const esMovilWhatsApp =
+      /Android|iPhone|iPad|iPod|Mobile/i.test(
+        navigator.userAgent
+      ) ||
+      window.matchMedia(
+        '(max-width: 760px)'
+      ).matches;
+
     const ventanaWhatsApp =
-      window.open(
-        'about:blank',
-        '_blank'
-      );
+      esMovilWhatsApp
+        ? null
+        : window.open(
+            'about:blank',
+            '_blank'
+          );
 
     if (
       ventanaWhatsApp
@@ -1006,12 +1016,6 @@ function App() {
           pedido.total
         ).toFixed(2);
 
-      alert(
-        `¡PEDIDO CREADO CORRECTAMENTE!\n\n` +
-          `PEDIDO: ${codigo}\n` +
-          `TOTAL: S/ ${totalServidor}\n\n` +
-          `Ahora te enviaremos a WhatsApp para que envíes el pedido a BRO PERU.`
-      );
 
       abrirWhatsAppBro({
         pedido,

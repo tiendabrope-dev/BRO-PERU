@@ -1,3 +1,5 @@
+import '../styles/carrito.css';
+
 function Carrito({
   abierto,
   carrito,
@@ -41,6 +43,7 @@ function Carrito({
             type="button"
             className="cart-close"
             onClick={onCerrar}
+            aria-label="Cerrar carrito"
           >
             ×
           </button>
@@ -88,7 +91,7 @@ function Carrito({
                         <div className="cart-item-top">
                           <div>
                             <p>
-                              BRO PERU
+                              BRO PERÚ
                             </p>
 
                             <h3>
@@ -120,6 +123,7 @@ function Carrito({
                           <div className="quantity-control">
                             <button
                               type="button"
+                              className="quantity-minus"
                               onClick={() =>
                                 onDisminuir(
                                   claveItem
@@ -136,6 +140,7 @@ function Carrito({
 
                             <button
                               type="button"
+                              className="quantity-plus"
                               onClick={() =>
                                 onAumentar(
                                   claveItem
@@ -150,7 +155,9 @@ function Carrito({
                           <strong>
                             S/{' '}
                             {(
-                              item.precio *
+                              Number(
+                                item.precio
+                              ) *
                               item.cantidad
                             ).toFixed(2)}
                           </strong>
