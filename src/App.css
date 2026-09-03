@@ -2712,7 +2712,10 @@ img {
   }
 
   .bro-user-button {
-    display: none !important;
+    display: grid !important;
+    width: 38px !important;
+    height: 38px !important;
+    padding: 7px !important;
   }
 
   .bro-search-button {
