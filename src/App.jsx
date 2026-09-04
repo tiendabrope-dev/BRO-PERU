@@ -930,11 +930,11 @@ function App() {
     }
 
     if (
-      !/^\d{8}$/.test(
+      !/^[A-Za-z0-9]{7,13}$/.test(
         formulario.dni.trim()
       )
     ) {
-      return 'El DNI debe tener exactamente 8 dígitos.';
+      return 'El documento debe tener entre 7 y 13 letras o números.';
     }
 
     const telefonoValidacion =
@@ -943,11 +943,11 @@ function App() {
         .replace(/[\s()-]/g, '');
 
     if (
-      !/^\d{9}$/.test(
+      !/^\+?\d{7,13}$/.test(
         telefonoValidacion
       )
     ) {
-      return 'El teléfono debe tener exactamente 9 dígitos.';
+      return 'El teléfono debe tener entre 7 y 13 dígitos y puede comenzar con +.';
     }
 
     if (

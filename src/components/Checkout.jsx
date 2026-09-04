@@ -65,19 +65,41 @@ function Checkout({
       value,
     } = evento.target;
 
-    if (
-      name === 'dni' ||
-      name === 'telefono'
-    ) {
-      const limite =
-        name === 'dni'
-          ? 8
-          : 9;
-
+    if (name === 'dni') {
       const valorLimpio =
         value
+          .replace(
+            /[^A-Za-z0-9]/g,
+            ''
+          )
+          .slice(0, 13)
+          .toUpperCase();
+
+      onActualizarCampo({
+        target: {
+          name,
+          value:
+            valorLimpio,
+        },
+      });
+
+      return;
+    }
+
+    if (
+      name === 'telefono'
+    ) {
+      const tieneMas =
+        value.startsWith('+');
+
+      const digitos =
+        value
           .replace(/\D/g, '')
-          .slice(0, limite);
+          .slice(0, 13);
+
+      const valorLimpio =
+        (tieneMas ? '+' : '') +
+        digitos;
 
       onActualizarCampo({
         target: {
@@ -118,19 +140,19 @@ function Checkout({
       }
 
       if (
-        !/^\d{8}$/.test(
+        !/^[A-Za-z0-9]{7,13}$/.test(
           documento
         )
       ) {
-        return 'El DNI debe tener exactamente 8 dígitos.';
+        return 'El documento debe tener entre 7 y 13 letras o números.';
       }
 
       if (
-        !/^\d{9}$/.test(
+        !/^\+?\d{7,13}$/.test(
           telefono
         )
       ) {
-        return 'El teléfono debe tener exactamente 9 dígitos.';
+        return 'El teléfono debe tener entre 7 y 13 dígitos y puede comenzar con +.';
       }
     }
 
@@ -614,14 +636,14 @@ function Checkout({
                         manejarCambioCampo
                       }
                       minLength={
-                        8
+                        7
                       }
                       maxLength={
-                        8
+                        13
                       }
-                      inputMode="numeric"
-                      pattern="[0-9]{8}"
-                      placeholder="Ej. 12345678"
+                      inputMode="text"
+                      pattern="[A-Za-z0-9]{7,13}"
+                      placeholder="DNI / CE / PASAPORTE"
                       autoComplete="off"
                       disabled={
                         guardandoPedido
@@ -644,13 +666,13 @@ function Checkout({
                         manejarCambioCampo
                       }
                       minLength={
-                        9
+                        7
                       }
                       maxLength={
-                        9
+                        14
                       }
-                      inputMode="numeric"
-                      pattern="[0-9]{9}"
+                      inputMode="tel"
+                      pattern="\+?[0-9]{7,13}"
                       placeholder="Ej. 926555219"
                       autoComplete="tel"
                       disabled={

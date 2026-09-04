@@ -362,15 +362,10 @@ export function abrirWhatsAppBro({
     directamente a la aplicación.
   */
   if (movil) {
-    const urlMovil =
+    const urlFallback =
       `https://wa.me/${WHATSAPP_PEDIDOS}` +
       `?text=${texto}`;
 
-    /*
-      Si por alguna razón App.jsx hubiera
-      creado una pestaña auxiliar, la
-      cerramos. En móvil no la queremos.
-    */
     if (
       ventanaWhatsApp &&
       !ventanaWhatsApp.closed
@@ -378,8 +373,40 @@ export function abrirWhatsAppBro({
       ventanaWhatsApp.close();
     }
 
+    const android =
+      /Android/i.test(
+        navigator.userAgent ||
+          ''
+      );
+
+    if (android) {
+      const fallback =
+        encodeURIComponent(
+          urlFallback
+        );
+
+      const urlWhatsAppNormal =
+        `intent://send?phone=${WHATSAPP_PEDIDOS}` +
+        `&text=${texto}` +
+        '#Intent;' +
+        'scheme=whatsapp;' +
+        'package=com.whatsapp;' +
+        `S.browser_fallback_url=${fallback};` +
+        'end';
+
+      window.location.assign(
+        urlWhatsAppNormal
+      );
+
+      return;
+    }
+
+    const urlWhatsApp =
+      `whatsapp://send?phone=${WHATSAPP_PEDIDOS}` +
+      `&text=${texto}`;
+
     window.location.assign(
-      urlMovil
+      urlWhatsApp
     );
 
     return;
