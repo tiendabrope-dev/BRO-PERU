@@ -394,15 +394,19 @@ function Producto({
                 !important;
 
               margin-left:
-                50%
+                0
                 !important;
 
               margin-right:
                 0
                 !important;
 
+              align-self:
+                center
+                !important;
+
               transform:
-                translateX(-50%)
+                none
                 !important;
 
               overflow:
