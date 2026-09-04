@@ -60,6 +60,36 @@ function Checkout({
   ) {
     setErrorPaso('');
 
+    const {
+      name,
+      value,
+    } = evento.target;
+
+    if (
+      name === 'dni' ||
+      name === 'telefono'
+    ) {
+      const limite =
+        name === 'dni'
+          ? 8
+          : 9;
+
+      const valorLimpio =
+        value
+          .replace(/\D/g, '')
+          .slice(0, limite);
+
+      onActualizarCampo({
+        target: {
+          name,
+          value:
+            valorLimpio,
+        },
+      });
+
+      return;
+    }
+
     onActualizarCampo(
       evento
     );
@@ -88,19 +118,19 @@ function Checkout({
       }
 
       if (
-        !/^[A-Za-z0-9-]{5,20}$/.test(
+        !/^\d{8}$/.test(
           documento
         )
       ) {
-        return 'Ingresa un documento válido de 5 a 20 caracteres.';
+        return 'El DNI debe tener exactamente 8 dígitos.';
       }
 
       if (
-        !/^\+?\d{9,15}$/.test(
+        !/^\d{9}$/.test(
           telefono
         )
       ) {
-        return 'Ingresa un teléfono válido de 9 a 15 dígitos.';
+        return 'El teléfono debe tener exactamente 9 dígitos.';
       }
     }
 
@@ -584,12 +614,14 @@ function Checkout({
                         manejarCambioCampo
                       }
                       minLength={
-                        5
+                        8
                       }
                       maxLength={
-                        20
+                        8
                       }
-                      placeholder="DNI / CE / PASAPORTE"
+                      inputMode="numeric"
+                      pattern="[0-9]{8}"
+                      placeholder="Ej. 12345678"
                       autoComplete="off"
                       disabled={
                         guardandoPedido
@@ -611,10 +643,14 @@ function Checkout({
                       onChange={
                         manejarCambioCampo
                       }
-                      maxLength={
-                        18
+                      minLength={
+                        9
                       }
-                      inputMode="tel"
+                      maxLength={
+                        9
+                      }
+                      inputMode="numeric"
+                      pattern="[0-9]{9}"
                       placeholder="Ej. 926555219"
                       autoComplete="tel"
                       disabled={
