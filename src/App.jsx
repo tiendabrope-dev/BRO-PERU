@@ -1563,17 +1563,24 @@ function App() {
             <button
               type="button"
               onClick={() => {
+                const datosWhatsApp =
+                  whatsappPendiente;
+
+                setWhatsappPendiente(
+                  null
+                );
+
                 abrirWhatsAppBro({
                   pedido:
-                    whatsappPendiente
+                    datosWhatsApp
                       .pedido,
 
                   formulario:
-                    whatsappPendiente
+                    datosWhatsApp
                       .formulario,
 
                   carrito:
-                    whatsappPendiente
+                    datosWhatsApp
                       .carrito,
                 });
               }}
