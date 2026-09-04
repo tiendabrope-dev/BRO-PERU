@@ -2822,6 +2822,7 @@ img {
     border:
       1px solid #dedbd5;
     background: #f8f6f2;
+    color: #111111 !important;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.07em;
