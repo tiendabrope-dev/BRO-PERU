@@ -237,12 +237,12 @@ function MiPedido() {
     }
 
     if (
-      !/^\d{8}$/.test(
+      !/^[A-Za-z0-9]{7,13}$/.test(
         dni
       )
     ) {
       setErrorConsulta(
-        'Ingresa un DNI válido de 8 dígitos.'
+        'Ingresa un documento válido de 7 a 13 letras o números.'
       );
 
       return;
@@ -860,7 +860,7 @@ function MiPedido() {
                     onChange={
                       actualizarConsulta
                     }
-                    placeholder="Tu DNI"
+                    placeholder="DNI / CE / PASAPORTE"
                     disabled={
                       consultando
                     }

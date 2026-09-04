@@ -1,0 +1,329 @@
+.bro-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+
+  padding: 120px 24px 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background:
+    rgba(17, 17, 17, 0.56);
+
+  box-sizing: border-box;
+}
+
+.bro-search-panel {
+  width: 100%;
+  max-width: 720px;
+
+  padding: 30px;
+
+  background: #f4f1ec;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 24px 70px
+    rgba(0, 0, 0, 0.2);
+
+  box-sizing: border-box;
+}
+
+.bro-search-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content:
+    space-between;
+  gap: 24px;
+
+  margin-bottom: 26px;
+}
+
+.bro-search-eyebrow {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+
+  color: #2d5a3d;
+}
+
+.bro-search-top h2 {
+  margin: 0;
+
+  font-family:
+    'Syne',
+    sans-serif;
+
+  font-size: 30px;
+  line-height: 0.95;
+  font-weight: 800;
+
+  letter-spacing:
+    -0.04em;
+
+  color: #111111;
+}
+
+.bro-search-close {
+  flex: 0 0 auto;
+
+  width: 38px;
+  height: 38px;
+
+  padding: 0;
+
+  border:
+    1px solid
+    #d9d5ce;
+
+  border-radius: 50%;
+
+  background:
+    transparent;
+
+  color: #111111;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.bro-search-input-wrap {
+  width: 100%;
+  height: 54px;
+
+  padding: 0 17px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #ffffff;
+
+  border:
+    1px solid
+    #dedad3;
+
+  border-radius: 10px;
+
+  box-sizing: border-box;
+}
+
+.bro-search-input-wrap svg {
+  flex: 0 0 auto;
+
+  width: 20px;
+  height: 20px;
+
+  fill: none;
+  stroke: #111111;
+
+  stroke-width: 1.7;
+}
+
+.bro-search-input-wrap input {
+  flex: 1;
+
+  min-width: 0;
+  height: 100%;
+
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
+  background:
+    transparent;
+
+  color: #111111;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size: 14px;
+}
+
+.bro-search-input-wrap
+input::placeholder {
+  color: #999999;
+}
+
+.bro-search-results {
+  margin-top: 14px;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border:
+    1px solid
+    #e3dfd8;
+
+  border-radius: 10px;
+}
+
+.bro-search-hint {
+  margin: 0;
+
+  padding: 18px;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size: 12.5px;
+  line-height: 1.5;
+
+  color: #777777;
+}
+
+.bro-search-result {
+  width: 100%;
+  min-height: 54px;
+
+  padding: 14px 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content:
+    space-between;
+
+  gap: 16px;
+
+  border: 0;
+  border-bottom:
+    1px solid
+    #ece8e1;
+
+  background:
+    #ffffff;
+
+  color: #111111;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.bro-search-result:last-child {
+  border-bottom: 0;
+}
+
+.bro-search-result:hover {
+  background: #f8f6f2;
+}
+
+.bro-search-result-name {
+  font-family:
+    'DM Sans',
+    sans-serif;
+
+  font-size: 13.5px;
+  font-weight: 700;
+
+  line-height: 1.35;
+}
+
+.bro-search-result-arrow {
+  flex: 0 0 auto;
+
+  color: #2d5a3d;
+
+  font-size: 18px;
+}
+
+.bro-search-empty {
+  padding: 22px 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  font-family:
+    'DM Sans',
+    sans-serif;
+}
+
+.bro-search-empty strong {
+  font-size: 13px;
+
+  color: #111111;
+}
+
+.bro-search-empty span {
+  font-size: 12px;
+
+  color: #777777;
+}
+
+@media (max-width: 700px) {
+  .bro-search-overlay {
+    padding:
+      90px 14px
+      24px;
+  }
+
+  .bro-search-panel {
+    padding:
+      22px 16px;
+
+    border-radius: 13px;
+  }
+
+  .bro-search-top {
+    margin-bottom:
+      20px;
+  }
+
+  .bro-search-top h2 {
+    font-size: 25px;
+  }
+
+  .bro-search-close {
+    width: 34px;
+    height: 34px;
+
+    font-size: 21px;
+  }
+
+  .bro-search-input-wrap {
+    height: 50px;
+
+    padding:
+      0 14px;
+  }
+
+  .bro-search-input-wrap
+  input {
+    font-size: 13px;
+  }
+
+  .bro-search-result {
+    min-height: 52px;
+
+    padding:
+      13px 14px;
+  }
+
+  .bro-search-result-name {
+    font-size: 13px;
+  }
+}

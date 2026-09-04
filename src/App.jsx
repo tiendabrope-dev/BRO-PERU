@@ -1233,6 +1233,12 @@ function App() {
         cantidadTotal={
           cantidadTotal
         }
+        productos={
+          productos
+        }
+        onVerProducto={
+          verProducto
+        }
         onInicio={
           irInicio
         }

@@ -3,21 +3,7 @@ import {
   useState,
 } from 'react';
 
-function SearchIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <circle
-        cx="11"
-        cy="11"
-        r="6.2"
-      />
-      <path d="M16 16L21 21" />
-    </svg>
-  );
-}
+import BuscadorProductos from './BuscadorProductos';
 
 function UserIcon() {
   return (
@@ -30,6 +16,7 @@ function UserIcon() {
         cy="7.3"
         r="3.4"
       />
+
       <path d="M5.5 19C6.5 15.7 8.7 14 12 14C15.3 14 17.5 15.7 18.5 19" />
     </svg>
   );
@@ -42,11 +29,13 @@ function CartIcon() {
       aria-hidden="true"
     >
       <path d="M3 4H5.2L7.4 14H18.4L20 7H6.3" />
+
       <circle
         cx="9"
         cy="18.3"
         r="1.4"
       />
+
       <circle
         cx="17"
         cy="18.3"
@@ -81,6 +70,8 @@ function Header({
   onMensajeAnterior,
   onMensajeSiguiente,
   cantidadTotal,
+  productos,
+  onVerProducto,
   onInicio,
   onCategoria,
   onMiPedido,
@@ -130,8 +121,14 @@ function Header({
         currentScrollY > 80
       ) {
         setIsVisible(false);
-        setMenuCategorias(false);
-        setMenuMovil(false);
+
+        setMenuCategorias(
+          false
+        );
+
+        setMenuMovil(
+          false
+        );
       }
 
       setLastScrollY(
@@ -266,18 +263,21 @@ function Header({
           <div className="bro-header-center-space" />
 
           <div className="bro-header-actions">
-            <button
-              type="button"
-              className="bro-icon-button bro-search-button"
-              aria-label="Buscar"
-            >
-              <SearchIcon />
-            </button>
+            <BuscadorProductos
+              productos={
+                productos
+              }
+              onVerProducto={
+                onVerProducto
+              }
+            />
 
             <button
               type="button"
               className="bro-icon-button bro-user-button"
-              onClick={() => onAdmin?.()}
+              onClick={() =>
+                onAdmin?.()
+              }
               aria-label="Usuario"
             >
               <UserIcon />
@@ -287,7 +287,10 @@ function Header({
               type="button"
               className="bro-cart-new"
               onClick={() => {
-                setMenuMovil(false);
+                setMenuMovil(
+                  false
+                );
+
                 onAbrirCarrito();
               }}
               aria-label="Abrir carrito"
@@ -309,7 +312,9 @@ function Header({
           <button
             type="button"
             className="bro-nav-link"
-            onClick={onInicio}
+            onClick={
+              onInicio
+            }
           >
             Inicio
           </button>
