@@ -380,18 +380,12 @@ export function abrirWhatsAppBro({
       );
 
     if (android) {
-      const fallback =
-        encodeURIComponent(
-          urlFallback
-        );
-
       const urlWhatsAppNormal =
         `intent://send?phone=${WHATSAPP_PEDIDOS}` +
         `&text=${texto}` +
         '#Intent;' +
         'scheme=whatsapp;' +
         'package=com.whatsapp;' +
-        `S.browser_fallback_url=${fallback};` +
         'end';
 
       window.location.assign(

@@ -766,6 +766,11 @@ function App() {
     setGuardandoPedido,
   ] = useState(false);
 
+  const [
+    whatsappPendiente,
+    setWhatsappPendiente,
+  ] = useState(null);
+
   const esCarritoSoloDigital =
     carrito.length > 0 &&
     carrito.every(
@@ -1049,12 +1054,7 @@ function App() {
       ).matches;
 
     const ventanaWhatsApp =
-      esMovilWhatsApp
-        ? null
-        : window.open(
-            'about:blank',
-            '_blank'
-          );
+      null;
 
     if (
       ventanaWhatsApp
@@ -1118,11 +1118,17 @@ function App() {
         ).toFixed(2);
 
 
-      abrirWhatsAppBro({
+      setWhatsappPendiente({
         pedido,
-        formulario,
-        carrito,
-        ventanaWhatsApp,
+        formulario: {
+          ...formulario,
+        },
+        carrito:
+          carrito.map(
+            (item) => ({
+              ...item,
+            })
+          ),
       });
 
       localStorage.removeItem(
@@ -1482,6 +1488,127 @@ function App() {
           confirmarDatosPedido
         }
       />
+
+      {whatsappPendiente && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            background:
+              'rgba(17,17,17,.72)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '420px',
+              background: '#F4F1EC',
+              borderRadius: '18px',
+              padding: '28px 22px',
+              textAlign: 'center',
+              boxShadow:
+                '0 20px 60px rgba(0,0,0,.28)',
+            }}
+          >
+            <div
+              style={{
+                fontSize: '34px',
+                marginBottom: '8px',
+              }}
+            >
+              ✓
+            </div>
+
+            <h2
+              style={{
+                margin:
+                  '0 0 8px',
+                color: '#111',
+              }}
+            >
+              PEDIDO CREADO
+            </h2>
+
+            <p
+              style={{
+                margin:
+                  '0 0 6px',
+                color: '#555',
+              }}
+            >
+              Tu pedido
+            </p>
+
+            <strong
+              style={{
+                display: 'block',
+                marginBottom:
+                  '22px',
+                color: '#111',
+                fontSize: '18px',
+              }}
+            >
+              {
+                whatsappPendiente
+                  .pedido
+                  .codigo_pedido
+              }
+            </strong>
+
+            <button
+              type="button"
+              onClick={() => {
+                abrirWhatsAppBro({
+                  pedido:
+                    whatsappPendiente
+                      .pedido,
+
+                  formulario:
+                    whatsappPendiente
+                      .formulario,
+
+                  carrito:
+                    whatsappPendiente
+                      .carrito,
+                });
+              }}
+              style={{
+                width: '100%',
+                minHeight: '54px',
+                border: 'none',
+                borderRadius: '12px',
+                background:
+                  '#2D5A3D',
+                color: '#fff',
+                fontWeight: 800,
+                fontSize: '16px',
+                cursor: 'pointer',
+              }}
+            >
+              ABRIR WHATSAPP
+            </button>
+
+            <p
+              style={{
+                margin:
+                  '14px 0 0',
+                color: '#767676',
+                fontSize: '12px',
+                lineHeight: 1.4,
+              }}
+            >
+              Envía el mensaje para
+              terminar de coordinar
+              tu pedido.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
