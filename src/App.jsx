@@ -41,6 +41,7 @@ import PreguntasFrecuentes from './pages/PreguntasFrecuentes';
 import Afiliados from './pages/Afiliados';
 import Producto from './pages/Producto';
 import TodosCuadros from './pages/TodosCuadros';
+import Legal from './pages/Legal';
 import AdminApp from './admin/AdminApp';
 
 function App() {
@@ -123,6 +124,42 @@ function App() {
         return {
           pagina:
             'afiliados',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname ===
+        '/terminos-condiciones'
+      ) {
+        return {
+          pagina:
+            'terminos',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname ===
+        '/politica-privacidad'
+      ) {
+        return {
+          pagina:
+            'privacidad',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname ===
+        '/cambios-devoluciones'
+      ) {
+        return {
+          pagina:
+            'cambios',
           producto: null,
           valida: true,
         };
@@ -240,6 +277,15 @@ function App() {
 
       afiliados:
         '/afiliados',
+
+      terminos:
+        '/terminos-condiciones',
+
+      privacidad:
+        '/politica-privacidad',
+
+      cambios:
+        '/cambios-devoluciones',
     };
 
     return (
@@ -330,6 +376,24 @@ function App() {
   function irAfiliados() {
     irPagina(
       'afiliados'
+    );
+  }
+
+  function irTerminos() {
+    irPagina(
+      'terminos'
+    );
+  }
+
+  function irPrivacidad() {
+    irPagina(
+      'privacidad'
+    );
+  }
+
+  function irCambios() {
+    irPagina(
+      'cambios'
     );
   }
 
@@ -1403,6 +1467,27 @@ function App() {
         <Afiliados />
       )}
 
+      {pagina ===
+        'terminos' && (
+        <Legal
+          tipo="terminos"
+        />
+      )}
+
+      {pagina ===
+        'privacidad' && (
+        <Legal
+          tipo="privacidad"
+        />
+      )}
+
+      {pagina ===
+        'cambios' && (
+        <Legal
+          tipo="cambios"
+        />
+      )}
+
       <Footer
         onCategoria={
           irCategoria
@@ -1415,6 +1500,15 @@ function App() {
         }
         onContacto={
           irContacto
+        }
+        onTerminos={
+          irTerminos
+        }
+        onPrivacidad={
+          irPrivacidad
+        }
+        onCambios={
+          irCambios
         }
       />
 

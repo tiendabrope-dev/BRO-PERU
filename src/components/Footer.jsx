@@ -3,6 +3,9 @@ function Footer({
   onPreguntas,
   onMiPedido,
   onContacto,
+  onTerminos,
+  onPrivacidad,
+  onCambios,
 }) {
   function abrirInstagram() {
     window.open(
@@ -21,11 +24,61 @@ function Footer({
   }
 
   function abrirWhatsApp() {
+    const telefono =
+      '51931330058';
+
+    const mensaje =
+      encodeURIComponent(
+        'Hola BRO PERU'
+      );
+
+    const agente =
+      navigator.userAgent ||
+      navigator.vendor ||
+      window.opera ||
+      '';
+
+    const esAndroid =
+      /android/i.test(
+        agente
+      );
+
+    const esIOS =
+      /iPad|iPhone|iPod/.test(
+        agente
+      ) &&
+      !window.MSStream;
+
+    if (esAndroid) {
+      window.location.href =
+        `intent://send?phone=${telefono}&text=${mensaje}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
+
+      return;
+    }
+
+    if (esIOS) {
+      window.location.href =
+        `whatsapp://send?phone=${telefono}&text=${mensaje}`;
+
+      return;
+    }
+
     window.open(
-      'https://web.whatsapp.com/send?phone=51931330058&text=Hola%20BRO%20PERU',
+      `https://web.whatsapp.com/send?phone=${telefono}&text=${mensaje}`,
       '_blank',
       'noopener,noreferrer'
     );
+  }
+
+  function ejecutarNavegacion(
+    accion
+  ) {
+    if (
+      typeof accion ===
+      'function'
+    ) {
+      accion();
+    }
   }
 
   return (
@@ -1210,12 +1263,12 @@ function Footer({
                 'pointer',
             }}
             onClick={() =>
-              alert(
-                'Sección de Políticas de Privacidad'
+              ejecutarNavegacion(
+                onTerminos
               )
             }
           >
-            Políticas de Privacidad
+            Términos y Condiciones
           </button>
 
           <button
@@ -1246,8 +1299,44 @@ function Footer({
                 'pointer',
             }}
             onClick={() =>
-              alert(
-                'Sección de Cambios y Devoluciones'
+              ejecutarNavegacion(
+                onPrivacidad
+              )
+            }
+          >
+            Política de Privacidad
+          </button>
+
+          <button
+            type="button"
+            style={{
+              fontSize:
+                '12.5px',
+
+              padding:
+                '3px 0',
+
+              display:
+                'block',
+
+              textAlign:
+                'left',
+
+              background:
+                'transparent',
+
+              border:
+                'none',
+
+              color:
+                '#888',
+
+              cursor:
+                'pointer',
+            }}
+            onClick={() =>
+              ejecutarNavegacion(
+                onCambios
               )
             }
           >
