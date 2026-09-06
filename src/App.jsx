@@ -30,6 +30,10 @@ import {
   abrirWhatsAppBro,
 } from './lib/whatsapp';
 
+import {
+  cerrarSesionAdmin,
+} from './lib/admin';
+
 import Header from './components/Header';
 import Carrito from './components/Carrito';
 import Checkout from './components/Checkout';
@@ -58,6 +62,9 @@ function App() {
 
   const location =
     useLocation();
+
+  const zonaPrivadaAnterior =
+    useRef(false);
 
   /*
     ==================================
@@ -167,7 +174,9 @@ function App() {
 
       if (
         pathname === '/admin' ||
-        pathname.startsWith('/admin/')
+        pathname.startsWith('/admin/') ||
+        pathname === '/cuenta' ||
+        pathname.startsWith('/cuenta/')
       ) {
         return {
           pagina: 'admin',
@@ -226,6 +235,92 @@ function App() {
 
   const productoSeleccionado =
     rutaActual.producto;
+
+  /*
+    /admin queda como compatibilidad
+    temporal y se convierte a /cuenta.
+  */
+  useEffect(() => {
+    const pathname =
+      location.pathname.replace(
+        /\/+$/,
+        ''
+      ) || '/';
+
+    if (
+      pathname === '/admin' ||
+      pathname.startsWith('/admin/')
+    ) {
+      const destino =
+        pathname.replace(
+          /^\/admin/,
+          '/cuenta'
+        );
+
+      navigate(
+        destino,
+        {
+          replace: true,
+        }
+      );
+    }
+  }, [
+    location.pathname,
+    navigate,
+  ]);
+
+  /*
+    REGLA DE SEGURIDAD BRO
+
+    Mientras navegamos entre rutas
+    /cuenta la sesión continúa.
+
+    Si se abandona la zona privada
+    hacia cualquier página pública de
+    BRO, cerramos la sesión y enviamos
+    al inicio.
+  */
+  useEffect(() => {
+    const pathname =
+      location.pathname.replace(
+        /\/+$/,
+        ''
+      ) || '/';
+
+    const esZonaPrivada =
+      pathname === '/cuenta' ||
+      pathname.startsWith('/cuenta/') ||
+      pathname === '/admin' ||
+      pathname.startsWith('/admin/');
+
+    const veniaDeZonaPrivada =
+      zonaPrivadaAnterior.current;
+
+    zonaPrivadaAnterior.current =
+      esZonaPrivada;
+
+    if (
+      veniaDeZonaPrivada &&
+      !esZonaPrivada
+    ) {
+      cerrarSesionAdmin()
+        .finally(() => {
+          if (
+            location.pathname !== '/'
+          ) {
+            navigate(
+              '/',
+              {
+                replace: true,
+              }
+            );
+          }
+        });
+    }
+  }, [
+    location.pathname,
+    navigate,
+  ]);
 
   /*
     Si alguien escribe una URL
@@ -1321,7 +1416,7 @@ function App() {
         onAfiliados={
           irAfiliados
         }
-        onAdmin={() => navigate('/admin')}
+        onAdmin={() => navigate('/cuenta')}
         onAbrirCarrito={() =>
           setCarritoAbierto(
             true

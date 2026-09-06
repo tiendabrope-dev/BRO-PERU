@@ -1,18 +1,88 @@
 import { supabase } from './supabase';
 
+const CLAVE_USUARIO_RECORDADO =
+  'bro-usuario-recordado';
+
+export function obtenerUsuarioRecordado() {
+  if (
+    typeof window ===
+    'undefined'
+  ) {
+    return '';
+  }
+
+  try {
+    return (
+      localStorage.getItem(
+        CLAVE_USUARIO_RECORDADO
+      ) || ''
+    );
+  } catch {
+    return '';
+  }
+}
+
+export function guardarUsuarioRecordado(
+  usuario
+) {
+  if (
+    typeof window ===
+    'undefined'
+  ) {
+    return;
+  }
+
+  try {
+    localStorage.setItem(
+      CLAVE_USUARIO_RECORDADO,
+      String(
+        usuario || ''
+      ).trim()
+    );
+  } catch {
+    /*
+      Si el navegador bloquea
+      localStorage, el acceso
+      sigue funcionando.
+    */
+  }
+}
+
+export function olvidarUsuarioRecordado() {
+  if (
+    typeof window ===
+    'undefined'
+  ) {
+    return;
+  }
+
+  try {
+    localStorage.removeItem(
+      CLAVE_USUARIO_RECORDADO
+    );
+  } catch {
+    /* Sin acción. */
+  }
+}
+
 export async function iniciarSesionAdmin(
-  email,
+  usuario,
   password
 ) {
+  const identificador =
+    String(
+      usuario || ''
+    ).trim();
+
   const { data, error } =
     await supabase.auth.signInWithPassword({
-      email: email.trim(),
+      email: identificador,
       password,
     });
 
   if (error) {
     throw new Error(
-      'Correo o contraseña incorrectos.'
+      'Usuario o contraseña incorrectos.'
     );
   }
 

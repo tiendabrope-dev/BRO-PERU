@@ -1,71 +1,231 @@
+/* ==========================================================
+   BRO
+   ACCESO + ADMIN
+========================================================== */
+
 .bro-admin,
 .bro-admin-login,
 .bro-admin-loading {
   min-height: 100vh;
   background: #f4f1ec;
-  color: #111;
+  color: #111111;
   font-family: 'DM Sans', sans-serif;
 }
 
 .bro-admin-loading {
   display: grid;
   place-items: center;
+  color: #767676;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .bro-admin-login {
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
-.bro-admin-login-card {
-  width: min(100%, 390px);
-  padding: 32px;
-  background: #fff;
-  border: 1px solid #e2ddd5;
-  border-radius: 14px;
-}
-
-.bro-admin-brand {
-  font-family: 'Black Ops One', sans-serif;
-  font-size: 34px;
-  margin-bottom: 20px;
-}
-
-.bro-admin-login-card h1 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.bro-admin-login-card p {
-  margin: 6px 0 24px;
-  color: #767676;
-}
-
-.bro-admin-login-card label {
-  display: grid;
-  gap: 7px;
-  margin-bottom: 16px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.bro-admin-login-card input {
   width: 100%;
-  height: 44px;
-  padding: 0 12px;
-  border: 1px solid #ccc6bd;
-  border-radius: 7px;
-  background: #fff;
-  color: #111;
-  font: inherit;
+  padding: 48px 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
-.bro-admin-login-card input:focus {
-  outline: 2px solid #2d5a3d;
-  outline-offset: 1px;
+.bro-access-shell {
+  width: min(100%, 410px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bro-access-brand {
+  margin-bottom: 31px;
+  text-align: center;
+}
+
+.bro-access-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 9px;
+  color: #111111;
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 60px;
+  line-height: 0.95;
+  letter-spacing: -0.075em;
+  user-select: none;
+}
+
+.bro-access-logo span {
+  display: inline-block;
+}
+
+.bro-access-logo-o {
+  margin-left: 3px;
+  color: #4a8c60;
+}
+
+.bro-access-brand p {
+  margin: 0;
+  color: #77726c;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.bro-admin-login-card {
+  width: 100%;
+  padding: 29px 29px 27px;
+  box-sizing: border-box;
+  border: 1px solid rgba(17, 17, 17, 0.07);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 14px 40px rgba(17, 17, 17, 0.055);
+}
+
+.bro-access-card-heading {
+  margin-bottom: 26px;
+  text-align: center;
+}
+
+.bro-access-card-heading h1 {
+  margin: 0;
+  color: #111111;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.bro-access-card-heading p {
+  margin: 7px 0 0;
+  color: #959089;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.bro-admin-login-card label:not(.bro-access-remember) {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bro-admin-login-card label:not(.bro-access-remember) > span {
+  color: #4b4742;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.bro-admin-login-card input[type='text'],
+.bro-admin-login-card input[type='password'] {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  border: 1px solid #d4cfc7;
+  border-radius: 6px;
+  outline: 0;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.bro-admin-login-card input[type='text']::placeholder,
+.bro-admin-login-card input[type='password']::placeholder {
+  color: #b1aca5;
+  font-size: 12px;
+}
+
+.bro-admin-login-card input[type='text']:focus,
+.bro-admin-login-card input[type='password']:focus {
+  border-color: #2d5a3d;
+  box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.08);
+}
+
+/* ==========================================================
+   RECORDARME - COMPACTO
+========================================================== */
+
+.bro-access-remember {
+  position: relative;
+  margin: 2px 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bro-access-remember > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bro-access-remember-box {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1px solid #c8c2b9;
+  border-radius: 3px;
+  background: #ffffff;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.bro-access-remember > input:checked +
+.bro-access-remember-box {
+  border-color: #2d5a3d;
+  background: #2d5a3d;
+}
+
+.bro-access-remember > input:checked +
+.bro-access-remember-box::after {
+  content: '✓';
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.bro-access-remember-copy {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #4b4742;
+  letter-spacing: normal !important;
+}
+
+.bro-access-remember-copy strong {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.bro-access-remember-copy small {
+  color: #98928a;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+.bro-admin-error {
+  margin: 3px 0 16px;
+  padding: 11px 12px;
+  border-radius: 6px;
+  background: #fff0f0;
+  color: #b42318;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .bro-admin-login-card button,
@@ -75,37 +235,66 @@
   font-weight: 800;
 }
 
-.bro-admin-login-card button {
+.bro-access-submit {
   width: 100%;
-  height: 46px;
+  min-height: 47px;
+  margin-top: 4px;
+  border-radius: 5px;
   background: #2d5a3d;
-  color: #fff;
-  border-radius: 7px;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  transition:
+    background 0.18s ease,
+    transform 0.12s ease;
 }
 
-.bro-admin-login-card button:disabled {
+.bro-access-submit:hover {
+  background: #244b33;
+}
+
+.bro-access-submit:active {
+  transform: scale(0.995);
+}
+
+.bro-access-submit:disabled {
   opacity: 0.65;
   cursor: wait;
 }
 
-.bro-admin-error {
-  margin-bottom: 16px;
-  padding: 10px 12px;
-  background: #fff0f0;
-  color: #b42318;
-  border-radius: 6px;
-  font-size: 13px;
+.bro-access-footer {
+  margin-top: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #aaa49b;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.015em;
 }
+
+.bro-access-footer strong {
+  color: #3f3d39;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+/* ==========================================================
+   ADMIN AUTENTICADO
+========================================================== */
 
 .bro-admin-header {
   min-height: 68px;
   padding: 0 28px;
-  background: #111;
-  color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  background: #111111;
+  color: #ffffff;
 }
 
 .bro-admin-header strong {
@@ -116,7 +305,7 @@
 
 .bro-admin-header button {
   background: transparent;
-  color: #fff;
+  color: #ffffff;
 }
 
 .bro-admin-content {
@@ -134,13 +323,72 @@
   color: #767676;
 }
 
+.bro-admin-home {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================
+   MÓVIL
+========================================================== */
+
 @media (max-width: 600px) {
   .bro-admin-login {
-    padding: 16px;
+    padding: 34px 17px 24px;
+  }
+
+  .bro-access-shell {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .bro-access-brand {
+    margin-bottom: 26px;
+  }
+
+  .bro-access-logo {
+    font-size: 54px;
+  }
+
+  .bro-access-brand p {
+    font-size: 10px;
   }
 
   .bro-admin-login-card {
-    padding: 24px 20px;
+    padding: 26px 20px 23px;
+    border-radius: 10px;
+  }
+
+  .bro-access-card-heading {
+    margin-bottom: 23px;
+  }
+
+  .bro-access-card-heading h1 {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .bro-admin-login-card input[type='text'],
+  .bro-admin-login-card input[type='password'] {
+    height: 46px;
+  }
+
+  .bro-access-remember-copy small {
+    font-size: 7.5px;
+  }
+
+  .bro-access-submit {
+    min-height: 47px;
+  }
+
+  .bro-access-footer {
+    margin-top: 27px;
   }
 
   .bro-admin-header {
@@ -160,15 +408,8 @@
     width: min(100% - 32px, 1200px);
     padding: 28px 0;
   }
-}
 
-.bro-admin-home {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  font-family: 'Black Ops One', sans-serif;
-  font-size: 20px;
-  letter-spacing: 0.04em;
+  .bro-admin-home {
+    font-size: 17px;
+  }
 }

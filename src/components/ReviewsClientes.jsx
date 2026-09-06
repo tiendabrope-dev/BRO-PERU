@@ -10,6 +10,8 @@ import {
   enviarReviewBro,
 } from '../lib/reviews';
 
+import '../styles/reviews-clientes.css';
+
 function Estrellas({
   valor,
   interactivas = false,
@@ -24,15 +26,11 @@ function Estrellas({
           const estrella =
             index + 1;
 
-          if (
-            interactivas
-          ) {
+          if (interactivas) {
             return (
               <button
                 type="button"
-                key={
-                  estrella
-                }
+                key={estrella}
                 className="bro-review-star-button"
                 onClick={() =>
                   onCambiar(
@@ -41,8 +39,7 @@ function Estrellas({
                 }
                 aria-label={`${estrella} estrellas`}
               >
-                {estrella <=
-                valor
+                {estrella <= valor
                   ? '★'
                   : '☆'}
               </button>
@@ -51,13 +48,10 @@ function Estrellas({
 
           return (
             <span
-              key={
-                estrella
-              }
+              key={estrella}
               className="bro-review-star"
             >
-              {estrella <=
-              valor
+              {estrella <= valor
                 ? '★'
                 : '☆'}
             </span>
@@ -69,7 +63,7 @@ function Estrellas({
 }
 
 function ReviewsClientes({
-  productos,
+  productos = [],
   onVerProducto,
 }) {
   const carruselRef =
@@ -136,47 +130,60 @@ function ReviewsClientes({
       return productos.filter(
         (producto) =>
           producto.categoria ===
-          'cuadros'
+            'cuadros' ||
+          producto.categoria ===
+            'cuadro'
       );
-    }, [productos]);
+    }, [
+      productos,
+    ]);
 
-  // En el Home trabajamos con un máximo de 10 reviews.
-  // Supabase puede seguir guardando todas las reviews históricas.
   const reviewsVisibles =
     useMemo(() => {
       return reviews.slice(
         0,
         10
       );
-    }, [reviews]);
+    }, [
+      reviews,
+    ]);
 
   useEffect(() => {
+    let montado = true;
+
     async function cargar() {
       try {
-        setCargando(
-          true
-        );
+        setCargando(true);
 
         const resultado =
           await cargarReviewsAprobadas();
 
+        if (!montado) {
+          return;
+        }
+
         setReviews(
-          resultado
+          resultado || []
         );
       } catch (
         errorCarga
       ) {
         console.error(
+          'No se pudieron cargar las reseñas:',
           errorCarga
         );
       } finally {
-        setCargando(
-          false
-        );
+        if (montado) {
+          setCargando(false);
+        }
       }
     }
 
     cargar();
+
+    return () => {
+      montado = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -198,8 +205,8 @@ function ReviewsClientes({
       setPuedeSiguiente(
         carrusel.scrollLeft +
           carrusel.clientWidth <
-        carrusel.scrollWidth -
-          margen
+          carrusel.scrollWidth -
+            margen
       );
     }
 
@@ -240,9 +247,7 @@ function ReviewsClientes({
       ) ||
       formularioAbierto;
 
-    if (
-      modalAbierto
-    ) {
+    if (modalAbierto) {
       document.body.style.overflow =
         'hidden';
     }
@@ -304,6 +309,31 @@ function ReviewsClientes({
     );
   }
 
+  function nombreProducto(
+    review
+  ) {
+    return (
+      encontrarProducto(
+        review
+      )?.nombre ||
+      'Producto BRO'
+    );
+  }
+
+  function imagenProducto(
+    producto
+  ) {
+    if (!producto) {
+      return '';
+    }
+
+    return (
+      producto.imagenes?.[0] ||
+      producto.imagen ||
+      ''
+    );
+  }
+
   function actualizarCampo(
     evento
   ) {
@@ -319,8 +349,7 @@ function ReviewsClientes({
         ...actual,
 
         [name]:
-          name ===
-          'foto'
+          name === 'foto'
             ? files?.[0] ||
               null
             : value,
@@ -330,10 +359,17 @@ function ReviewsClientes({
     setError('');
   }
 
+  function abrirFormulario() {
+    setError('');
+    setMensaje('');
+
+    setFormularioAbierto(
+      true
+    );
+  }
+
   function cerrarFormulario() {
-    if (
-      enviando
-    ) {
+    if (enviando) {
       return;
     }
 
@@ -350,9 +386,7 @@ function ReviewsClientes({
   ) {
     evento.preventDefault();
 
-    if (
-      enviando
-    ) {
+    if (enviando) {
       return;
     }
 
@@ -383,9 +417,7 @@ function ReviewsClientes({
       return;
     }
 
-    if (
-      !producto
-    ) {
+    if (!producto) {
       setError(
         'Selecciona el producto que estás calificando.'
       );
@@ -403,20 +435,8 @@ function ReviewsClientes({
       return;
     }
 
-    if (
-      !formulario.foto
-    ) {
-      setError(
-        'Agrega una foto de tu cuadro.'
-      );
-
-      return;
-    }
-
     try {
-      setEnviando(
-        true
-      );
+      setEnviando(true);
 
       setError('');
       setMensaje('');
@@ -424,15 +444,19 @@ function ReviewsClientes({
       await enviarReviewBro({
         nombre,
         producto,
+
         rating:
           formulario.rating,
+
         comentario,
+
         foto:
-          formulario.foto,
+          formulario.foto ||
+          null,
       });
 
       setMensaje(
-        '¡Gracias! Tu review fue enviada a BRO y será revisada antes de publicarse.'
+        '¡Gracias! Tu reseña fue enviada a BRO y será revisada antes de publicarse.'
       );
 
       setFormulario({
@@ -451,1158 +475,17 @@ function ReviewsClientes({
 
       setError(
         errorEnvio.message ||
-          'No pudimos enviar tu review. Intenta nuevamente.'
+          'No pudimos enviar tu reseña. Intenta nuevamente.'
       );
     } finally {
-      setEnviando(
-        false
-      );
+      setEnviando(false);
     }
   }
 
   return (
     <section className="bro-reviews-section">
-      <style>
-        {`
-          .bro-reviews-section {
-            padding:
-              58px 28px
-              68px;
-
-            background:
-              #ffffff;
-
-            color:
-              #111111;
-
-            overflow:
-              hidden;
-          }
-
-          .bro-reviews-container {
-            width:
-              100%;
-
-            max-width:
-              1400px;
-
-            margin:
-              0 auto;
-          }
-
-          .bro-reviews-header {
-            display:
-              block;
-
-            margin-bottom:
-              112px;
-          }
-
-          .bro-reviews-eyebrow {
-            margin:
-              0 0 6px;
-
-            color:
-              #2D5A3D;
-
-            font-family:
-              'DM Sans',
-              sans-serif;
-
-            font-size:
-              9px;
-
-            font-weight:
-              700;
-
-            letter-spacing:
-              0.14em;
-          }
-
-          .bro-reviews-title {
-            margin:
-              0;
-
-            font-family:
-              'Syne',
-              sans-serif;
-
-            font-size:
-              clamp(
-                22px,
-                2.15vw,
-                34px
-              );
-
-            line-height:
-              0.98;
-
-            font-weight:
-              800;
-
-            letter-spacing:
-              -0.04em;
-          }
-
-          .bro-reviews-stage {
-            position:
-              relative;
-
-            width:
-              100%;
-
-            max-width:
-              1160px;
-
-            margin:
-              0 auto;
-          }
-
-          .bro-reviews-arrow {
-            position:
-              absolute;
-
-            top:
-              50%;
-
-            transform:
-              translateY(-50%);
-
-            z-index:
-              4;
-
-            width:
-              46px;
-
-            height:
-              46px;
-
-            border:
-              1px solid
-              rgba(
-                17,
-                17,
-                17,
-                0.08
-              );
-
-            border-radius:
-              50%;
-
-            background:
-              #ffffff;
-
-            color:
-              #767676;
-
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            justify-content:
-              center;
-
-            padding:
-              0;
-
-            font-size:
-              25px;
-
-            line-height:
-              1;
-
-            cursor:
-              pointer;
-
-            box-shadow:
-              0 5px 18px
-              rgba(
-                17,
-                17,
-                17,
-                0.10
-              );
-
-            transition:
-              color 0.2s ease,
-              opacity 0.2s ease,
-              transform 0.2s ease;
-          }
-
-          .bro-reviews-arrow:hover:not(:disabled) {
-            color:
-              #111111;
-
-            transform:
-              translateY(-50%)
-              scale(1.04);
-          }
-
-          .bro-reviews-arrow:disabled {
-            opacity:
-              0.22;
-
-            cursor:
-              default;
-          }
-
-          .bro-reviews-arrow-prev {
-            left:
-              0;
-          }
-
-          .bro-reviews-arrow-next {
-            right:
-              0;
-          }
-
-          .bro-reviews-carousel {
-            display:
-              flex;
-
-            gap:
-              12px;
-
-            width:
-              100%;
-
-            max-width:
-              1048px;
-
-            margin:
-              0 auto;
-
-            overflow-x:
-              auto;
-
-            scroll-behavior:
-              smooth;
-
-            scroll-snap-type:
-              x mandatory;
-
-            scrollbar-width:
-              none;
-
-            padding-bottom:
-              4px;
-          }
-
-          .bro-reviews-carousel::-webkit-scrollbar {
-            display:
-              none;
-          }
-
-          .bro-review-card {
-            position:
-              relative;
-
-            flex:
-              0 0
-              200px;
-
-            aspect-ratio:
-              1 / 1.04;
-
-            padding:
-              0;
-
-            border:
-              0;
-
-            border-radius:
-              12px;
-
-            overflow:
-              hidden;
-
-            background:
-              #eeeeee;
-
-            cursor:
-              pointer;
-
-            scroll-snap-align:
-              start;
-
-            text-align:
-              left;
-          }
-
-          .bro-review-card img {
-            width:
-              100%;
-
-            height:
-              100%;
-
-            object-fit:
-              cover;
-
-            display:
-              block;
-
-            transition:
-              transform
-              0.3s ease;
-          }
-
-          .bro-review-card:hover img {
-            transform:
-              scale(1.025);
-          }
-
-          .bro-review-card::after {
-            content:
-              '';
-
-            position:
-              absolute;
-
-            inset:
-              40% 0 0;
-
-            background:
-              linear-gradient(
-                to bottom,
-                transparent,
-                rgba(
-                  0,
-                  0,
-                  0,
-                  0.82
-                )
-              );
-          }
-
-          .bro-review-card-info {
-            position:
-              absolute;
-
-            z-index:
-              2;
-
-            left:
-              12px;
-
-            right:
-              12px;
-
-            bottom:
-              11px;
-
-            color:
-              #ffffff;
-          }
-
-          .bro-review-card-name {
-            display:
-              block;
-
-            margin-bottom:
-              3px;
-
-            font-size:
-              13px;
-
-            font-weight:
-              700;
-          }
-
-          .bro-review-card-product {
-            display:
-              block;
-
-            margin-bottom:
-              5px;
-
-            font-size:
-              9px;
-
-            font-weight:
-              600;
-
-            line-height:
-              1.2;
-
-            opacity:
-              0.82;
-          }
-
-          .bro-review-stars {
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            gap:
-              1px;
-          }
-
-          .bro-review-star {
-            color:
-              #F7B500;
-
-            font-size:
-              14px;
-          }
-
-          .bro-review-empty {
-            width:
-              100%;
-
-            padding:
-              50px 20px;
-
-            border:
-              1px dashed
-              #d7d3cc;
-
-            border-radius:
-              14px;
-
-            text-align:
-              center;
-
-            color:
-              #767676;
-          }
-
-          .bro-reviews-cta {
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            justify-content:
-              center;
-
-            flex-direction:
-              column;
-
-            gap:
-              10px;
-
-            margin-top:
-              34px;
-
-            text-align:
-              center;
-          }
-
-          .bro-reviews-cta p {
-            margin:
-              0;
-
-            color:
-              #767676;
-
-            font-size:
-              11.5px;
-          }
-
-          .bro-review-publish {
-            min-width:
-              220px;
-
-            min-height:
-              44px;
-
-            padding:
-              0 20px;
-
-            border:
-              1px solid
-              #111111;
-
-            border-radius:
-              5px;
-
-            background:
-              #111111;
-
-            color:
-              white;
-
-            font-size:
-              10.5px;
-
-            font-weight:
-              700;
-
-            letter-spacing:
-              0.12em;
-
-            cursor:
-              pointer;
-          }
-
-          .bro-review-publish:hover {
-            background:
-              #2D5A3D;
-
-            border-color:
-              #2D5A3D;
-          }
-
-          /* ==========================
-             MODALES
-          ========================== */
-
-          .bro-review-overlay {
-            position:
-              fixed;
-
-            z-index:
-              99999;
-
-            inset:
-              0;
-
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            justify-content:
-              center;
-
-            padding:
-              24px;
-
-            background:
-              rgba(
-                17,
-                17,
-                17,
-                0.68
-              );
-          }
-
-          .bro-review-modal {
-            position:
-              relative;
-
-            width:
-              min(
-                1080px,
-                100%
-              );
-
-            max-height:
-              calc(
-                100vh -
-                48px
-              );
-
-            overflow:
-              auto;
-
-            border-radius:
-              12px;
-
-            background:
-              #ffffff;
-          }
-
-          .bro-review-close {
-            position:
-              absolute;
-
-            z-index:
-              5;
-
-            top:
-              16px;
-
-            right:
-              16px;
-
-            width:
-              42px;
-
-            height:
-              42px;
-
-            border:
-              0;
-
-            border-radius:
-              50%;
-
-            background:
-              rgba(
-                17,
-                17,
-                17,
-                0.88
-              );
-
-            color:
-              #ffffff;
-
-            font-size:
-              22px;
-
-            cursor:
-              pointer;
-          }
-
-          .bro-review-detail-grid {
-            display:
-              grid;
-
-            grid-template-columns:
-              1.08fr 0.92fr;
-
-            min-height:
-              590px;
-          }
-
-          .bro-review-detail-photo {
-            min-height:
-              590px;
-
-            background:
-              #eeeeee;
-          }
-
-          .bro-review-detail-photo img {
-            width:
-              100%;
-
-            height:
-              100%;
-
-            min-height:
-              590px;
-
-            object-fit:
-              cover;
-
-            display:
-              block;
-          }
-
-          .bro-review-detail-copy {
-            display:
-              flex;
-
-            flex-direction:
-              column;
-
-            padding:
-              46px 38px
-              32px;
-          }
-
-          .bro-review-detail-top {
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            justify-content:
-              space-between;
-
-            gap:
-              15px;
-          }
-
-          .bro-review-detail-name {
-            margin:
-              0;
-
-            font-family:
-              'Syne',
-              sans-serif;
-
-            font-size:
-              21px;
-
-            font-weight:
-              700;
-          }
-
-          .bro-review-verified {
-            font-size:
-              12px;
-
-            font-weight:
-              700;
-
-            color:
-              #2D5A3D;
-          }
-
-          .bro-review-detail-copy
-          .bro-review-stars {
-            margin-top:
-              13px;
-          }
-
-          .bro-review-comment {
-            margin:
-              30px 0;
-
-            font-size:
-              16px;
-
-            line-height:
-              1.65;
-
-            color:
-              #333333;
-          }
-
-          .bro-review-product-box {
-            display:
-              flex;
-
-            align-items:
-              center;
-
-            gap:
-              16px;
-
-            margin-top:
-              auto;
-
-            padding-top:
-              24px;
-
-            border-top:
-              1px solid
-              #e1e1e1;
-          }
-
-          .bro-review-product-box img {
-            width:
-              66px;
-
-            height:
-              82px;
-
-            object-fit:
-              contain;
-
-            border:
-              1px solid
-              #e7e7e7;
-          }
-
-          .bro-review-product-copy {
-            flex:
-              1;
-          }
-
-          .bro-review-product-copy strong {
-            display:
-              block;
-
-            margin-bottom:
-              8px;
-
-            font-size:
-              14px;
-          }
-
-          .bro-review-view-product {
-            min-height:
-              40px;
-
-            padding:
-              0 18px;
-
-            border:
-              0;
-
-            border-radius:
-              6px;
-
-            background:
-              #f1f1f1;
-
-            color:
-              #111111;
-
-            font-weight:
-              700;
-
-            cursor:
-              pointer;
-          }
-
-          /* ==========================
-             FORMULARIO
-          ========================== */
-
-          .bro-review-form-modal {
-            width:
-              min(
-                650px,
-                100%
-              );
-
-            padding:
-              44px 40px
-              40px;
-          }
-
-          .bro-review-form-eyebrow {
-            margin:
-              0 0 6px;
-
-            color:
-              #2D5A3D;
-
-            font-size:
-              11px;
-
-            font-weight:
-              700;
-
-            letter-spacing:
-              0.14em;
-          }
-
-          .bro-review-form-title {
-            margin:
-              0 0 10px;
-
-            font-family:
-              'Syne',
-              sans-serif;
-
-            font-size:
-              34px;
-
-            font-weight:
-              800;
-          }
-
-          .bro-review-form-intro {
-            margin:
-              0 0 28px;
-
-            color:
-              #767676;
-
-            line-height:
-              1.5;
-          }
-
-          .bro-review-form {
-            display:
-              grid;
-
-            gap:
-              19px;
-          }
-
-          .bro-review-field {
-            display:
-              grid;
-
-            gap:
-              7px;
-          }
-
-          .bro-review-field label {
-            font-size:
-              11px;
-
-            font-weight:
-              700;
-
-            letter-spacing:
-              0.08em;
-          }
-
-          .bro-review-field input,
-          .bro-review-field select,
-          .bro-review-field textarea {
-            width:
-              100%;
-
-            min-height:
-              48px;
-
-            padding:
-              12px 13px;
-
-            border:
-              1px solid
-              #cccccc;
-
-            border-radius:
-              5px;
-
-            background:
-              #ffffff;
-
-            color:
-              #111111;
-
-            font:
-              inherit;
-
-            box-sizing:
-              border-box;
-          }
-
-          .bro-review-field textarea {
-            min-height:
-              120px;
-
-            resize:
-              vertical;
-          }
-
-          .bro-review-rating-select {
-            display:
-              flex;
-
-            gap:
-              5px;
-          }
-
-          .bro-review-star-button {
-            padding:
-              0;
-
-            border:
-              0;
-
-            background:
-              transparent;
-
-            color:
-              #F7B500;
-
-            font-size:
-              30px;
-
-            cursor:
-              pointer;
-          }
-
-          .bro-review-form-note {
-            margin:
-              0;
-
-            color:
-              #767676;
-
-            font-size:
-              11px;
-
-            line-height:
-              1.45;
-          }
-
-          .bro-review-error {
-            padding:
-              11px 13px;
-
-            border-radius:
-              5px;
-
-            background:
-              #fdeaea;
-
-            color:
-              #a32626;
-
-            font-size:
-              13px;
-          }
-
-          .bro-review-success {
-            padding:
-              13px;
-
-            border-radius:
-              5px;
-
-            background:
-              #E8F0EA;
-
-            color:
-              #2D5A3D;
-
-            font-size:
-              13px;
-
-            line-height:
-              1.45;
-          }
-
-          .bro-review-submit {
-            min-height:
-              50px;
-
-            border:
-              0;
-
-            border-radius:
-              5px;
-
-            background:
-              #2D5A3D;
-
-            color:
-              #ffffff;
-
-            font-weight:
-              700;
-
-            letter-spacing:
-              0.08em;
-
-            cursor:
-              pointer;
-          }
-
-          .bro-review-submit:disabled {
-            opacity:
-              0.55;
-
-            cursor:
-              wait;
-          }
-
-          @media (
-            max-width: 1000px
-          ) {
-            .bro-reviews-stage {
-              max-width:
-                700px;
-            }
-
-            .bro-reviews-carousel {
-              max-width:
-                594px;
-            }
-
-            .bro-review-card {
-              flex:
-                0 0
-                190px;
-            }
-          }
-
-          @media (
-            max-width: 700px
-          ) {
-            .bro-reviews-section {
-              padding:
-                50px 18px
-                58px;
-            }
-
-            .bro-reviews-header {
-              align-items:
-                center;
-
-              margin-bottom:
-                72px;
-            }
-
-            .bro-reviews-title {
-              font-size:
-                clamp(
-                  22px,
-                  8.5vw,
-                  30px
-                );
-            }
-
-            .bro-reviews-stage {
-              max-width:
-                100%;
-            }
-
-            .bro-reviews-arrow {
-              width:
-                38px;
-
-              height:
-                38px;
-
-              font-size:
-                21px;
-            }
-
-            .bro-reviews-arrow-prev {
-              left:
-                -2px;
-            }
-
-            .bro-reviews-arrow-next {
-              right:
-                -2px;
-            }
-
-            .bro-reviews-carousel {
-              width:
-                calc(100% - 70px);
-
-              max-width:
-                none;
-            }
-
-            .bro-review-card {
-              flex:
-                0 0
-                68%;
-            }
-
-            .bro-review-overlay {
-              padding:
-                12px;
-            }
-
-            .bro-review-detail-grid {
-              grid-template-columns:
-                1fr;
-            }
-
-            .bro-review-detail-photo,
-            .bro-review-detail-photo img {
-              min-height:
-                360px;
-
-              max-height:
-                420px;
-            }
-
-            .bro-review-detail-copy {
-              padding:
-                28px 22px;
-            }
-
-            .bro-review-form-modal {
-              padding:
-                36px 20px
-                25px;
-            }
-
-            .bro-review-form-title {
-              font-size:
-                28px;
-            }
-          }
-        `}
-      </style>
-
       <div className="bro-reviews-container">
+
         <div className="bro-reviews-header">
           <div>
             <p className="bro-reviews-eyebrow">
@@ -1615,12 +498,11 @@ function ReviewsClientes({
               SUS CUADROS.
             </h2>
           </div>
-
         </div>
 
         {cargando && (
           <div className="bro-review-empty">
-            Cargando reviews...
+            Cargando reseñas...
           </div>
         )}
 
@@ -1629,10 +511,10 @@ function ReviewsClientes({
             0 && (
             <div className="bro-review-empty">
               Aún no tenemos
-              reviews publicadas.
+              reseñas publicadas.
               Sé uno de los
               primeros en compartir
-              tu cuadro BRO.
+              tu experiencia con BRO.
             </div>
           )}
 
@@ -1640,6 +522,7 @@ function ReviewsClientes({
           reviews.length >
             0 && (
             <div className="bro-reviews-stage">
+
               {reviewsVisibles.length >
                 5 && (
                 <button
@@ -1653,7 +536,7 @@ function ReviewsClientes({
                   disabled={
                     !puedeAnterior
                   }
-                  aria-label="Reviews anteriores"
+                  aria-label="Reseñas anteriores"
                 >
                   ‹
                 </button>
@@ -1666,50 +549,101 @@ function ReviewsClientes({
                 className="bro-reviews-carousel"
               >
                 {reviewsVisibles.map(
-                  (
-                    review
-                  ) => (
-                    <button
-                      type="button"
-                      key={
-                        review.id
-                      }
-                      className="bro-review-card"
-                      onClick={() =>
-                        setModalReview(
-                          review
-                        )
-                      }
-                    >
-                      <img
-                        src={
-                          review.fotoUrl
+                  (review) => {
+                    const conFoto =
+                      Boolean(
+                        review.fotoUrl
+                      );
+
+                    return (
+                      <button
+                        type="button"
+                        key={
+                          review.id
                         }
-                        alt={`Review de ${review.nombre}`}
-                        loading="lazy"
-                      />
+                        className={`bro-review-card ${
+                          conFoto
+                            ? 'con-foto'
+                            : 'sin-foto'
+                        }`}
+                        onClick={() =>
+                          setModalReview(
+                            review
+                          )
+                        }
+                      >
+                        {conFoto ? (
+                          <>
+                            <img
+                              src={
+                                review.fotoUrl
+                              }
+                              alt={`Reseña de ${review.nombre}`}
+                              loading="lazy"
+                            />
 
-                      <span className="bro-review-card-info">
-                        <span className="bro-review-card-name">
-                          {
-                            review.nombre
-                          }
-                        </span>
+                            <span className="bro-review-card-info">
+                              <span className="bro-review-card-name">
+                                {
+                                  review.nombre
+                                }
+                              </span>
 
-                        <span className="bro-review-card-product">
-                          {
-                            review.producto_nombre
-                          }
-                        </span>
+                              <span className="bro-review-card-product">
+                                {
+                                  nombreProducto(
+                                    review
+                                  )
+                                }
+                              </span>
 
-                        <Estrellas
-                          valor={
-                            review.rating
-                          }
-                        />
-                      </span>
-                    </button>
-                  )
+                              <Estrellas
+                                valor={
+                                  review.rating
+                                }
+                              />
+                            </span>
+                          </>
+                        ) : (
+                          <span className="bro-review-text-card">
+                            <span className="bro-review-text-quote">
+                              “
+                            </span>
+
+                            <span className="bro-review-text-comment">
+                              {
+                                review.comentario
+                              }
+                            </span>
+
+                            <span className="bro-review-text-bottom">
+                              <span>
+                                <strong>
+                                  {
+                                    review.nombre
+                                  }
+                                </strong>
+
+                                <small>
+                                  {
+                                    nombreProducto(
+                                      review
+                                    )
+                                  }
+                                </small>
+                              </span>
+
+                              <Estrellas
+                                valor={
+                                  review.rating
+                                }
+                              />
+                            </span>
+                          </span>
+                        )}
+                      </button>
+                    );
+                  }
                 )}
               </div>
 
@@ -1726,11 +660,12 @@ function ReviewsClientes({
                   disabled={
                     !puedeSiguiente
                   }
-                  aria-label="Reviews siguientes"
+                  aria-label="Reseñas siguientes"
                 >
                   ›
                 </button>
               )}
+
             </div>
           )}
 
@@ -1744,15 +679,14 @@ function ReviewsClientes({
           <button
             type="button"
             className="bro-review-publish"
-            onClick={() =>
-              setFormularioAbierto(
-                true
-              )
+            onClick={
+              abrirFormulario
             }
           >
-            PUBLICAR TU REVIEW
+            PUBLICAR TU RESEÑA
           </button>
         </div>
+
       </div>
 
       {modalReview &&
@@ -1760,6 +694,11 @@ function ReviewsClientes({
           const producto =
             encontrarProducto(
               modalReview
+            );
+
+          const conFoto =
+            Boolean(
+              modalReview.fotoUrl
             );
 
           return (
@@ -1780,7 +719,11 @@ function ReviewsClientes({
               }}
             >
               <div
-                className="bro-review-modal"
+                className={`bro-review-modal ${
+                  conFoto
+                    ? ''
+                    : 'bro-review-modal-sin-foto'
+                }`}
                 role="dialog"
                 aria-modal="true"
               >
@@ -1797,15 +740,23 @@ function ReviewsClientes({
                   ×
                 </button>
 
-                <div className="bro-review-detail-grid">
-                  <div className="bro-review-detail-photo">
-                    <img
-                      src={
-                        modalReview.fotoUrl
-                      }
-                      alt={`Review de ${modalReview.nombre}`}
-                    />
-                  </div>
+                <div
+                  className={`bro-review-detail-grid ${
+                    conFoto
+                      ? ''
+                      : 'sin-foto'
+                  }`}
+                >
+                  {conFoto && (
+                    <div className="bro-review-detail-photo">
+                      <img
+                        src={
+                          modalReview.fotoUrl
+                        }
+                        alt={`Reseña de ${modalReview.nombre}`}
+                      />
+                    </div>
+                  )}
 
                   <div className="bro-review-detail-copy">
                     <div className="bro-review-detail-top">
@@ -1814,13 +765,6 @@ function ReviewsClientes({
                           modalReview.nombre
                         }
                       </h3>
-
-                      {modalReview.verificada && (
-                        <span className="bro-review-verified">
-                          ● COMPRA
-                          VERIFICADA
-                        </span>
-                      )}
                     </div>
 
                     <Estrellas
@@ -1835,16 +779,30 @@ function ReviewsClientes({
                       }
                     </p>
 
+                    {modalReview.fecha && (
+                      <span className="bro-review-date">
+                        {
+                          modalReview.fecha
+                        }
+                      </span>
+                    )}
+
                     {producto && (
                       <div className="bro-review-product-box">
-                        <img
-                          src={
-                            producto.imagen
-                          }
-                          alt={
-                            producto.nombre
-                          }
-                        />
+                        {imagenProducto(
+                          producto
+                        ) && (
+                          <img
+                            src={
+                              imagenProducto(
+                                producto
+                              )
+                            }
+                            alt={
+                              producto.nombre
+                            }
+                          />
+                        )}
 
                         <div className="bro-review-product-copy">
                           <strong>
@@ -1861,7 +819,7 @@ function ReviewsClientes({
                                 null
                               );
 
-                              onVerProducto(
+                              onVerProducto?.(
                                 producto
                               );
                             }}
@@ -1914,14 +872,14 @@ function ReviewsClientes({
             </p>
 
             <h3 className="bro-review-form-title">
-              PUBLICAR TU REVIEW
+              PUBLICAR TU RESEÑA
             </h3>
 
             <p className="bro-review-form-intro">
               Comparte tu
-              experiencia y una
-              foto de cómo quedó
-              tu cuadro.
+              experiencia. Puedes
+              agregar una foto de tu
+              cuadro si deseas.
             </p>
 
             <form
@@ -1965,14 +923,11 @@ function ReviewsClientes({
                   }
                 >
                   <option value="">
-                    Selecciona tu
-                    cuadro
+                    Selecciona tu cuadro
                   </option>
 
                   {cuadros.map(
-                    (
-                      producto
-                    ) => (
+                    (producto) => (
                       <option
                         key={
                           producto.id
@@ -2041,21 +996,29 @@ function ReviewsClientes({
               <div className="bro-review-field">
                 <label htmlFor="review-foto">
                   FOTO DE TU CUADRO
+                  <span className="bro-review-optional">
+                    OPCIONAL
+                  </span>
                 </label>
 
                 <input
                   id="review-foto"
                   name="foto"
                   type="file"
-                  accept="image/jpeg,image/png,image/webp"
+                  accept="image/jpeg,image/png,image/webp,image/avif"
                   onChange={
                     actualizarCampo
                   }
                 />
+
+                <small className="bro-review-file-help">
+                  Puedes enviar tu
+                  reseña sin fotografía.
+                </small>
               </div>
 
               <p className="bro-review-form-note">
-                Tu review no se
+                Tu reseña no se
                 publicará
                 automáticamente.
                 BRO la revisará
@@ -2085,7 +1048,7 @@ function ReviewsClientes({
                 >
                   {enviando
                     ? 'ENVIANDO...'
-                    : 'ENVIAR REVIEW'}
+                    : 'ENVIAR RESEÑA'}
                 </button>
               )}
             </form>

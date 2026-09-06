@@ -5,8 +5,30 @@ import {
 } from 'react';
 
 import usePreciosPublicos from '../hooks/usePreciosPublicos';
+import { obtenerResenasProducto } from '../lib/resenas';
 
 import '../styles/producto.css';
+
+function formatearFechaResena(fecha) {
+  if (!fecha) {
+    return '';
+  }
+
+  try {
+    return new Intl.DateTimeFormat(
+      'es-PE',
+      {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }
+    ).format(
+      new Date(`${fecha}T12:00:00`)
+    );
+  } catch {
+    return fecha;
+  }
+}
 
 function Producto({
   producto,
@@ -15,6 +37,22 @@ function Producto({
 }) {
   const { precios } =
     usePreciosPublicos();
+
+  const [
+    resenasProducto,
+    setResenasProducto,
+  ] = useState([]);
+
+  const [
+    cargandoResenas,
+    setCargandoResenas,
+  ] = useState(true);
+
+  const [
+    errorResenas,
+    setErrorResenas,
+  ] = useState('');
+
   const [size, setSize] =
     useState(null);
 
@@ -78,6 +116,81 @@ function Producto({
 
     setImagenActiva(0);
   }, [producto]);
+
+  useEffect(() => {
+    let activo = true;
+
+    async function cargarResenas() {
+      if (!producto?.id) {
+        if (activo) {
+          setResenasProducto([]);
+          setCargandoResenas(false);
+          setErrorResenas('');
+        }
+
+        return;
+      }
+
+      setCargandoResenas(true);
+      setErrorResenas('');
+
+      try {
+        const datos =
+          await obtenerResenasProducto(
+            producto.id
+          );
+
+        if (!activo) {
+          return;
+        }
+
+        setResenasProducto(
+          datos || []
+        );
+      } catch (errorCarga) {
+        if (!activo) {
+          return;
+        }
+
+        console.error(
+          'No se pudieron cargar las reseñas públicas:',
+          errorCarga
+        );
+
+        setResenasProducto([]);
+
+        setErrorResenas(
+          'No pudimos cargar las reseñas en este momento.'
+        );
+      } finally {
+        if (activo) {
+          setCargandoResenas(false);
+        }
+      }
+    }
+
+    cargarResenas();
+
+    function recargarResenas() {
+      cargarResenas();
+    }
+
+    window.addEventListener(
+      'bro-resenas-actualizadas',
+      recargarResenas
+    );
+
+    return () => {
+      activo = false;
+
+      window.removeEventListener(
+        'bro-resenas-actualizadas',
+        recargarResenas
+      );
+    };
+  }, [
+    producto?.id,
+  ]);
 
   const precioActual =
     useMemo(() => {
@@ -322,16 +435,77 @@ function Producto({
     );
   }
 
+  const resumenResenas =
+    useMemo(() => {
+      if (
+        resenasProducto.length ===
+        0
+      ) {
+        const promedioBase =
+          Math.max(
+            0,
+            Math.min(
+              5,
+              Number(
+                producto.rating ||
+                  0
+              )
+            )
+          );
+
+        return {
+          promedio:
+            promedioBase,
+
+          total:
+            Number(
+              producto.ratingCount ||
+                0
+            ),
+
+          usaResenasReales:
+            false,
+        };
+      }
+
+      const suma =
+        resenasProducto.reduce(
+          (
+            total,
+            resena
+          ) =>
+            total +
+            Number(
+              resena.calificacion ||
+                0
+            ),
+          0
+        );
+
+      return {
+        promedio:
+          suma /
+          resenasProducto.length,
+
+        total:
+          resenasProducto.length,
+
+        usaResenasReales:
+          true,
+      };
+    }, [
+      producto.rating,
+      producto.ratingCount,
+      resenasProducto,
+    ]);
+
   const rating =
     Math.max(
       0,
       Math.min(
         5,
         Math.round(
-          Number(
-            producto.rating ||
-              0
-          )
+          resumenResenas.promedio
         )
       )
     );
@@ -564,8 +738,7 @@ function Producto({
               <span className="bro-product-rating-count-detail">
                 (
                 {
-                  producto.ratingCount ||
-                  0
+                  resumenResenas.total
                 }
                 )
               </span>
@@ -797,6 +970,186 @@ function Producto({
         </section>
 
       </div>
+
+      <section
+        className="bro-product-reviews"
+        id="resenas"
+      >
+        <div className="bro-product-reviews-heading">
+          <div>
+            <span>
+              OPINIONES
+            </span>
+
+            <h2>
+              Reseñas de clientes
+            </h2>
+
+            <p>
+              Experiencias compartidas por
+              clientes de BRO.
+            </p>
+          </div>
+
+          {resenasProducto.length >
+            0 && (
+            <div className="bro-product-reviews-summary">
+              <strong>
+                {resumenResenas.promedio.toFixed(
+                  1
+                )}
+              </strong>
+
+              <div>
+                <span className="bro-product-reviews-summary-stars">
+                  {Array.from({
+                    length: 5,
+                  }).map(
+                    (
+                      _,
+                      index
+                    ) => (
+                      <span
+                        key={
+                          index
+                        }
+                      >
+                        {index <
+                        Math.round(
+                          resumenResenas.promedio
+                        )
+                          ? '★'
+                          : '☆'}
+                      </span>
+                    )
+                  )}
+                </span>
+
+                <small>
+                  {
+                    resenasProducto.length
+                  }{' '}
+                  {resenasProducto.length ===
+                  1
+                    ? 'reseña publicada'
+                    : 'reseñas publicadas'}
+                </small>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {cargandoResenas ? (
+          <div className="bro-product-reviews-status">
+            Cargando reseñas...
+          </div>
+        ) : errorResenas ? (
+          <div className="bro-product-reviews-error">
+            {errorResenas}
+          </div>
+        ) : resenasProducto.length ===
+          0 ? (
+          <div className="bro-product-reviews-empty">
+            <strong>
+              AÚN NO HAY RESEÑAS PUBLICADAS
+            </strong>
+
+            <span>
+              Las nuevas opiniones aparecerán
+              aquí después de ser aprobadas
+              por BRO.
+            </span>
+          </div>
+        ) : (
+          <div className="bro-product-reviews-grid">
+            {resenasProducto.map(
+              (
+                resena
+              ) => (
+                <article
+                  key={
+                    resena.id
+                  }
+                  className={`bro-product-review-card ${
+                    resena.imagen_url
+                      ? 'con-foto'
+                      : 'solo-texto'
+                  }`}
+                >
+                  {resena.imagen_url && (
+                    <div className="bro-product-review-photo">
+                      <img
+                        src={
+                          resena.imagen_url
+                        }
+                        alt={`Foto de la reseña de ${resena.nombre_cliente}`}
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+
+                  <div className="bro-product-review-content">
+                    <div className="bro-product-review-top">
+                      <div>
+                        <strong>
+                          {
+                            resena.nombre_cliente
+                          }
+                        </strong>
+
+                        <span>
+                          RESEÑA APROBADA
+                        </span>
+                      </div>
+
+                      <time>
+                        {
+                          formatearFechaResena(
+                            resena.fecha_resena
+                          )
+                        }
+                      </time>
+                    </div>
+
+                    <div
+                      className="bro-product-review-stars"
+                      aria-label={`${resena.calificacion} de 5 estrellas`}
+                    >
+                      {Array.from({
+                        length: 5,
+                      }).map(
+                        (
+                          _,
+                          index
+                        ) => (
+                          <span
+                            key={
+                              index
+                            }
+                          >
+                            {index <
+                            Number(
+                              resena.calificacion
+                            )
+                              ? '★'
+                              : '☆'}
+                          </span>
+                        )
+                      )}
+                    </div>
+
+                    <p>
+                      {
+                        resena.comentario
+                      }
+                    </p>
+                  </div>
+                </article>
+              )
+            )}
+          </div>
+        )}
+      </section>
     </main>
   );
 }

@@ -3,32 +3,48 @@ import {
 } from './supabase';
 
 const BUCKET_REVIEWS =
-  'review-fotos';
-
-const DURACION_URL_FOTO =
-  60 * 60;
+  'bro-resenas';
 
 function extensionDesdeArchivo(
   archivo
 ) {
   const tipo =
-    archivo.type;
+    archivo?.type;
 
   if (
-    tipo ===
-    'image/png'
+    tipo === 'image/png'
   ) {
     return 'png';
   }
 
   if (
-    tipo ===
-    'image/webp'
+    tipo === 'image/webp'
   ) {
     return 'webp';
   }
 
+  if (
+    tipo === 'image/avif'
+  ) {
+    return 'avif';
+  }
+
   return 'jpg';
+}
+
+function crearIdentificador() {
+  if (
+    typeof crypto !==
+      'undefined' &&
+    typeof crypto.randomUUID ===
+      'function'
+  ) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2, 10)}`;
 }
 
 function crearNombreArchivo(
@@ -39,127 +55,32 @@ function crearNombreArchivo(
       archivo
     );
 
-  const identificador =
-    typeof crypto !==
-      'undefined' &&
-    crypto.randomUUID
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random()
-          .toString(36)
-          .slice(2)}`;
-
   return (
-    `pendientes/` +
-    `${Date.now()}-` +
-    `${identificador}.` +
-    extension
+    `clientes/` +
+    `${crearIdentificador()}/` +
+    `${Date.now()}.${extension}`
   );
 }
 
-async function obtenerUrlTemporal(
-  fotoPath
+async function subirFotoReview(
+  foto
 ) {
-  const {
-    data,
-    error,
-  } =
-    await supabase.storage
-      .from(
-        BUCKET_REVIEWS
-      )
-      .createSignedUrl(
-        fotoPath,
-        DURACION_URL_FOTO
-      );
+  /*
+    FOTO OPCIONAL.
 
-  if (error) {
-    console.error(
-      'No se pudo obtener la foto de la review:',
-      error
-    );
-
+    Si el cliente no manda foto,
+    devolvemos null y continuamos
+    normalmente.
+  */
+  if (!foto) {
     return null;
-  }
-
-  return (
-    data?.signedUrl ||
-    null
-  );
-}
-
-export async function
-cargarReviewsAprobadas() {
-  const {
-    data,
-    error,
-  } =
-    await supabase.rpc(
-      'listar_reviews_bro'
-    );
-
-  if (error) {
-    throw error;
-  }
-
-  const reviews =
-    data || [];
-
-  const reviewsConFoto =
-    await Promise.all(
-      reviews.map(
-        async (
-          review
-        ) => {
-          const fotoUrl =
-            await obtenerUrlTemporal(
-              review.foto_path
-            );
-
-          return {
-            ...review,
-
-            fotoUrl,
-          };
-        }
-      )
-    );
-
-  return reviewsConFoto.filter(
-    (review) =>
-      Boolean(
-        review.fotoUrl
-      )
-  );
-}
-
-export async function
-enviarReviewBro({
-  nombre,
-  producto,
-  rating,
-  comentario,
-  foto,
-}) {
-  if (
-    !producto
-  ) {
-    throw new Error(
-      'Selecciona un producto.'
-    );
-  }
-
-  if (
-    !foto
-  ) {
-    throw new Error(
-      'Agrega una foto de tu cuadro.'
-    );
   }
 
   const tiposPermitidos = [
     'image/jpeg',
     'image/png',
     'image/webp',
+    'image/avif',
   ];
 
   if (
@@ -168,36 +89,36 @@ enviarReviewBro({
     )
   ) {
     throw new Error(
-      'La foto debe ser JPG, PNG o WEBP.'
+      'La foto debe ser JPG, PNG, WEBP o AVIF.'
     );
   }
 
   const maximo =
-    5 * 1024 * 1024;
+    8 * 1024 * 1024;
 
   if (
-    foto.size > maximo
+    foto.size >
+    maximo
   ) {
     throw new Error(
-      'La foto no puede superar los 5 MB.'
+      'La foto no puede superar los 8 MB.'
     );
   }
 
-  const fotoPath =
+  const ruta =
     crearNombreArchivo(
       foto
     );
 
   const {
-    error:
-      errorFoto,
+    error,
   } =
     await supabase.storage
       .from(
         BUCKET_REVIEWS
       )
       .upload(
-        fotoPath,
+        ruta,
         foto,
         {
           cacheControl:
@@ -211,46 +132,211 @@ enviarReviewBro({
         }
       );
 
-  if (errorFoto) {
+  if (error) {
     throw new Error(
-      errorFoto.message ||
+      error.message ||
         'No se pudo subir la foto.'
     );
   }
 
   const {
     data,
+  } =
+    supabase.storage
+      .from(
+        BUCKET_REVIEWS
+      )
+      .getPublicUrl(
+        ruta
+      );
+
+  return (
+    data?.publicUrl ||
+    null
+  );
+}
+
+export async function
+cargarReviewsAprobadas() {
+  const {
+    data,
+    error,
+  } =
+    await supabase
+      .from(
+        'bro_resenas'
+      )
+      .select(`
+        id,
+        producto_id,
+        nombre_cliente,
+        calificacion,
+        comentario,
+        imagen_url,
+        fecha_resena,
+        creado_en
+      `)
+      .eq(
+        'estado',
+        'aprobada'
+      )
+      .order(
+        'fecha_resena',
+        {
+          ascending: false,
+        }
+      )
+      .order(
+        'creado_en',
+        {
+          ascending: false,
+        }
+      );
+
+  if (error) {
+    throw new Error(
+      error.message ||
+        'No se pudieron cargar las reseñas.'
+    );
+  }
+
+  /*
+    Normalizamos para no romper
+    el componente actual.
+  */
+  return (
+    data || []
+  ).map(
+    (review) => ({
+      id:
+        review.id,
+
+      producto_id:
+        review.producto_id,
+
+      nombre:
+        review.nombre_cliente,
+
+      rating:
+        Number(
+          review.calificacion ||
+            0
+        ),
+
+      comentario:
+        review.comentario,
+
+      fotoUrl:
+        review.imagen_url ||
+        null,
+
+      fecha:
+        review.fecha_resena,
+
+      verificada:
+        false,
+    })
+  );
+}
+
+export async function
+enviarReviewBro({
+  nombre,
+  producto,
+  rating,
+  comentario,
+  foto = null,
+}) {
+  if (!producto?.id) {
+    throw new Error(
+      'Selecciona un producto.'
+    );
+  }
+
+  const nombreLimpio =
+    String(
+      nombre || ''
+    ).trim();
+
+  if (
+    nombreLimpio.length <
+    2
+  ) {
+    throw new Error(
+      'Ingresa tu nombre.'
+    );
+  }
+
+  const estrellas =
+    Number(
+      rating
+    );
+
+  if (
+    !Number.isInteger(
+      estrellas
+    ) ||
+    estrellas < 1 ||
+    estrellas > 5
+  ) {
+    throw new Error(
+      'Selecciona una puntuación de 1 a 5 estrellas.'
+    );
+  }
+
+  const texto =
+    String(
+      comentario || ''
+    ).trim();
+
+  if (
+    texto.length <
+    5
+  ) {
+    throw new Error(
+      'Cuéntanos brevemente tu experiencia.'
+    );
+  }
+
+  /*
+    Solo subimos foto cuando existe.
+  */
+  const imagenUrl =
+    await subirFotoReview(
+      foto
+    );
+
+  const {
+    data,
     error,
   } =
     await supabase.rpc(
-      'enviar_review_bro',
+      'enviar_resena_bro',
       {
         p_producto_id:
           String(
             producto.id
           ),
 
-        p_producto_nombre:
-          producto.nombre,
+        p_nombre_cliente:
+          nombreLimpio,
 
-        p_nombre:
-          nombre.trim(),
-
-        p_rating:
-          Number(
-            rating
-          ),
+        p_calificacion:
+          estrellas,
 
         p_comentario:
-          comentario.trim(),
+          texto,
 
-        p_foto_path:
-          fotoPath,
+        p_imagen_url:
+          imagenUrl,
       }
     );
 
   if (error) {
-    throw error;
+    throw new Error(
+      error.message ||
+        'No se pudo enviar la reseña.'
+    );
   }
 
   return data;

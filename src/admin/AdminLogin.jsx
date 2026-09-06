@@ -4,29 +4,75 @@ import {
 
 import {
   cerrarSesionAdmin,
+  guardarUsuarioRecordado,
   iniciarSesionAdmin,
+  obtenerUsuarioRecordado,
+  olvidarUsuarioRecordado,
   verificarAdmin,
 } from '../lib/admin';
 
 function AdminLogin({
   onAccesoCorrecto,
 }) {
-  const [email, setEmail] =
-    useState('');
+  const usuarioRecordadoInicial =
+    obtenerUsuarioRecordado();
 
-  const [password, setPassword] =
-    useState('');
+  const [
+    usuario,
+    setUsuario,
+  ] = useState(
+    usuarioRecordadoInicial
+  );
 
-  const [error, setError] =
-    useState('');
+  const [
+    password,
+    setPassword,
+  ] = useState('');
 
-  const [cargando, setCargando] =
-    useState(false);
+  const [
+    recordarme,
+    setRecordarme,
+  ] = useState(
+    Boolean(
+      usuarioRecordadoInicial
+    )
+  );
 
-  async function handleSubmit(event) {
+  const [
+    error,
+    setError,
+  ] = useState('');
+
+  const [
+    cargando,
+    setCargando,
+  ] = useState(false);
+
+  async function handleSubmit(
+    event
+  ) {
     event.preventDefault();
 
     if (cargando) {
+      return;
+    }
+
+    const usuarioLimpio =
+      usuario.trim();
+
+    if (!usuarioLimpio) {
+      setError(
+        'Ingresa tu usuario.'
+      );
+
+      return;
+    }
+
+    if (!password) {
+      setError(
+        'Ingresa tu contraseña.'
+      );
+
       return;
     }
 
@@ -34,30 +80,42 @@ function AdminLogin({
     setCargando(true);
 
     try {
-      const usuario =
+      const usuarioAutenticado =
         await iniciarSesionAdmin(
-          email,
+          usuarioLimpio,
           password
         );
 
-      const esAdmin =
+      const tieneAcceso =
         await verificarAdmin(
-          usuario.id
+          usuarioAutenticado.id
         );
 
-      if (!esAdmin) {
+      if (!tieneAcceso) {
         await cerrarSesionAdmin();
 
         throw new Error(
-          'Este usuario no tiene acceso al panel.'
+          'No tienes acceso disponible con esta cuenta.'
         );
       }
 
-      onAccesoCorrecto(usuario);
-    } catch (errorLogin) {
+      if (recordarme) {
+        guardarUsuarioRecordado(
+          usuarioLimpio
+        );
+      } else {
+        olvidarUsuarioRecordado();
+      }
+
+      onAccesoCorrecto(
+        usuarioAutenticado
+      );
+    } catch (
+      errorLogin
+    ) {
       setError(
         errorLogin.message ||
-          'No se pudo iniciar sesión.'
+          'No se pudo iniciar sesión. Verifica tus datos.'
       );
     } finally {
       setCargando(false);
@@ -66,67 +124,162 @@ function AdminLogin({
 
   return (
     <main className="bro-admin-login">
-      <form
-        className="bro-admin-login-card"
-        onSubmit={handleSubmit}
-      >
-        <div className="bro-admin-brand">
-          BRO
+
+      <section className="bro-access-shell">
+
+        <div className="bro-access-brand">
+
+          <div
+            className="bro-access-logo"
+            aria-label="BRO"
+          >
+            <span>B</span>
+
+            <span>R</span>
+
+            <span className="bro-access-logo-o">
+              O
+            </span>
+          </div>
+
+          <p>
+            Porque él se lo merece.
+          </p>
+
         </div>
 
-        <h1>
-          PANEL ADMIN
-        </h1>
-
-        <p>
-          Acceso privado
-        </p>
-
-        <label>
-          Correo
-          <input
-            type="email"
-            value={email}
-            onChange={(event) =>
-              setEmail(
-                event.target.value
-              )
-            }
-            autoComplete="email"
-            required
-          />
-        </label>
-
-        <label>
-          Contraseña
-          <input
-            type="password"
-            value={password}
-            onChange={(event) =>
-              setPassword(
-                event.target.value
-              )
-            }
-            autoComplete="current-password"
-            required
-          />
-        </label>
-
-        {error && (
-          <div className="bro-admin-error">
-            {error}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={cargando}
+        <form
+          className="bro-admin-login-card"
+          onSubmit={
+            handleSubmit
+          }
         >
-          {cargando
-            ? 'INGRESANDO...'
-            : 'INGRESAR'}
-        </button>
-      </form>
+          <div className="bro-access-card-heading">
+
+            <h1>
+              Ingresa a tu cuenta
+            </h1>
+
+            <p>
+              Accede a tu espacio BRO
+            </p>
+
+          </div>
+
+          <label>
+            <span>
+              USUARIO
+            </span>
+
+            <input
+              type="text"
+              name="username"
+              value={
+                usuario
+              }
+              onChange={(
+                event
+              ) => {
+                setUsuario(
+                  event.target.value
+                );
+
+                setError('');
+              }}
+              placeholder="usuario"
+              autoComplete="username"
+              autoCapitalize="none"
+              spellCheck="false"
+              required
+            />
+          </label>
+
+          <label>
+            <span>
+              CONTRASEÑA
+            </span>
+
+            <input
+              type="password"
+              name="password"
+              value={
+                password
+              }
+              onChange={(
+                event
+              ) => {
+                setPassword(
+                  event.target.value
+                );
+
+                setError('');
+              }}
+              placeholder="contraseña"
+              autoComplete="current-password"
+              required
+            />
+          </label>
+
+          <label className="bro-access-remember">
+            <input
+              type="checkbox"
+              checked={
+                recordarme
+              }
+              onChange={(
+                event
+              ) =>
+                setRecordarme(
+                  event.target.checked
+                )
+              }
+            />
+
+            <span className="bro-access-remember-box" />
+
+            <span className="bro-access-remember-copy">
+              <strong>
+                RECORDARME
+              </strong>
+
+              <small>
+                Recordar usuario en este equipo
+              </small>
+            </span>
+          </label>
+
+          {error && (
+            <div className="bro-admin-error">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="bro-access-submit"
+            disabled={
+              cargando
+            }
+          >
+            {cargando
+              ? 'INGRESANDO...'
+              : 'INGRESAR'}
+          </button>
+
+        </form>
+
+        <div className="bro-access-footer">
+          <span>
+            Powered by
+          </span>
+
+          <strong>
+            BRO Engineering
+          </strong>
+        </div>
+
+      </section>
+
     </main>
   );
 }

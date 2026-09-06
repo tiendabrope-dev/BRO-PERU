@@ -1,7 +1,13 @@
 import {
   useEffect,
+  useMemo,
   useState,
 } from 'react';
+
+import {
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 
 import {
   cerrarSesionAdmin,
@@ -15,32 +21,169 @@ import AdminPrecios from './AdminPrecios';
 import AdminPedidos from './AdminPedidos';
 import AdminPedidoDetalle from './AdminPedidoDetalle';
 import AdminProductos from './AdminProductos';
+import AdminResenas from './AdminResenas';
 
 import './admin.css';
 import './admin-pedido-detalle.css';
 
+const RUTAS_MODULOS = {
+  dashboard: '/cuenta/inicio',
+  pedidos: '/cuenta/pedidos',
+  precios: '/cuenta/precios',
+  productos: '/cuenta/productos',
+  resenas: '/cuenta/resenas',
+  ticker: '/cuenta/promociones',
+  ajustes: '/cuenta/ajustes',
+};
+
+function resolverRutaCuenta(
+  pathname
+) {
+  const ruta =
+    pathname.replace(
+      /\/+$/,
+      ''
+    ) || '/';
+
+  if (ruta === '/cuenta') {
+    return {
+      modulo: 'acceso',
+      pedidoId: null,
+      valida: true,
+    };
+  }
+
+  if (
+    ruta === '/cuenta/inicio'
+  ) {
+    return {
+      modulo: 'dashboard',
+      pedidoId: null,
+      valida: true,
+    };
+  }
+
+  if (
+    ruta === '/cuenta/pedidos'
+  ) {
+    return {
+      modulo: 'pedidos',
+      pedidoId: null,
+      valida: true,
+    };
+  }
+
+  if (
+    ruta.startsWith(
+      '/cuenta/pedidos/'
+    )
+  ) {
+    const valor =
+      ruta.slice(
+        '/cuenta/pedidos/'.length
+      );
+
+    let pedidoId = '';
+
+    try {
+      pedidoId =
+        decodeURIComponent(
+          valor
+        );
+    } catch {
+      pedidoId = '';
+    }
+
+    if (pedidoId) {
+      return {
+        modulo: 'pedidos',
+        pedidoId,
+        valida: true,
+      };
+    }
+  }
+
+  const rutasSimples = {
+    '/cuenta/precios':
+      'precios',
+
+    '/cuenta/productos':
+      'productos',
+
+    '/cuenta/resenas':
+      'resenas',
+
+    '/cuenta/promociones':
+      'ticker',
+
+    '/cuenta/ajustes':
+      'ajustes',
+  };
+
+  if (
+    rutasSimples[ruta]
+  ) {
+    return {
+      modulo:
+        rutasSimples[ruta],
+
+      pedidoId: null,
+      valida: true,
+    };
+  }
+
+  return {
+    modulo: 'dashboard',
+    pedidoId: null,
+    valida: false,
+  };
+}
+
 function AdminApp() {
-  const [usuario, setUsuario] =
-    useState(null);
+  const navigate =
+    useNavigate();
 
-  const [cargando, setCargando] =
-    useState(true);
-
-  const [modulo, setModulo] =
-    useState('dashboard');
+  const location =
+    useLocation();
 
   const [
-    pedidoSeleccionado,
-    setPedidoSeleccionado,
+    usuario,
+    setUsuario,
   ] = useState(null);
 
+  const [
+    cargando,
+    setCargando,
+  ] = useState(true);
+
+  const rutaCuenta =
+    useMemo(
+      () =>
+        resolverRutaCuenta(
+          location.pathname
+        ),
+      [
+        location.pathname,
+      ]
+    );
+
+  const {
+    modulo,
+    pedidoId,
+  } = rutaCuenta;
+
   useEffect(() => {
+    let montado = true;
+
     async function revisarAcceso() {
       try {
         const actual =
           await obtenerUsuarioActual();
 
-        if (!actual) {
+        if (
+          !montado ||
+          !actual
+        ) {
           return;
         }
 
@@ -54,54 +197,158 @@ function AdminApp() {
           return;
         }
 
-        setUsuario(actual);
+        if (montado) {
+          setUsuario(
+            actual
+          );
+        }
       } finally {
-        setCargando(false);
+        if (montado) {
+          setCargando(
+            false
+          );
+        }
       }
     }
 
     revisarAcceso();
+
+    return () => {
+      montado = false;
+    };
   }, []);
+
+  useEffect(() => {
+    if (
+      cargando ||
+      !usuario
+    ) {
+      return;
+    }
+
+    if (
+      location.pathname ===
+        '/cuenta' ||
+      !rutaCuenta.valida
+    ) {
+      navigate(
+        '/cuenta/inicio',
+        {
+          replace: true,
+        }
+      );
+    }
+  }, [
+    cargando,
+    usuario,
+    location.pathname,
+    rutaCuenta.valida,
+    navigate,
+  ]);
 
   async function salir() {
     await cerrarSesionAdmin();
 
     setUsuario(null);
-    setModulo('dashboard');
-    setPedidoSeleccionado(null);
+
+    navigate(
+      '/',
+      {
+        replace: true,
+      }
+    );
+  }
+
+  function accesoCorrecto(
+    usuarioAutenticado
+  ) {
+    setUsuario(
+      usuarioAutenticado
+    );
+
+    if (
+      location.pathname ===
+        '/cuenta' ||
+      !rutaCuenta.valida
+    ) {
+      navigate(
+        '/cuenta/inicio',
+        {
+          replace: true,
+        }
+      );
+    }
   }
 
   function volverDashboard() {
-    setModulo('dashboard');
-    setPedidoSeleccionado(null);
+    navigate(
+      '/cuenta/inicio'
+    );
   }
 
   function abrirModulo(
     nombreModulo
   ) {
-    setPedidoSeleccionado(null);
-    setModulo(nombreModulo);
+    navigate(
+      RUTAS_MODULOS[
+        nombreModulo
+      ] ||
+        '/cuenta/inicio'
+    );
+  }
+
+  function abrirPedido(
+    id
+  ) {
+    if (!id) {
+      return;
+    }
+
+    navigate(
+      '/cuenta/pedidos/' +
+        encodeURIComponent(
+          id
+        )
+    );
   }
 
   function renderModulo() {
-    if (modulo === 'precios') {
-      return <AdminPrecios />;
+    if (
+      modulo === 'precios'
+    ) {
+      return (
+        <AdminPrecios />
+      );
     }
 
-    if (modulo === 'productos') {
-      return <AdminProductos />;
+    if (
+      modulo === 'productos'
+    ) {
+      return (
+        <AdminProductos />
+      );
     }
 
-    if (modulo === 'pedidos') {
-      if (pedidoSeleccionado) {
+    if (
+      modulo === 'resenas'
+    ) {
+      return (
+        <AdminResenas />
+      );
+    }
+
+    if (
+      modulo === 'pedidos'
+    ) {
+      if (pedidoId) {
         return (
           <AdminPedidoDetalle
             pedidoId={
-              pedidoSeleccionado
+              pedidoId
             }
             onVolver={() =>
-              setPedidoSeleccionado(
-                null
+              navigate(
+                '/cuenta/pedidos'
               )
             }
           />
@@ -111,30 +358,46 @@ function AdminApp() {
       return (
         <AdminPedidos
           onAbrirPedido={
-            setPedidoSeleccionado
+            abrirPedido
           }
         />
       );
     }
 
-    return (
-      <section className="admin-module-placeholder">
-        <h2>
-          {modulo.toUpperCase()}
-        </h2>
+    if (
+      modulo === 'ticker' ||
+      modulo === 'ajustes'
+    ) {
+      return (
+        <section className="admin-module-placeholder">
+          <h2>
+            {modulo ===
+            'ticker'
+              ? 'PROMOCIONES'
+              : 'AJUSTES'}
+          </h2>
 
-        <p>
-          Este módulo se implementará
-          próximamente.
-        </p>
-      </section>
+          <p>
+            Este módulo se implementará
+            próximamente.
+          </p>
+        </section>
+      );
+    }
+
+    return (
+      <AdminDashboard
+        onAbrirModulo={
+          abrirModulo
+        }
+      />
     );
   }
 
   if (cargando) {
     return (
       <main className="bro-admin-loading">
-        Cargando panel...
+        Cargando...
       </main>
     );
   }
@@ -143,7 +406,7 @@ function AdminApp() {
     return (
       <AdminLogin
         onAccesoCorrecto={
-          setUsuario
+          accesoCorrecto
         }
       />
     );
@@ -159,12 +422,14 @@ function AdminApp() {
             volverDashboard
           }
         >
-          BRO ADMIN
+          BRO
         </button>
 
         <button
           type="button"
-          onClick={salir}
+          onClick={
+            salir
+          }
         >
           CERRAR SESIÓN
         </button>
@@ -180,7 +445,7 @@ function AdminApp() {
           />
         ) : (
           <>
-            {!pedidoSeleccionado && (
+            {!pedidoId && (
               <button
                 type="button"
                 className="admin-module-back"
