@@ -1,9 +1,14 @@
 import {
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
 import BuscadorProductos from './BuscadorProductos';
+
+import {
+  obtenerPromocionesPublicas,
+} from '../lib/promociones';
 
 function UserIcon() {
   return (
@@ -66,9 +71,6 @@ function MenuIcon({
 
 function Header({
   mensajesSuperiores,
-  mensajeSuperior,
-  onMensajeAnterior,
-  onMensajeSiguiente,
   cantidadTotal,
   productos,
   onVerProducto,
@@ -81,6 +83,22 @@ function Header({
   onAdmin,
   onAbrirCarrito,
 }) {
+  const [
+    mensajesTopbar,
+    setMensajesTopbar,
+  ] = useState(
+    Array.isArray(
+      mensajesSuperiores
+    )
+      ? mensajesSuperiores
+      : []
+  );
+
+  const [
+    mensajeTopbar,
+    setMensajeTopbar,
+  ] = useState(0);
+
   const [
     menuCategorias,
     setMenuCategorias,
@@ -96,31 +114,150 @@ function Header({
     setIsVisible,
   ] = useState(true);
 
-  const [
-    lastScrollY,
-    setLastScrollY,
-  ] = useState(0);
+  const lastScrollY =
+    useRef(0);
+
+  useEffect(() => {
+    let activo = true;
+
+    async function cargarPromociones() {
+      try {
+        const datos =
+          await obtenerPromocionesPublicas();
+
+        if (!activo) {
+          return;
+        }
+
+        const textos =
+          (datos || [])
+            .map(
+              (item) =>
+                String(
+                  item.texto ||
+                    ''
+                ).trim()
+            )
+            .filter(
+              Boolean
+            );
+
+        setMensajesTopbar(
+          textos
+        );
+
+        setMensajeTopbar(
+          0
+        );
+      } catch (
+        errorCarga
+      ) {
+        console.error(
+          'No se pudieron cargar las promociones públicas:',
+          errorCarga
+        );
+
+        if (!activo) {
+          return;
+        }
+
+        setMensajesTopbar(
+          Array.isArray(
+            mensajesSuperiores
+          )
+            ? mensajesSuperiores
+            : []
+        );
+
+        setMensajeTopbar(
+          0
+        );
+      }
+    }
+
+    cargarPromociones();
+
+    function recargarPromociones() {
+      cargarPromociones();
+    }
+
+    window.addEventListener(
+      'bro-promociones-actualizadas',
+      recargarPromociones
+    );
+
+    return () => {
+      activo = false;
+
+      window.removeEventListener(
+        'bro-promociones-actualizadas',
+        recargarPromociones
+      );
+    };
+  }, [
+    mensajesSuperiores,
+  ]);
+
+  useEffect(() => {
+    if (
+      mensajesTopbar.length <=
+      1
+    ) {
+      return undefined;
+    }
+
+    const intervalo =
+      window.setInterval(
+        () => {
+          setMensajeTopbar(
+            (actual) =>
+              (
+                actual +
+                1
+              ) %
+              mensajesTopbar.length
+          );
+        },
+        5000
+      );
+
+    return () => {
+      window.clearInterval(
+        intervalo
+      );
+    };
+  }, [
+    mensajesTopbar.length,
+  ]);
 
   useEffect(() => {
     function handleScroll() {
-      const currentScrollY =
+      const actual =
         window.scrollY;
 
       if (
-        currentScrollY <= 40
+        actual <=
+        40
       ) {
-        setIsVisible(true);
+        setIsVisible(
+          true
+        );
       } else if (
-        currentScrollY <
-        lastScrollY
+        actual <
+        lastScrollY.current
       ) {
-        setIsVisible(true);
+        setIsVisible(
+          true
+        );
       } else if (
-        currentScrollY >
-          lastScrollY &&
-        currentScrollY > 80
+        actual >
+        lastScrollY.current &&
+        actual >
+        80
       ) {
-        setIsVisible(false);
+        setIsVisible(
+          false
+        );
 
         setMenuCategorias(
           false
@@ -131,16 +268,16 @@ function Header({
         );
       }
 
-      setLastScrollY(
-        currentScrollY
-      );
+      lastScrollY.current =
+        actual;
     }
 
     window.addEventListener(
       'scroll',
       handleScroll,
       {
-        passive: true,
+        passive:
+          true,
       }
     );
 
@@ -150,13 +287,55 @@ function Header({
         handleScroll
       );
     };
-  }, [lastScrollY]);
+  }, []);
+
+  function mensajeAnteriorTopbar() {
+    if (
+      mensajesTopbar.length ===
+      0
+    ) {
+      return;
+    }
+
+    setMensajeTopbar(
+      (actual) =>
+        (
+          actual -
+          1 +
+          mensajesTopbar.length
+        ) %
+        mensajesTopbar.length
+    );
+  }
+
+  function mensajeSiguienteTopbar() {
+    if (
+      mensajesTopbar.length ===
+      0
+    ) {
+      return;
+    }
+
+    setMensajeTopbar(
+      (actual) =>
+        (
+          actual +
+          1
+        ) %
+        mensajesTopbar.length
+    );
+  }
 
   function abrirCategoria(
     tipoCategoria
   ) {
-    setMenuCategorias(false);
-    setMenuMovil(false);
+    setMenuCategorias(
+      false
+    );
+
+    setMenuMovil(
+      false
+    );
 
     onCategoria(
       tipoCategoria
@@ -166,8 +345,13 @@ function Header({
   function navegar(
     accion
   ) {
-    setMenuCategorias(false);
-    setMenuMovil(false);
+    setMenuCategorias(
+      false
+    );
+
+    setMenuMovil(
+      false
+    );
 
     accion?.();
   }
@@ -175,11 +359,20 @@ function Header({
   return (
     <div
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        zIndex: 2000,
+        position:
+          'fixed',
+
+        top:
+          0,
+
+        left:
+          0,
+
+        width:
+          '100%',
+
+        zIndex:
+          2000,
 
         transform:
           isVisible
@@ -190,38 +383,46 @@ function Header({
           'transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)',
       }}
     >
-      <div className="bro-topbar">
-        <button
-          type="button"
-          onClick={
-            onMensajeAnterior
-          }
-          aria-label="Mensaje anterior"
-        >
-          ‹
-        </button>
 
-        <div className="bro-topbar-message">
-          {
-            mensajesSuperiores[
-              mensajeSuperior
-            ]
-          }
+      {mensajesTopbar.length >
+        0 && (
+        <div className="bro-topbar">
+
+          <button
+            type="button"
+            onClick={
+              mensajeAnteriorTopbar
+            }
+            aria-label="Mensaje anterior"
+          >
+            ‹
+          </button>
+
+          <div className="bro-topbar-message">
+            {
+              mensajesTopbar[
+                mensajeTopbar
+              ]
+            }
+          </div>
+
+          <button
+            type="button"
+            onClick={
+              mensajeSiguienteTopbar
+            }
+            aria-label="Mensaje siguiente"
+          >
+            ›
+          </button>
+
         </div>
-
-        <button
-          type="button"
-          onClick={
-            onMensajeSiguiente
-          }
-          aria-label="Mensaje siguiente"
-        >
-          ›
-        </button>
-      </div>
+      )}
 
       <header className="bro-main-header">
+
         <div className="bro-header-top">
+
           <button
             type="button"
             className="bro-mobile-menu-button"
@@ -263,6 +464,7 @@ function Header({
           <div className="bro-header-center-space" />
 
           <div className="bro-header-actions">
+
             <BuscadorProductos
               productos={
                 productos
@@ -305,10 +507,13 @@ function Header({
                 {cantidadTotal}
               </span>
             </button>
+
           </div>
+
         </div>
 
         <nav className="bro-nav-row">
+
           <button
             type="button"
             className="bro-nav-link"
@@ -320,6 +525,7 @@ function Header({
           </button>
 
           <div className="bro-category-dropdown">
+
             <button
               type="button"
               className="bro-nav-dropdown-button"
@@ -339,6 +545,7 @@ function Header({
 
             {menuCategorias && (
               <div className="bro-dropdown-menu">
+
                 <button
                   type="button"
                   onClick={() =>
@@ -382,8 +589,10 @@ function Header({
                 >
                   Wallpapers
                 </button>
+
               </div>
             )}
+
           </div>
 
           <button
@@ -425,10 +634,12 @@ function Header({
           >
             Programa de afiliados
           </button>
+
         </nav>
 
         {menuMovil && (
           <div className="bro-mobile-menu">
+
             <button
               type="button"
               onClick={() =>
@@ -445,6 +656,7 @@ function Header({
             </div>
 
             <div className="bro-mobile-category-grid">
+
               <button
                 type="button"
                 onClick={() =>
@@ -488,6 +700,7 @@ function Header({
               >
                 WALLPAPERS
               </button>
+
             </div>
 
             <button
@@ -533,9 +746,12 @@ function Header({
             >
               PROGRAMA DE AFILIADOS
             </button>
+
           </div>
         )}
+
       </header>
+
     </div>
   );
 }

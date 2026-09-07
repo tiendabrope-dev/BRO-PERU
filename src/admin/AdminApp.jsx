@@ -23,6 +23,7 @@ import AdminPedidoDetalle from './AdminPedidoDetalle';
 import AdminProductos from './AdminProductos';
 import AdminResenas from './AdminResenas';
 import AdminSuscriptores from './AdminSuscriptores';
+import AdminPromociones from './AdminPromociones';
 
 import './admin.css';
 import './admin-pedido-detalle.css';
@@ -66,12 +67,18 @@ function resolverRutaCuenta(
     ) || '/';
 
   if (
-    ruta === '/cuenta'
+    ruta ===
+    '/cuenta'
   ) {
     return {
-      modulo: 'acceso',
-      pedidoId: null,
-      valida: true,
+      modulo:
+        'acceso',
+
+      pedidoId:
+        null,
+
+      valida:
+        true,
     };
   }
 
@@ -80,9 +87,14 @@ function resolverRutaCuenta(
     '/cuenta/inicio'
   ) {
     return {
-      modulo: 'dashboard',
-      pedidoId: null,
-      valida: true,
+      modulo:
+        'dashboard',
+
+      pedidoId:
+        null,
+
+      valida:
+        true,
     };
   }
 
@@ -91,9 +103,14 @@ function resolverRutaCuenta(
     '/cuenta/inicio/pedidos'
   ) {
     return {
-      modulo: 'pedidos',
-      pedidoId: null,
-      valida: true,
+      modulo:
+        'pedidos',
+
+      pedidoId:
+        null,
+
+      valida:
+        true,
     };
   }
 
@@ -121,9 +138,13 @@ function resolverRutaCuenta(
 
     if (pedidoId) {
       return {
-        modulo: 'pedidos',
+        modulo:
+          'pedidos',
+
         pedidoId,
-        valida: true,
+
+        valida:
+          true,
       };
     }
   }
@@ -148,21 +169,30 @@ function resolverRutaCuenta(
       'ajustes',
   };
 
-  if (rutas[ruta]) {
+  if (
+    rutas[ruta]
+  ) {
     return {
       modulo:
         rutas[ruta],
 
-      pedidoId: null,
+      pedidoId:
+        null,
 
-      valida: true,
+      valida:
+        true,
     };
   }
 
   return {
-    modulo: 'dashboard',
-    pedidoId: null,
-    valida: false,
+    modulo:
+      'dashboard',
+
+    pedidoId:
+      null,
+
+    valida:
+      false,
   };
 }
 
@@ -199,12 +229,6 @@ function AdminApp() {
     pedidoId,
   } = rutaCuenta;
 
-  /*
-    ==========================================================
-    RECARGA
-    ==========================================================
-  */
-
   useEffect(() => {
     function prepararRecarga() {
       const ruta =
@@ -239,12 +263,6 @@ function AdminApp() {
     };
   }, []);
 
-  /*
-    ==========================================================
-    COMPROBAR SESIÓN
-    ==========================================================
-  */
-
   useEffect(() => {
     let activo = true;
 
@@ -276,7 +294,9 @@ function AdminApp() {
           return;
         }
 
-        setUsuario(actual);
+        setUsuario(
+          actual
+        );
 
         const fueRecarga =
           sessionStorage.getItem(
@@ -291,7 +311,8 @@ function AdminApp() {
           navigate(
             '/cuenta/inicio',
             {
-              replace: true,
+              replace:
+                true,
             }
           );
 
@@ -305,13 +326,16 @@ function AdminApp() {
           navigate(
             '/cuenta/inicio',
             {
-              replace: true,
+              replace:
+                true,
             }
           );
         }
       } finally {
         if (activo) {
-          setCargando(false);
+          setCargando(
+            false
+          );
         }
       }
     }
@@ -324,12 +348,6 @@ function AdminApp() {
   }, [
     navigate,
   ]);
-
-  /*
-    ==========================================================
-    SIN SESIÓN
-    ==========================================================
-  */
 
   useEffect(() => {
     if (
@@ -346,7 +364,8 @@ function AdminApp() {
       navigate(
         '/cuenta',
         {
-          replace: true,
+          replace:
+            true,
         }
       );
     }
@@ -356,12 +375,6 @@ function AdminApp() {
     location.pathname,
     navigate,
   ]);
-
-  /*
-    ==========================================================
-    URL INVÁLIDA
-    ==========================================================
-  */
 
   useEffect(() => {
     if (
@@ -377,7 +390,8 @@ function AdminApp() {
       navigate(
         '/cuenta/inicio',
         {
-          replace: true,
+          replace:
+            true,
         }
       );
     }
@@ -387,12 +401,6 @@ function AdminApp() {
     rutaCuenta.valida,
     navigate,
   ]);
-
-  /*
-    ==========================================================
-    LOGIN
-    ==========================================================
-  */
 
   function accesoCorrecto(
     usuarioAutenticado
@@ -408,16 +416,11 @@ function AdminApp() {
     navigate(
       '/cuenta/inicio',
       {
-        replace: true,
+        replace:
+          true,
       }
     );
   }
-
-  /*
-    ==========================================================
-    CERRAR SESIÓN
-    ==========================================================
-  */
 
   async function salir() {
     sessionStorage.removeItem(
@@ -431,16 +434,11 @@ function AdminApp() {
     navigate(
       '/',
       {
-        replace: true,
+        replace:
+          true,
       }
     );
   }
-
-  /*
-    ==========================================================
-    NAVEGACIÓN
-    ==========================================================
-  */
 
   function volverDashboard() {
     navigate(
@@ -457,7 +455,9 @@ function AdminApp() {
       ] ||
       '/cuenta/inicio';
 
-    navigate(destino);
+    navigate(
+      destino
+    );
   }
 
   function abrirPedido(
@@ -474,12 +474,6 @@ function AdminApp() {
         )
     );
   }
-
-  /*
-    ==========================================================
-    MÓDULOS
-    ==========================================================
-  */
 
   function renderModulo() {
     if (
@@ -520,6 +514,15 @@ function AdminApp() {
 
     if (
       modulo ===
+      'ticker'
+    ) {
+      return (
+        <AdminPromociones />
+      );
+    }
+
+    if (
+      modulo ===
       'pedidos'
     ) {
       if (pedidoId) {
@@ -548,23 +551,17 @@ function AdminApp() {
 
     if (
       modulo ===
-        'ticker' ||
-      modulo ===
-        'ajustes'
+      'ajustes'
     ) {
       return (
         <section className="admin-module-placeholder">
 
           <h2>
-            {modulo ===
-            'ticker'
-              ? 'PROMOCIONES'
-              : 'AJUSTES'}
+            AJUSTES
           </h2>
 
           <p>
-            Este módulo se implementará
-            próximamente.
+            Este módulo se implementará próximamente.
           </p>
 
         </section>
@@ -580,12 +577,6 @@ function AdminApp() {
     );
   }
 
-  /*
-    ==========================================================
-    CARGANDO
-    ==========================================================
-  */
-
   if (cargando) {
     return (
       <main className="bro-admin-loading">
@@ -593,12 +584,6 @@ function AdminApp() {
       </main>
     );
   }
-
-  /*
-    ==========================================================
-    LOGIN
-    ==========================================================
-  */
 
   if (!usuario) {
     return (
@@ -609,12 +594,6 @@ function AdminApp() {
       />
     );
   }
-
-  /*
-    ==========================================================
-    ÁREA PRIVADA
-    ==========================================================
-  */
 
   return (
     <main className="bro-admin">
