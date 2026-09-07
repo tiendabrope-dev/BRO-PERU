@@ -23,6 +23,7 @@ const FORMULARIO_VACIO = {
   nombre: '',
   slug: '',
   cantidadResenas: '0',
+  promedioResenasBase: '5.0',
   activo: true,
   imagenUrl: '',
 };
@@ -251,6 +252,13 @@ function AdminProductos() {
             0
         ),
 
+      promedioResenasBase:
+        String(
+          producto
+            .promedio_resenas_base ??
+            5
+        ),
+
       activo:
         Boolean(
           producto.activo
@@ -360,6 +368,32 @@ function AdminProductos() {
         ...actual,
 
         cantidadResenas:
+          valor,
+      })
+    );
+  }
+
+  function cambiarPromedioResenas(
+    evento
+  ) {
+    const valor =
+      evento.target.value
+        .replace(',', '.');
+
+    if (
+      valor !== '' &&
+      !/^(?:[0-4](?:\.\d{0,2})?|5(?:\.0{0,2})?)$/.test(
+        valor
+      )
+    ) {
+      return;
+    }
+
+    setFormulario(
+      (actual) => ({
+        ...actual,
+
+        promedioResenasBase:
           valor,
       })
     );
@@ -482,6 +516,10 @@ function AdminProductos() {
               formulario
                 .cantidadResenas,
 
+            promedioResenasBase:
+              formulario
+                .promedioResenasBase,
+
             activo:
               formulario.activo,
           });
@@ -512,6 +550,10 @@ function AdminProductos() {
               cantidadResenas:
                 formulario
                   .cantidadResenas,
+
+              promedioResenasBase:
+                formulario
+                  .promedioResenasBase,
 
               activo:
                 formulario.activo,
@@ -786,11 +828,17 @@ function AdminProductos() {
                       <div className="admin-producto-meta">
                         <span>
                           ★{' '}
+                          {Number(
+                            producto
+                              .promedio_resenas_base ??
+                              5
+                          ).toFixed(1)}
+                          {' · '}
                           {producto
                             .cantidad_resenas ||
                             0}
                           {' '}
-                          reseñas
+                          reseñas base
                         </span>
 
                         {!imagenProducto && (
@@ -969,7 +1017,7 @@ function AdminProductos() {
 
                 <label>
                   <span>
-                    CANTIDAD DE RESEÑAS
+                    RESEÑAS BASE / HISTÓRICAS
                   </span>
 
                   <input
@@ -986,8 +1034,35 @@ function AdminProductos() {
                   />
 
                   <small className="admin-producto-ayuda">
-                    Solo se mostrará la
-                    cantidad de reseñas.
+                    Cantidad inicial que ya
+                    tenía el producto antes
+                    de recibir reseñas nuevas.
+                  </small>
+                </label>
+
+                <label>
+                  <span>
+                    PROMEDIO BASE
+                  </span>
+
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    value={
+                      formulario
+                        .promedioResenasBase
+                    }
+                    onChange={
+                      cambiarPromedioResenas
+                    }
+                    placeholder="4.8"
+                  />
+
+                  <small className="admin-producto-ayuda">
+                    Promedio histórico entre
+                    0 y 5 estrellas. Las reseñas
+                    aprobadas se combinarán
+                    automáticamente con este dato.
                   </small>
                 </label>
 

@@ -8,6 +8,7 @@ const SELECT_PRODUCTO = `
   activo,
   imagen_url,
   cantidad_resenas,
+  promedio_resenas_base,
   creado_en,
   actualizado_en
 `;
@@ -49,6 +50,67 @@ export function generarIdProducto() {
       .toString(36)
       .slice(2, 10)
   );
+}
+
+function normalizarCantidadResenas(
+  cantidad
+) {
+  return Math.max(
+    0,
+    Number.parseInt(
+      cantidad,
+      10
+    ) || 0
+  );
+}
+
+function normalizarPromedioBase(
+  promedio,
+  cantidadResenas
+) {
+  const cantidad =
+    normalizarCantidadResenas(
+      cantidadResenas
+    );
+
+  /*
+    Si no existen reseñas base,
+    el promedio histórico no participa
+    en ningún cálculo.
+  */
+  if (cantidad === 0) {
+    return null;
+  }
+
+  const texto =
+    String(
+      promedio ?? ''
+    )
+      .trim()
+      .replace(',', '.');
+
+  if (!texto) {
+    throw new Error(
+      'Ingresa el promedio base de reseñas.'
+    );
+  }
+
+  const numero =
+    Number(texto);
+
+  if (
+    !Number.isFinite(numero) ||
+    numero < 0 ||
+    numero > 5
+  ) {
+    throw new Error(
+      'El promedio base debe estar entre 0 y 5.'
+    );
+  }
+
+  return Math.round(
+    numero * 100
+  ) / 100;
 }
 
 export async function obtenerProductosAdmin() {
@@ -265,6 +327,7 @@ export async function crearProductoAdmin({
   slug,
   imagenUrl,
   cantidadResenas = 0,
+  promedioResenasBase = null,
   activo = true,
 }) {
   const nombreLimpio =
@@ -300,12 +363,14 @@ export async function crearProductoAdmin({
     generarIdProducto();
 
   const resenas =
-    Math.max(
-      0,
-      Number.parseInt(
-        cantidadResenas,
-        10
-      ) || 0
+    normalizarCantidadResenas(
+      cantidadResenas
+    );
+
+  const promedioBase =
+    normalizarPromedioBase(
+      promedioResenasBase,
+      resenas
     );
 
   const ahora =
@@ -334,8 +399,16 @@ export async function crearProductoAdmin({
         imagen_url:
           imagenUrl,
 
+        /*
+          IMPORTANTE:
+          cantidad_resenas sigue siendo
+          únicamente la base histórica.
+        */
         cantidad_resenas:
           resenas,
+
+        promedio_resenas_base:
+          promedioBase,
 
         creado_en:
           ahora,
@@ -378,6 +451,7 @@ export async function actualizarProductoAdmin(
     slug,
     imagenUrl,
     cantidadResenas = 0,
+    promedioResenasBase = null,
     activo = true,
   }
 ) {
@@ -410,12 +484,14 @@ export async function actualizarProductoAdmin(
   }
 
   const resenas =
-    Math.max(
-      0,
-      Number.parseInt(
-        cantidadResenas,
-        10
-      ) || 0
+    normalizarCantidadResenas(
+      cantidadResenas
+    );
+
+  const promedioBase =
+    normalizarPromedioBase(
+      promedioResenasBase,
+      resenas
     );
 
   const cambios = {
@@ -431,8 +507,15 @@ export async function actualizarProductoAdmin(
     activo:
       Boolean(activo),
 
+    /*
+      Siempre conserva el significado
+      de reseñas base / históricas.
+    */
     cantidad_resenas:
       resenas,
+
+    promedio_resenas_base:
+      promedioBase,
 
     actualizado_en:
       new Date()

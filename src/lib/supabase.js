@@ -12,18 +12,20 @@ export const supabase = createClient(
   {
     auth: {
       /*
-        SEGURIDAD BRO
+        SESIÓN BRO
 
-        La sesión vive únicamente
-        mientras la aplicación está
-        abierta.
-
-        Al cerrar, recargar o abandonar
-        completamente la página, no se
-        conserva una sesión autenticada
-        en localStorage.
+        - Sobrevive a F5 / recarga.
+        - Sobrevive mientras la pestaña
+          siga abierta.
+        - Al cerrar la pestaña o navegador,
+          sessionStorage desaparece.
+        - No queda una sesión permanente
+          en localStorage.
       */
-      persistSession: false,
+      persistSession: true,
+
+      storage:
+        window.sessionStorage,
 
       autoRefreshToken: true,
 

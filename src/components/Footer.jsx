@@ -1,3 +1,11 @@
+import {
+  useState,
+} from 'react';
+
+import {
+  suscribirNewsletterBro,
+} from '../lib/newsletter';
+
 function Footer({
   onCategoria,
   onPreguntas,
@@ -7,6 +15,63 @@ function Footer({
   onPrivacidad,
   onCambios,
 }) {
+  const [
+    correoNewsletter,
+    setCorreoNewsletter,
+  ] = useState('');
+
+  const [
+    estadoNewsletter,
+    setEstadoNewsletter,
+  ] = useState('idle');
+
+  const [
+    mensajeNewsletter,
+    setMensajeNewsletter,
+  ] = useState('');
+
+  async function enviarNewsletter(
+    evento
+  ) {
+    evento.preventDefault();
+
+    if (
+      estadoNewsletter ===
+      'enviando'
+    ) {
+      return;
+    }
+
+    setMensajeNewsletter('');
+    setEstadoNewsletter(
+      'enviando'
+    );
+
+    try {
+      await suscribirNewsletterBro(
+        correoNewsletter
+      );
+
+      setCorreoNewsletter('');
+      setEstadoNewsletter(
+        'exito'
+      );
+      setMensajeNewsletter(
+        '¡YA ERES PARTE DE BRO!'
+      );
+    } catch (
+      errorNewsletter
+    ) {
+      setEstadoNewsletter(
+        'error'
+      );
+      setMensajeNewsletter(
+        errorNewsletter.message ||
+          'No pudimos registrar tu correo. Intenta nuevamente.'
+      );
+    }
+  }
+
   function abrirInstagram() {
     window.open(
       'https://www.instagram.com/tiendabro.pe?igsh=MTRiNmliY3YyMmpjbw==',
@@ -193,6 +258,46 @@ function Footer({
 
             letter-spacing:
               0.04em;
+          }
+
+          .bro-footer-v2
+          .newsletter-form
+          button:disabled {
+            opacity:
+              0.55;
+
+            cursor:
+              wait;
+          }
+
+          .bro-footer-v2
+          .bro-newsletter-status {
+            min-height:
+              16px;
+
+            margin:
+              0 0 10px;
+
+            font-size:
+              10.5px;
+
+            line-height:
+              1.35;
+
+            letter-spacing:
+              0.025em;
+          }
+
+          .bro-footer-v2
+          .bro-newsletter-status.exito {
+            color:
+              #7eb58f;
+          }
+
+          .bro-footer-v2
+          .bro-newsletter-status.error {
+            color:
+              #e98787;
           }
 
           /* ==================================================
@@ -1389,8 +1494,11 @@ function Footer({
             y promociones exclusivas.
           </p>
 
-          <div
+          <form
             className="newsletter-form"
+            onSubmit={
+              enviarNewsletter
+            }
             style={{
               marginBottom:
                 '9px',
@@ -1404,7 +1512,38 @@ function Footer({
           >
             <input
               type="email"
+              value={
+                correoNewsletter
+              }
+              onChange={(
+                evento
+              ) => {
+                setCorreoNewsletter(
+                  evento.target.value
+                );
+
+                if (
+                  estadoNewsletter !==
+                  'enviando'
+                ) {
+                  setEstadoNewsletter(
+                    'idle'
+                  );
+                  setMensajeNewsletter(
+                    ''
+                  );
+                }
+              }}
               placeholder="Tu correo"
+              autoComplete="email"
+              inputMode="email"
+              maxLength="180"
+              disabled={
+                estadoNewsletter ===
+                'enviando'
+              }
+              required
+              aria-label="Correo para unirte a BRO"
               style={{
                 fontSize:
                   '12.5px',
@@ -1415,12 +1554,33 @@ function Footer({
             />
 
             <button
-              type="button"
-              aria-label="Enviar correo"
+              type="submit"
+              disabled={
+                estadoNewsletter ===
+                'enviando'
+              }
+              aria-label="Unirme a BRO"
             >
-              →
+              {estadoNewsletter ===
+              'enviando'
+                ? '…'
+                : '→'}
             </button>
-          </div>
+          </form>
+
+          {mensajeNewsletter && (
+            <p
+              className={`bro-newsletter-status ${estadoNewsletter}`}
+              role={
+                estadoNewsletter ===
+                'error'
+                  ? 'alert'
+                  : 'status'
+              }
+            >
+              {mensajeNewsletter}
+            </p>
+          )}
 
           <div className="bro-footer-payment">
             <span className="bro-footer-payment-label">

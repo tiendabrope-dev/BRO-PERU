@@ -22,18 +22,38 @@ import AdminPedidos from './AdminPedidos';
 import AdminPedidoDetalle from './AdminPedidoDetalle';
 import AdminProductos from './AdminProductos';
 import AdminResenas from './AdminResenas';
+import AdminSuscriptores from './AdminSuscriptores';
 
 import './admin.css';
 import './admin-pedido-detalle.css';
 
+const CLAVE_RECARGA =
+  'bro-cuenta-recarga';
+
 const RUTAS_MODULOS = {
-  dashboard: '/cuenta/inicio',
-  pedidos: '/cuenta/pedidos',
-  precios: '/cuenta/precios',
-  productos: '/cuenta/productos',
-  resenas: '/cuenta/resenas',
-  ticker: '/cuenta/promociones',
-  ajustes: '/cuenta/ajustes',
+  dashboard:
+    '/cuenta/inicio',
+
+  pedidos:
+    '/cuenta/inicio/pedidos',
+
+  precios:
+    '/cuenta/inicio/precios',
+
+  productos:
+    '/cuenta/inicio/productos',
+
+  resenas:
+    '/cuenta/inicio/resenas',
+
+  suscriptores:
+    '/cuenta/inicio/suscriptores',
+
+  ticker:
+    '/cuenta/inicio/promociones',
+
+  ajustes:
+    '/cuenta/inicio/ajustes',
 };
 
 function resolverRutaCuenta(
@@ -45,7 +65,9 @@ function resolverRutaCuenta(
       ''
     ) || '/';
 
-  if (ruta === '/cuenta') {
+  if (
+    ruta === '/cuenta'
+  ) {
     return {
       modulo: 'acceso',
       pedidoId: null,
@@ -54,7 +76,8 @@ function resolverRutaCuenta(
   }
 
   if (
-    ruta === '/cuenta/inicio'
+    ruta ===
+    '/cuenta/inicio'
   ) {
     return {
       modulo: 'dashboard',
@@ -64,7 +87,8 @@ function resolverRutaCuenta(
   }
 
   if (
-    ruta === '/cuenta/pedidos'
+    ruta ===
+    '/cuenta/inicio/pedidos'
   ) {
     return {
       modulo: 'pedidos',
@@ -75,12 +99,13 @@ function resolverRutaCuenta(
 
   if (
     ruta.startsWith(
-      '/cuenta/pedidos/'
+      '/cuenta/inicio/pedidos/'
     )
   ) {
     const valor =
       ruta.slice(
-        '/cuenta/pedidos/'.length
+        '/cuenta/inicio/pedidos/'
+          .length
       );
 
     let pedidoId = '';
@@ -103,31 +128,33 @@ function resolverRutaCuenta(
     }
   }
 
-  const rutasSimples = {
-    '/cuenta/precios':
+  const rutas = {
+    '/cuenta/inicio/precios':
       'precios',
 
-    '/cuenta/productos':
+    '/cuenta/inicio/productos':
       'productos',
 
-    '/cuenta/resenas':
+    '/cuenta/inicio/resenas':
       'resenas',
 
-    '/cuenta/promociones':
+    '/cuenta/inicio/suscriptores':
+      'suscriptores',
+
+    '/cuenta/inicio/promociones':
       'ticker',
 
-    '/cuenta/ajustes':
+    '/cuenta/inicio/ajustes':
       'ajustes',
   };
 
-  if (
-    rutasSimples[ruta]
-  ) {
+  if (rutas[ruta]) {
     return {
       modulo:
-        rutasSimples[ruta],
+        rutas[ruta],
 
       pedidoId: null,
+
       valida: true,
     };
   }
@@ -172,18 +199,65 @@ function AdminApp() {
     pedidoId,
   } = rutaCuenta;
 
+  /*
+    ==========================================================
+    RECARGA
+    ==========================================================
+  */
+
   useEffect(() => {
-    let montado = true;
+    function prepararRecarga() {
+      const ruta =
+        window.location.pathname;
+
+      if (
+        ruta.startsWith(
+          '/cuenta/inicio/'
+        )
+      ) {
+        sessionStorage.setItem(
+          CLAVE_RECARGA,
+          '1'
+        );
+      } else {
+        sessionStorage.removeItem(
+          CLAVE_RECARGA
+        );
+      }
+    }
+
+    window.addEventListener(
+      'beforeunload',
+      prepararRecarga
+    );
+
+    return () => {
+      window.removeEventListener(
+        'beforeunload',
+        prepararRecarga
+      );
+    };
+  }, []);
+
+  /*
+    ==========================================================
+    COMPROBAR SESIÓN
+    ==========================================================
+  */
+
+  useEffect(() => {
+    let activo = true;
 
     async function revisarAcceso() {
       try {
         const actual =
           await obtenerUsuarioActual();
 
-        if (
-          !montado ||
-          !actual
-        ) {
+        if (!activo) {
+          return;
+        }
+
+        if (!actual) {
           return;
         }
 
@@ -192,21 +266,52 @@ function AdminApp() {
             actual.id
           );
 
-        if (!esAdmin) {
-          await cerrarSesionAdmin();
+        if (!activo) {
           return;
         }
 
-        if (montado) {
-          setUsuario(
-            actual
+        if (!esAdmin) {
+          await cerrarSesionAdmin();
+
+          return;
+        }
+
+        setUsuario(actual);
+
+        const fueRecarga =
+          sessionStorage.getItem(
+            CLAVE_RECARGA
+          ) === '1';
+
+        sessionStorage.removeItem(
+          CLAVE_RECARGA
+        );
+
+        if (fueRecarga) {
+          navigate(
+            '/cuenta/inicio',
+            {
+              replace: true,
+            }
+          );
+
+          return;
+        }
+
+        if (
+          window.location.pathname ===
+          '/cuenta'
+        ) {
+          navigate(
+            '/cuenta/inicio',
+            {
+              replace: true,
+            }
           );
         }
       } finally {
-        if (montado) {
-          setCargando(
-            false
-          );
+        if (activo) {
+          setCargando(false);
         }
       }
     }
@@ -214,9 +319,49 @@ function AdminApp() {
     revisarAcceso();
 
     return () => {
-      montado = false;
+      activo = false;
     };
-  }, []);
+  }, [
+    navigate,
+  ]);
+
+  /*
+    ==========================================================
+    SIN SESIÓN
+    ==========================================================
+  */
+
+  useEffect(() => {
+    if (
+      cargando ||
+      usuario
+    ) {
+      return;
+    }
+
+    if (
+      location.pathname !==
+      '/cuenta'
+    ) {
+      navigate(
+        '/cuenta',
+        {
+          replace: true,
+        }
+      );
+    }
+  }, [
+    cargando,
+    usuario,
+    location.pathname,
+    navigate,
+  ]);
+
+  /*
+    ==========================================================
+    URL INVÁLIDA
+    ==========================================================
+  */
 
   useEffect(() => {
     if (
@@ -227,8 +372,6 @@ function AdminApp() {
     }
 
     if (
-      location.pathname ===
-        '/cuenta' ||
       !rutaCuenta.valida
     ) {
       navigate(
@@ -241,12 +384,46 @@ function AdminApp() {
   }, [
     cargando,
     usuario,
-    location.pathname,
     rutaCuenta.valida,
     navigate,
   ]);
 
+  /*
+    ==========================================================
+    LOGIN
+    ==========================================================
+  */
+
+  function accesoCorrecto(
+    usuarioAutenticado
+  ) {
+    sessionStorage.removeItem(
+      CLAVE_RECARGA
+    );
+
+    setUsuario(
+      usuarioAutenticado
+    );
+
+    navigate(
+      '/cuenta/inicio',
+      {
+        replace: true,
+      }
+    );
+  }
+
+  /*
+    ==========================================================
+    CERRAR SESIÓN
+    ==========================================================
+  */
+
   async function salir() {
+    sessionStorage.removeItem(
+      CLAVE_RECARGA
+    );
+
     await cerrarSesionAdmin();
 
     setUsuario(null);
@@ -259,26 +436,11 @@ function AdminApp() {
     );
   }
 
-  function accesoCorrecto(
-    usuarioAutenticado
-  ) {
-    setUsuario(
-      usuarioAutenticado
-    );
-
-    if (
-      location.pathname ===
-        '/cuenta' ||
-      !rutaCuenta.valida
-    ) {
-      navigate(
-        '/cuenta/inicio',
-        {
-          replace: true,
-        }
-      );
-    }
-  }
+  /*
+    ==========================================================
+    NAVEGACIÓN
+    ==========================================================
+  */
 
   function volverDashboard() {
     navigate(
@@ -289,12 +451,13 @@ function AdminApp() {
   function abrirModulo(
     nombreModulo
   ) {
-    navigate(
+    const destino =
       RUTAS_MODULOS[
         nombreModulo
       ] ||
-        '/cuenta/inicio'
-    );
+      '/cuenta/inicio';
+
+    navigate(destino);
   }
 
   function abrirPedido(
@@ -305,16 +468,23 @@ function AdminApp() {
     }
 
     navigate(
-      '/cuenta/pedidos/' +
+      '/cuenta/inicio/pedidos/' +
         encodeURIComponent(
           id
         )
     );
   }
 
+  /*
+    ==========================================================
+    MÓDULOS
+    ==========================================================
+  */
+
   function renderModulo() {
     if (
-      modulo === 'precios'
+      modulo ===
+      'precios'
     ) {
       return (
         <AdminPrecios />
@@ -322,7 +492,8 @@ function AdminApp() {
     }
 
     if (
-      modulo === 'productos'
+      modulo ===
+      'productos'
     ) {
       return (
         <AdminProductos />
@@ -330,7 +501,8 @@ function AdminApp() {
     }
 
     if (
-      modulo === 'resenas'
+      modulo ===
+      'resenas'
     ) {
       return (
         <AdminResenas />
@@ -338,7 +510,17 @@ function AdminApp() {
     }
 
     if (
-      modulo === 'pedidos'
+      modulo ===
+      'suscriptores'
+    ) {
+      return (
+        <AdminSuscriptores />
+      );
+    }
+
+    if (
+      modulo ===
+      'pedidos'
     ) {
       if (pedidoId) {
         return (
@@ -348,7 +530,7 @@ function AdminApp() {
             }
             onVolver={() =>
               navigate(
-                '/cuenta/pedidos'
+                '/cuenta/inicio/pedidos'
               )
             }
           />
@@ -365,11 +547,14 @@ function AdminApp() {
     }
 
     if (
-      modulo === 'ticker' ||
-      modulo === 'ajustes'
+      modulo ===
+        'ticker' ||
+      modulo ===
+        'ajustes'
     ) {
       return (
         <section className="admin-module-placeholder">
+
           <h2>
             {modulo ===
             'ticker'
@@ -381,6 +566,7 @@ function AdminApp() {
             Este módulo se implementará
             próximamente.
           </p>
+
         </section>
       );
     }
@@ -394,6 +580,12 @@ function AdminApp() {
     );
   }
 
+  /*
+    ==========================================================
+    CARGANDO
+    ==========================================================
+  */
+
   if (cargando) {
     return (
       <main className="bro-admin-loading">
@@ -401,6 +593,12 @@ function AdminApp() {
       </main>
     );
   }
+
+  /*
+    ==========================================================
+    LOGIN
+    ==========================================================
+  */
 
   if (!usuario) {
     return (
@@ -412,9 +610,17 @@ function AdminApp() {
     );
   }
 
+  /*
+    ==========================================================
+    ÁREA PRIVADA
+    ==========================================================
+  */
+
   return (
     <main className="bro-admin">
+
       <header className="bro-admin-header">
+
         <button
           type="button"
           className="bro-admin-home"
@@ -433,9 +639,11 @@ function AdminApp() {
         >
           CERRAR SESIÓN
         </button>
+
       </header>
 
       <div className="bro-admin-content">
+
         {modulo ===
         'dashboard' ? (
           <AdminDashboard
@@ -445,6 +653,7 @@ function AdminApp() {
           />
         ) : (
           <>
+
             {!pedidoId && (
               <button
                 type="button"
@@ -458,9 +667,12 @@ function AdminApp() {
             )}
 
             {renderModulo()}
+
           </>
         )}
+
       </div>
+
     </main>
   );
 }

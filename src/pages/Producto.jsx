@@ -435,68 +435,61 @@ function Producto({
     );
   }
 
+  /*
+    ==========================================================
+    RESUMEN DE RESEÑAS
+    ==========================================================
+
+    IMPORTANTE:
+
+    useProductosPublicos ya entrega:
+
+    producto.rating
+    = promedio combinado de:
+      - reseñas base / históricas
+      - reseñas reales aprobadas
+
+    producto.ratingCount
+    = cantidad total combinada de:
+      - reseñas base / históricas
+      - reseñas reales aprobadas
+
+    Por eso NO volvemos a sumar aquí
+    resenasProducto. Esa lista se usa
+    únicamente para mostrar las tarjetas
+    de opiniones reales aprobadas.
+  */
+
   const resumenResenas =
     useMemo(() => {
-      if (
-        resenasProducto.length ===
-        0
-      ) {
-        const promedioBase =
-          Math.max(
-            0,
-            Math.min(
-              5,
-              Number(
-                producto.rating ||
-                  0
-              )
+      const promedio =
+        Math.max(
+          0,
+          Math.min(
+            5,
+            Number(
+              producto.rating ||
+                0
             )
-          );
+          )
+        );
 
-        return {
-          promedio:
-            promedioBase,
-
-          total:
-            Number(
-              producto.ratingCount ||
-                0
-            ),
-
-          usaResenasReales:
-            false,
-        };
-      }
-
-      const suma =
-        resenasProducto.reduce(
-          (
-            total,
-            resena
-          ) =>
-            total +
-            Number(
-              resena.calificacion ||
-                0
-            ),
-          0
+      const total =
+        Math.max(
+          0,
+          Number(
+            producto.ratingCount ||
+              0
+          )
         );
 
       return {
-        promedio:
-          suma /
-          resenasProducto.length,
-
-        total:
-          resenasProducto.length,
-
-        usaResenasReales:
-          true,
+        promedio,
+        total,
       };
     }, [
       producto.rating,
       producto.ratingCount,
-      resenasProducto,
     ]);
 
   const rating =
@@ -991,7 +984,7 @@ function Producto({
             </p>
           </div>
 
-          {resenasProducto.length >
+          {resumenResenas.total >
             0 && (
             <div className="bro-product-reviews-summary">
               <strong>
@@ -1027,12 +1020,12 @@ function Producto({
 
                 <small>
                   {
-                    resenasProducto.length
+                    resumenResenas.total
                   }{' '}
-                  {resenasProducto.length ===
+                  {resumenResenas.total ===
                   1
-                    ? 'reseña publicada'
-                    : 'reseñas publicadas'}
+                    ? 'reseña'
+                    : 'reseñas'}
                 </small>
               </div>
             </div>
@@ -1051,13 +1044,13 @@ function Producto({
           0 ? (
           <div className="bro-product-reviews-empty">
             <strong>
-              AÚN NO HAY RESEÑAS PUBLICADAS
+              AÚN NO HAY OPINIONES DETALLADAS
             </strong>
 
             <span>
-              Las nuevas opiniones aparecerán
-              aquí después de ser aprobadas
-              por BRO.
+              Las nuevas opiniones con comentario
+              aparecerán aquí después de ser
+              aprobadas por BRO.
             </span>
           </div>
         ) : (

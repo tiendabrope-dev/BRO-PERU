@@ -24,6 +24,184 @@ function normalizarCategoria(
   return valor;
 }
 
+function obtenerNumeroValido(
+  valor,
+  fallback = 0
+) {
+  const numero =
+    Number(valor);
+
+  return Number.isFinite(
+    numero
+  )
+    ? numero
+    : fallback;
+}
+
+function obtenerPromedioBase({
+  promedioDb,
+  cantidadBase,
+  promedioCatalogo,
+}) {
+  if (
+    cantidadBase <= 0
+  ) {
+    return 0;
+  }
+
+  const db =
+    Number(promedioDb);
+
+  if (
+    Number.isFinite(db) &&
+    db >= 0 &&
+    db <= 5
+  ) {
+    return db;
+  }
+
+  const catalogo =
+    Number(
+      promedioCatalogo
+    );
+
+  if (
+    Number.isFinite(catalogo) &&
+    catalogo >= 0 &&
+    catalogo <= 5
+  ) {
+    return catalogo;
+  }
+
+  /*
+    Compatibilidad con los productos
+    antiguos que todavía no tenían
+    promedio_resenas_base.
+  */
+  return 5;
+}
+
+function construirEstadisticasReales(
+  resenas = []
+) {
+  const mapa =
+    new Map();
+
+  for (
+    const resena
+    of resenas
+  ) {
+    const id =
+      String(
+        resena.producto_id ||
+        ''
+      );
+
+    if (!id) {
+      continue;
+    }
+
+    const estrellas =
+      obtenerNumeroValido(
+        resena.calificacion,
+        0
+      );
+
+    const actual =
+      mapa.get(id) || {
+        cantidad: 0,
+        suma: 0,
+      };
+
+    actual.cantidad += 1;
+    actual.suma +=
+      estrellas;
+
+    mapa.set(
+      id,
+      actual
+    );
+  }
+
+  return mapa;
+}
+
+function combinarEstadisticas({
+  cantidadBase,
+  promedioBase,
+  estadisticaReal,
+}) {
+  const base =
+    Math.max(
+      0,
+      Math.trunc(
+        obtenerNumeroValido(
+          cantidadBase,
+          0
+        )
+      )
+    );
+
+  const reales =
+    Math.max(
+      0,
+      Math.trunc(
+        obtenerNumeroValido(
+          estadisticaReal
+            ?.cantidad,
+          0
+        )
+      )
+    );
+
+  const sumaReal =
+    obtenerNumeroValido(
+      estadisticaReal
+        ?.suma,
+      0
+    );
+
+  const total =
+    base +
+    reales;
+
+  if (total === 0) {
+    return {
+      cantidadTotal: 0,
+      promedioTotal: 0,
+      cantidadReal: 0,
+    };
+  }
+
+  const sumaBase =
+    base *
+    obtenerNumeroValido(
+      promedioBase,
+      0
+    );
+
+  const promedioTotal =
+    (
+      sumaBase +
+      sumaReal
+    ) /
+    total;
+
+  return {
+    cantidadTotal:
+      total,
+
+    promedioTotal:
+      Math.round(
+        promedioTotal *
+        100
+      ) / 100,
+
+    cantidadReal:
+      reales,
+  };
+}
+
 function useProductosPublicos(
   catalogo = []
 ) {
@@ -32,12 +210,20 @@ function useProductosPublicos(
     setProductosDb,
   ] = useState(null);
 
+  const [
+    resenasDb,
+    setResenasDb,
+  ] = useState([]);
+
   useEffect(() => {
     let montado = true;
 
     async function cargarProductos() {
-      const { data, error } =
-        await supabase
+      const [
+        respuestaProductos,
+        respuestaResenas,
+      ] = await Promise.all([
+        supabase
           .from('bro_productos')
           .select(`
             producto_id,
@@ -47,21 +233,44 @@ function useProductosPublicos(
             activo,
             imagen_url,
             cantidad_resenas,
+            promedio_resenas_base,
             creado_en,
             actualizado_en
           `)
           .order('creado_en', {
             ascending: true,
-          });
+          }),
+
+        /*
+          RLS solo permite que el público
+          vea las reseñas aprobadas.
+
+          El filtro explícito mantiene la
+          intención clara incluso si luego
+          cambian las políticas.
+        */
+        supabase
+          .from('bro_resenas')
+          .select(`
+            producto_id,
+            calificacion
+          `)
+          .eq(
+            'estado',
+            'aprobada'
+          ),
+      ]);
 
       if (!montado) {
         return;
       }
 
-      if (error) {
+      if (
+        respuestaProductos.error
+      ) {
         console.error(
           'No se pudieron cargar los productos públicos:',
-          error
+          respuestaProductos.error
         );
 
         /*
@@ -70,12 +279,36 @@ function useProductosPublicos(
           local para no tumbar BRO.
         */
         setProductosDb(null);
+        setResenasDb([]);
 
         return;
       }
 
+      if (
+        respuestaResenas.error
+      ) {
+        console.error(
+          'No se pudieron cargar las reseñas públicas:',
+          respuestaResenas.error
+        );
+
+        /*
+          Los productos siguen funcionando.
+          Simplemente se muestran sus valores
+          base hasta que pueda cargarse la
+          información de reseñas reales.
+        */
+        setResenasDb([]);
+      } else {
+        setResenasDb(
+          respuestaResenas.data ||
+          []
+        );
+      }
+
       setProductosDb(
-        data || []
+        respuestaProductos.data ||
+        []
       );
     }
 
@@ -90,11 +323,27 @@ function useProductosPublicos(
       actualizarCatalogo
     );
 
+    /*
+      Cuando Admin aprueba, oculta,
+      rechaza o crea una reseña,
+      podemos disparar este evento para
+      refrescar los totales sin recargar.
+    */
+    window.addEventListener(
+      'bro-resenas-actualizadas',
+      actualizarCatalogo
+    );
+
     return () => {
       montado = false;
 
       window.removeEventListener(
         'bro-productos-actualizados',
+        actualizarCatalogo
+      );
+
+      window.removeEventListener(
+        'bro-resenas-actualizadas',
         actualizarCatalogo
       );
     };
@@ -185,6 +434,11 @@ function useProductosPublicos(
       }
     }
 
+    const estadisticasReales =
+      construirEstadisticasReales(
+        resenasDb
+      );
+
     const idsUtilizados =
       new Set();
 
@@ -196,12 +450,16 @@ function useProductosPublicos(
       Conservan toda su estructura
       actual.
 
-      Supabase solamente reemplaza:
+      Supabase reemplaza:
       - nombre
       - slug
       - imagen principal
-      - reseñas
+      - reseñas base
+      - promedio base
       - activo / inactivo
+
+      Las reseñas aprobadas reales
+      se suman automáticamente.
     */
     const productosExistentes =
       catalogo.flatMap(
@@ -227,10 +485,14 @@ function useProductosPublicos(
             ];
           }
 
-          idsUtilizados.add(
+          const productoId =
             String(
-              productoDb.producto_id
-            )
+              productoDb
+                .producto_id
+            );
+
+          idsUtilizados.add(
+            productoId
           );
 
           if (
@@ -265,6 +527,38 @@ function useProductosPublicos(
             );
           }
 
+          const cantidadBase =
+            Math.max(
+              0,
+              Number.parseInt(
+                productoDb
+                  .cantidad_resenas,
+                10
+              ) || 0
+            );
+
+          const promedioBase =
+            obtenerPromedioBase({
+              promedioDb:
+                productoDb
+                  .promedio_resenas_base,
+
+              cantidadBase,
+
+              promedioCatalogo:
+                producto.rating,
+            });
+
+          const combinada =
+            combinarEstadisticas({
+              cantidadBase,
+              promedioBase,
+              estadisticaReal:
+                estadisticasReales.get(
+                  productoId
+                ),
+            });
+
           return [
             {
               ...producto,
@@ -290,12 +584,33 @@ function useProductosPublicos(
 
               imagenes,
 
+              /*
+                rating y ratingCount son
+                los valores finales que
+                consume la tienda.
+              */
+              rating:
+                combinada
+                  .promedioTotal,
+
               ratingCount:
-                Number(
-                  productoDb
-                    .cantidad_resenas ||
-                    0
-                ),
+                combinada
+                  .cantidadTotal,
+
+              /*
+                También exponemos el
+                desglose para Producto.jsx
+                y futuras pantallas.
+              */
+              ratingBase:
+                promedioBase,
+
+              ratingCountBase:
+                cantidadBase,
+
+              ratingCountReal:
+                combinada
+                  .cantidadReal,
             },
           ];
         }
@@ -332,6 +647,12 @@ function useProductosPublicos(
         )
         .map(
           (productoDb) => {
+            const productoId =
+              String(
+                productoDb
+                  .producto_id
+              );
+
             const imagenes = [
               productoDb.imagen_url,
             ];
@@ -341,6 +662,38 @@ function useProductosPublicos(
                 guiaTamanos
               );
             }
+
+            const cantidadBase =
+              Math.max(
+                0,
+                Number.parseInt(
+                  productoDb
+                    .cantidad_resenas,
+                  10
+                ) || 0
+              );
+
+            const promedioBase =
+              obtenerPromedioBase({
+                promedioDb:
+                  productoDb
+                    .promedio_resenas_base,
+
+                cantidadBase,
+
+                promedioCatalogo:
+                  5,
+              });
+
+            const combinada =
+              combinarEstadisticas({
+                cantidadBase,
+                promedioBase,
+                estadisticaReal:
+                  estadisticasReales.get(
+                    productoId
+                  ),
+              });
 
             return {
               id:
@@ -370,14 +723,23 @@ function useProductosPublicos(
 
               badge: '',
 
-              rating: 5,
+              rating:
+                combinada
+                  .promedioTotal,
 
               ratingCount:
-                Number(
-                  productoDb
-                    .cantidad_resenas ||
-                    0
-                ),
+                combinada
+                  .cantidadTotal,
+
+              ratingBase:
+                promedioBase,
+
+              ratingCountBase:
+                cantidadBase,
+
+              ratingCountReal:
+                combinada
+                  .cantidadReal,
 
               tamanos:
                 tamanosPorDefecto,
@@ -395,6 +757,7 @@ function useProductosPublicos(
   }, [
     catalogo,
     productosDb,
+    resenasDb,
   ]);
 }
 

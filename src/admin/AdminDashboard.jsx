@@ -34,6 +34,14 @@ const MODULOS = [
     estado: 'urgente',
   },
   {
+    id: 'suscriptores',
+    icono: 'EM',
+    titulo: 'Suscriptores',
+    descripcion:
+      'Gestionar correos registrados en BRO.',
+    estado: 'urgente',
+  },
+  {
     id: 'ticker',
     icono: 'TX',
     titulo: 'Promociones',
@@ -56,6 +64,7 @@ function AdminDashboard({
 }) {
   return (
     <section className="admin-dashboard">
+
       <div className="admin-dashboard-heading">
         <span>
           ADMINISTRACIÓN
@@ -119,6 +128,7 @@ function AdminDashboard({
           )
         )}
       </div>
+
     </section>
   );
 }
