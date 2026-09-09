@@ -64,6 +64,7 @@ function FilaSeccion({
   seccion,
   color,
   ocupado,
+  esPrincipal,
   onCambiarNombre,
   onGuardarNombre,
   onToggleActivo,
@@ -169,6 +170,12 @@ function FilaSeccion({
 
       </div>
 
+      {esPrincipal && (
+        <span className="admin-seccion-principal">
+          🏠 EN EL HOME
+        </span>
+      )}
+
       <button
         type="button"
         className={`admin-seccion-switch ${
@@ -256,6 +263,26 @@ function AdminSecciones() {
           (item) =>
             item.activo
         ).length,
+      [
+        secciones,
+      ]
+    );
+
+  /*
+    La sección "principal" es la
+    primera ACTIVA (por orden).
+
+    Es la única que hoy alimenta
+    el carrusel del Home.
+  */
+  const seccionPrincipalId =
+    useMemo(
+      () =>
+        secciones.find(
+          (item) =>
+            item.activo
+        )?.id ||
+        null,
       [
         secciones,
       ]
@@ -853,6 +880,18 @@ function AdminSecciones() {
             color: #9a9a9a;
           }
 
+          .admin-seccion-principal {
+            flex-shrink: 0;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #e8f0ea;
+            color: #2d5a3d;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: .04em;
+            white-space: nowrap;
+          }
+
           .admin-seccion-switch {
             width: 40px;
             height: 23px;
@@ -1125,6 +1164,10 @@ function AdminSecciones() {
                     ocupado={
                       guardando ===
                       seccion.id
+                    }
+                    esPrincipal={
+                      seccion.id ===
+                      seccionPrincipalId
                     }
                     onCambiarNombre={
                       cambiarNombreLocal
