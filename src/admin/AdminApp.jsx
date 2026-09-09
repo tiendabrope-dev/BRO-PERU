@@ -24,6 +24,7 @@ import AdminProductos from './AdminProductos';
 import AdminResenas from './AdminResenas';
 import AdminSuscriptores from './AdminSuscriptores';
 import AdminPromociones from './AdminPromociones';
+import AdminAjustes from './AdminAjustes';
 
 import './admin.css';
 import './admin-pedido-detalle.css';
@@ -554,17 +555,7 @@ function AdminApp() {
       'ajustes'
     ) {
       return (
-        <section className="admin-module-placeholder">
-
-          <h2>
-            AJUSTES
-          </h2>
-
-          <p>
-            Este módulo se implementará próximamente.
-          </p>
-
-        </section>
+        <AdminAjustes />
       );
     }
 
