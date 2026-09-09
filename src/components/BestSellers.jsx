@@ -31,7 +31,22 @@ function BestSellers({
         .filter(
           (producto) =>
             producto.categoria ===
-            'cuadros'
+              'cuadros' &&
+            /*
+              enSeccionPrincipal es
+              false solo cuando SÍ
+              hay secciones activas
+              y este producto no
+              fue asignado.
+
+              undefined (sin datos
+              de secciones todavía,
+              o Supabase caído)
+              se sigue mostrando,
+              igual que antes.
+            */
+            producto.enSeccionPrincipal !==
+              false
         )
         .slice(0, 10);
     }, [productos]);
@@ -1250,4 +1265,4 @@ function BestSellers({
   );
 }
 
-export default BestSellers;
+export default BestSellers;

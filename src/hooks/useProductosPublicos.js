@@ -215,6 +215,16 @@ function useProductosPublicos(
     setResenasDb,
   ] = useState([]);
 
+  const [
+    seccionesDb,
+    setSeccionesDb,
+  ] = useState([]);
+
+  const [
+    asignacionesDb,
+    setAsignacionesDb,
+  ] = useState([]);
+
   useEffect(() => {
     let montado = true;
 
@@ -222,6 +232,8 @@ function useProductosPublicos(
       const [
         respuestaProductos,
         respuestaResenas,
+        respuestaSecciones,
+        respuestaAsignaciones,
       ] = await Promise.all([
         supabase
           .from('bro_productos')
@@ -259,6 +271,41 @@ function useProductosPublicos(
             'estado',
             'aprobada'
           ),
+
+        /*
+          Secciones destacadas
+          (Más Vendidos, etc.).
+
+          Solo las activas, en el
+          orden que definió el admin.
+        */
+        supabase
+          .from('bro_secciones')
+          .select(`
+            id,
+            orden
+          `)
+          .eq(
+            'activo',
+            true
+          )
+          .order('orden', {
+            ascending: true,
+          })
+          .order('creado_en', {
+            ascending: true,
+          }),
+
+        /*
+          Qué productos pertenecen
+          a cada sección.
+        */
+        supabase
+          .from('bro_producto_secciones')
+          .select(`
+            producto_id,
+            seccion_id
+          `),
       ]);
 
       if (!montado) {
@@ -280,6 +327,8 @@ function useProductosPublicos(
         */
         setProductosDb(null);
         setResenasDb([]);
+        setSeccionesDb([]);
+        setAsignacionesDb([]);
 
         return;
       }
@@ -302,6 +351,44 @@ function useProductosPublicos(
       } else {
         setResenasDb(
           respuestaResenas.data ||
+          []
+        );
+      }
+
+      if (
+        respuestaSecciones.error
+      ) {
+        console.error(
+          'No se pudieron cargar las secciones públicas:',
+          respuestaSecciones.error
+        );
+
+        /*
+          Sin secciones disponibles,
+          los carruseles vuelven a su
+          comportamiento anterior
+          (no filtran por curación).
+        */
+        setSeccionesDb([]);
+      } else {
+        setSeccionesDb(
+          respuestaSecciones.data ||
+          []
+        );
+      }
+
+      if (
+        respuestaAsignaciones.error
+      ) {
+        console.error(
+          'No se pudieron cargar las asignaciones de secciones:',
+          respuestaAsignaciones.error
+        );
+
+        setAsignacionesDb([]);
+      } else {
+        setAsignacionesDb(
+          respuestaAsignaciones.data ||
           []
         );
       }
@@ -334,6 +421,15 @@ function useProductosPublicos(
       actualizarCatalogo
     );
 
+    /*
+      Cuando Admin crea, edita,
+      reordena o elimina una sección.
+    */
+    window.addEventListener(
+      'bro-secciones-actualizadas',
+      actualizarCatalogo
+    );
+
     return () => {
       montado = false;
 
@@ -344,6 +440,11 @@ function useProductosPublicos(
 
       window.removeEventListener(
         'bro-resenas-actualizadas',
+        actualizarCatalogo
+      );
+
+      window.removeEventListener(
+        'bro-secciones-actualizadas',
         actualizarCatalogo
       );
     };
@@ -439,6 +540,59 @@ function useProductosPublicos(
         resenasDb
       );
 
+    /*
+      ==================================
+      SECCIÓN PRINCIPAL
+      ==================================
+
+      Por ahora, el carrusel de
+      "Más Vendidos" del Home muestra
+      la primera sección activa
+      (menor orden).
+
+      Si no hay ninguna sección
+      activa (o falló la carga),
+      idsSeccionPrincipal queda en
+      null y los carruseles vuelven
+      a mostrar todos los cuadros,
+      igual que antes de Secciones.
+    */
+    const seccionPrincipal =
+      seccionesDb[0] ||
+      null;
+
+    const idsSeccionPrincipal =
+      seccionPrincipal
+        ? new Set(
+            asignacionesDb
+              .filter(
+                (fila) =>
+                  fila.seccion_id ===
+                  seccionPrincipal.id
+              )
+              .map(
+                (fila) =>
+                  String(
+                    fila.producto_id
+                  )
+              )
+          )
+        : null;
+
+    function estaEnSeccionPrincipal(
+      productoId
+    ) {
+      if (
+        !idsSeccionPrincipal
+      ) {
+        return true;
+      }
+
+      return idsSeccionPrincipal.has(
+        productoId
+      );
+    }
+
     const idsUtilizados =
       new Set();
 
@@ -481,7 +635,16 @@ function useProductosPublicos(
           */
           if (!productoDb) {
             return [
-              producto,
+              {
+                ...producto,
+
+                enSeccionPrincipal:
+                  estaEnSeccionPrincipal(
+                    String(
+                      producto.id
+                    )
+                  ),
+              },
             ];
           }
 
@@ -611,6 +774,11 @@ function useProductosPublicos(
               ratingCountReal:
                 combinada
                   .cantidadReal,
+
+              enSeccionPrincipal:
+                estaEnSeccionPrincipal(
+                  productoId
+                ),
             },
           ];
         }
@@ -746,6 +914,11 @@ function useProductosPublicos(
 
               marcos:
                 marcosPorDefecto,
+
+              enSeccionPrincipal:
+                estaEnSeccionPrincipal(
+                  productoId
+                ),
             };
           }
         );
@@ -758,7 +931,9 @@ function useProductosPublicos(
     catalogo,
     productosDb,
     resenasDb,
+    seccionesDb,
+    asignacionesDb,
   ]);
 }
 
-export default useProductosPublicos;
+export default useProductosPublicos;
