@@ -5,7 +5,6 @@ import {
 
 import {
   actualizarProductoAdmin,
-  cambiarBestSellerAdmin,
   cambiarEstadoProductoAdmin,
   crearProductoAdmin,
   generarIdProducto,
@@ -13,6 +12,13 @@ import {
   obtenerProductosAdmin,
   subirImagenProductoAdmin,
 } from '../lib/adminProductos';
+
+import {
+  asignarProductoASeccionAdmin,
+  obtenerAsignacionesSeccionesAdmin,
+  obtenerSeccionesAdmin,
+  quitarProductoDeSeccionAdmin,
+} from '../lib/adminSecciones';
 
 import {
   productos as productosCatalogo,
@@ -83,8 +89,18 @@ function AdminProductos() {
   ] = useState('');
 
   const [
-    guardandoBestSeller,
-    setGuardandoBestSeller,
+    secciones,
+    setSecciones,
+  ] = useState([]);
+
+  const [
+    asignaciones,
+    setAsignaciones,
+  ] = useState([]);
+
+  const [
+    guardandoSeccion,
+    setGuardandoSeccion,
   ] = useState('');
 
   const [
@@ -136,6 +152,7 @@ function AdminProductos() {
 
   useEffect(() => {
     cargarProductos();
+    cargarSecciones();
   }, []);
 
   useEffect(() => {
@@ -175,6 +192,33 @@ function AdminProductos() {
       );
     } finally {
       setCargando(false);
+    }
+  }
+
+  async function cargarSecciones() {
+    try {
+      const [
+        datosSecciones,
+        datosAsignaciones,
+      ] = await Promise.all([
+        obtenerSeccionesAdmin(),
+        obtenerAsignacionesSeccionesAdmin(),
+      ]);
+
+      setSecciones(
+        datosSecciones
+      );
+
+      setAsignaciones(
+        datosAsignaciones
+      );
+    } catch (
+      errorSecciones
+    ) {
+      console.error(
+        'No se pudieron cargar las secciones:',
+        errorSecciones
+      );
     }
   }
 
@@ -654,39 +698,98 @@ function AdminProductos() {
     }
   }
 
-  async function cambiarBestSeller(
+  const seccionPrincipal =
+    secciones.find(
+      (item) =>
+        item.activo
+    ) ||
+    null;
+
+  const idsEnSeccionPrincipal =
+    seccionPrincipal
+      ? new Set(
+          asignaciones
+            .filter(
+              (fila) =>
+                fila.seccion_id ===
+                seccionPrincipal.id
+            )
+            .map(
+              (fila) =>
+                String(
+                  fila.producto_id
+                )
+            )
+        )
+      : new Set();
+
+  async function alternarSeccionPrincipal(
     producto
   ) {
     if (
-      guardandoBestSeller
+      guardandoSeccion ||
+      !seccionPrincipal
     ) {
       return;
     }
 
-    setGuardandoBestSeller(
-      producto.producto_id
+    const productoId =
+      String(
+        producto.producto_id
+      );
+
+    const yaAsignado =
+      idsEnSeccionPrincipal.has(
+        productoId
+      );
+
+    setGuardandoSeccion(
+      productoId
     );
 
     setError('');
     setMensaje('');
 
     try {
-      const actualizado =
-        await cambiarBestSellerAdmin(
-          producto.producto_id,
-          !producto.es_best_seller
+      if (yaAsignado) {
+        await quitarProductoDeSeccionAdmin(
+          productoId,
+          seccionPrincipal.id
         );
 
-      setProductos(
-        (actuales) =>
-          actuales.map(
-            (item) =>
-              item.producto_id ===
-              actualizado.producto_id
-                ? actualizado
-                : item
-          )
-      );
+        setAsignaciones(
+          (actuales) =>
+            actuales.filter(
+              (fila) =>
+                !(
+                  String(
+                    fila.producto_id
+                  ) ===
+                    productoId &&
+                  fila.seccion_id ===
+                    seccionPrincipal.id
+                )
+            )
+        );
+      } else {
+        await asignarProductoASeccionAdmin(
+          productoId,
+          seccionPrincipal.id
+        );
+
+        setAsignaciones(
+          (actuales) => [
+            ...actuales,
+            {
+              producto_id:
+                productoId,
+
+              seccion_id:
+                seccionPrincipal.id,
+            },
+          ]
+        );
+      }
 
       notificarActualizacionProductos();
     } catch (
@@ -694,10 +797,10 @@ function AdminProductos() {
     ) {
       setError(
         errorCambio.message ||
-          'No se pudo actualizar el producto.'
+          'No se pudo actualizar la sección del producto.'
       );
     } finally {
-      setGuardandoBestSeller(
+      setGuardandoSeccion(
         ''
       );
     }
@@ -961,49 +1064,69 @@ function AdminProductos() {
                         </button>
                       </div>
 
-                      <div className="admin-producto-estado">
-                        <span
-                          className={
-                            producto
-                              .es_best_seller
-                              ? 'activo'
-                              : 'inactivo'
-                          }
-                        >
-                          {producto
-                            .es_best_seller
-                            ? 'BEST SELLER'
-                            : 'NORMAL'}
-                        </span>
-
-                        <button
-                          type="button"
-                          className={`admin-producto-switch ${
-                            producto
-                              .es_best_seller
-                              ? 'on'
-                              : ''
-                          }`}
-                          disabled={
-                            guardandoBestSeller ===
-                            producto
-                              .producto_id
-                          }
-                          onClick={() =>
-                            cambiarBestSeller(
-                              producto
+                      {seccionPrincipal && (
+                        <div className="admin-producto-estado">
+                          <span
+                            className={
+                              idsEnSeccionPrincipal.has(
+                                String(
+                                  producto
+                                    .producto_id
+                                )
+                              )
+                                ? 'activo'
+                                : 'inactivo'
+                            }
+                          >
+                            {idsEnSeccionPrincipal.has(
+                              String(
+                                producto
+                                  .producto_id
+                              )
                             )
-                          }
-                          aria-label={
-                            producto
-                              .es_best_seller
-                              ? `Quitar a ${producto.nombre} de Best Seller`
-                              : `Marcar a ${producto.nombre} como Best Seller`
-                          }
-                        >
-                          <span />
-                        </button>
-                      </div>
+                              ? seccionPrincipal.nombre.toUpperCase()
+                              : 'NORMAL'}
+                          </span>
+
+                          <button
+                            type="button"
+                            className={`admin-producto-switch ${
+                              idsEnSeccionPrincipal.has(
+                                String(
+                                  producto
+                                    .producto_id
+                                )
+                              )
+                                ? 'on'
+                                : ''
+                            }`}
+                            disabled={
+                              guardandoSeccion ===
+                              String(
+                                producto
+                                  .producto_id
+                              )
+                            }
+                            onClick={() =>
+                              alternarSeccionPrincipal(
+                                producto
+                              )
+                            }
+                            aria-label={
+                              idsEnSeccionPrincipal.has(
+                                String(
+                                  producto
+                                    .producto_id
+                                )
+                              )
+                                ? `Quitar a ${producto.nombre} de ${seccionPrincipal.nombre}`
+                                : `Agregar a ${producto.nombre} en ${seccionPrincipal.nombre}`
+                            }
+                          >
+                            <span />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </article>
                 );
@@ -1290,4 +1413,4 @@ function AdminProductos() {
   );
 }
 
-export default AdminProductos;
+export default AdminProductos;

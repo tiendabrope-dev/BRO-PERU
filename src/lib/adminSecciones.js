@@ -257,3 +257,107 @@ export async function eliminarSeccionAdmin(
 
   return true;
 }
+
+export async function obtenerAsignacionesSeccionesAdmin() {
+  const { data, error } =
+    await supabase
+      .from('bro_producto_secciones')
+      .select(
+        'producto_id, seccion_id'
+      );
+
+  if (error) {
+    console.error(
+      'Error cargando asignaciones de secciones:',
+      error
+    );
+
+    throw new Error(
+      'No se pudieron cargar las asignaciones de secciones.'
+    );
+  }
+
+  return data || [];
+}
+
+export async function asignarProductoASeccionAdmin(
+  productoId,
+  seccionId
+) {
+  if (
+    !productoId ||
+    !seccionId
+  ) {
+    throw new Error(
+      'Producto o sección inválidos.'
+    );
+  }
+
+  const { error } =
+    await supabase
+      .from('bro_producto_secciones')
+      .insert({
+        producto_id:
+          String(
+            productoId
+          ),
+
+        seccion_id:
+          seccionId,
+      });
+
+  if (error) {
+    console.error(
+      'Error asignando producto a la sección:',
+      error
+    );
+
+    throw new Error(
+      'No se pudo agregar el producto a la sección.'
+    );
+  }
+
+  return true;
+}
+
+export async function quitarProductoDeSeccionAdmin(
+  productoId,
+  seccionId
+) {
+  if (
+    !productoId ||
+    !seccionId
+  ) {
+    throw new Error(
+      'Producto o sección inválidos.'
+    );
+  }
+
+  const { error } =
+    await supabase
+      .from('bro_producto_secciones')
+      .delete()
+      .eq(
+        'producto_id',
+        String(
+          productoId
+        )
+      )
+      .eq(
+        'seccion_id',
+        seccionId
+      );
+
+  if (error) {
+    console.error(
+      'Error quitando producto de la sección:',
+      error
+    );
+
+    throw new Error(
+      'No se pudo quitar el producto de la sección.'
+    );
+  }
+
+  return true;
+}
