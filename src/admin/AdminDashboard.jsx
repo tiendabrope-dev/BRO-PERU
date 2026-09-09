@@ -47,7 +47,7 @@ const MODULOS = [
     titulo: 'Promociones',
     descripcion:
       'Modificar el roll promocional.',
-    estado: 'despues',
+    estado: 'completo',
   },
   {
     id: 'ajustes',
@@ -55,9 +55,29 @@ const MODULOS = [
     titulo: 'Ajustes',
     descripcion:
       'Configuración general.',
-    estado: 'despues',
+    estado: 'completo',
   },
 ];
+
+function obtenerEtiquetaEstado(
+  estado
+) {
+  if (
+    estado ===
+    'urgente'
+  ) {
+    return 'PRIORIDAD';
+  }
+
+  if (
+    estado ===
+    'completo'
+  ) {
+    return 'LISTO';
+  }
+
+  return 'DESPUÉS';
+}
 
 function AdminDashboard({
   onAbrirModulo,
@@ -119,10 +139,9 @@ function AdminDashboard({
               <div
                 className={`admin-module-status ${modulo.estado}`}
               >
-                {modulo.estado ===
-                'urgente'
-                  ? 'PRIORIDAD'
-                  : 'DESPUÉS'}
+                {obtenerEtiquetaEstado(
+                  modulo.estado
+                )}
               </div>
             </button>
           )

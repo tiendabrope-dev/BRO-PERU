@@ -1,10 +1,16 @@
 import {
+  useEffect,
   useState,
 } from 'react';
 
 import {
   suscribirNewsletterBro,
 } from '../lib/newsletter';
+
+import {
+  AJUSTES_POR_DEFECTO,
+  obtenerAjustesPublicos,
+} from '../lib/ajustes';
 
 function Footer({
   onCategoria,
@@ -29,6 +35,34 @@ function Footer({
     mensajeNewsletter,
     setMensajeNewsletter,
   ] = useState('');
+
+  const [
+    ajustes,
+    setAjustes,
+  ] = useState(
+    AJUSTES_POR_DEFECTO
+  );
+
+  useEffect(() => {
+    let activo = true;
+
+    async function cargarAjustes() {
+      const datos =
+        await obtenerAjustesPublicos();
+
+      if (activo) {
+        setAjustes(
+          datos
+        );
+      }
+    }
+
+    cargarAjustes();
+
+    return () => {
+      activo = false;
+    };
+  }, []);
 
   async function enviarNewsletter(
     evento
@@ -90,7 +124,7 @@ function Footer({
 
   function abrirWhatsApp() {
     const telefono =
-      '51931330058';
+      ajustes.whatsappPedidos;
 
     const mensaje =
       encodeURIComponent(

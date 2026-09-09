@@ -4,6 +4,22 @@ import {
   useState,
 } from 'react';
 
+import {
+  AJUSTES_POR_DEFECTO,
+  obtenerAjustesPublicos,
+} from '../lib/ajustes';
+
+function formatearNumeroPago(
+  numero
+) {
+  return String(
+    numero || ''
+  ).replace(
+    /(\d{3})(?=\d)/g,
+    '$1 '
+  );
+}
+
 function Checkout({
   abierto,
   esCarritoSoloDigital,
@@ -27,6 +43,13 @@ function Checkout({
     setErrorPaso,
   ] = useState('');
 
+  const [
+    ajustes,
+    setAjustes,
+  ] = useState(
+    AJUSTES_POR_DEFECTO
+  );
+
   const formularioRef =
     useRef(null);
 
@@ -36,6 +59,27 @@ function Checkout({
       setErrorPaso('');
     }
   }, [abierto]);
+
+  useEffect(() => {
+    let activo = true;
+
+    async function cargarAjustes() {
+      const datos =
+        await obtenerAjustesPublicos();
+
+      if (activo) {
+        setAjustes(
+          datos
+        );
+      }
+    }
+
+    cargarAjustes();
+
+    return () => {
+      activo = false;
+    };
+  }, []);
 
   if (!abierto) {
     return null;
@@ -1026,11 +1070,15 @@ function Checkout({
                     </span>
 
                     <strong>
-                      926 555 219
+                      {formatearNumeroPago(
+                        ajustes.yapePlinNumero
+                      )}
                     </strong>
 
                     <p>
-                      DIEGO LOP* VAL*
+                      {
+                        ajustes.yapePlinTitular
+                      }
                     </p>
 
                   </div>

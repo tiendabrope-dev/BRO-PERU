@@ -226,3 +226,8 @@
     font-size: 7px;
   }
 }
+
+.admin-module-status.completo {
+  background: #2d5a3d;
+  color: #ffffff;
+}

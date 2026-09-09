@@ -1,8 +1,7 @@
-const WHATSAPP_PEDIDOS = '51931330058';
-
-const NUMERO_PAGO = '926555219';
-
-const TITULAR_PAGO = 'DIEGO LOP* VAL*';
+import {
+  AJUSTES_POR_DEFECTO,
+  obtenerAjustesPublicos,
+} from './ajustes';
 
 function formatearDinero(valor) {
   return `S/ ${Number(valor).toFixed(2)}`;
@@ -152,7 +151,8 @@ function crearListadoProductos(
 }
 
 function crearDatosPago(
-  metodoPago
+  metodoPago,
+  ajustes
 ) {
   if (
     metodoPago ===
@@ -161,8 +161,8 @@ function crearDatosPago(
       'plin'
   ) {
     return [
-      `📲 *YAPE / PLIN: ${NUMERO_PAGO}*`,
-      `Titular: ${TITULAR_PAGO}`,
+      `📲 *YAPE / PLIN: ${ajustes.yapePlinNumero}*`,
+      `Titular: ${ajustes.yapePlinTitular}`,
     ];
   }
 
@@ -193,6 +193,7 @@ export function crearMensajeWhatsAppBro({
   pedido,
   formulario,
   carrito,
+  ajustes = AJUSTES_POR_DEFECTO,
 }) {
   const codigoPedido =
     pedido.codigo_pedido ||
@@ -246,7 +247,8 @@ export function crearMensajeWhatsAppBro({
 
   const datosPago =
     crearDatosPago(
-      formulario.metodoPago
+      formulario.metodoPago,
+      ajustes
     );
 
   return [
@@ -330,23 +332,30 @@ export function crearMensajeWhatsAppBro({
     .join('\n');
 }
 
-export function abrirWhatsAppBro({
+export async function abrirWhatsAppBro({
   pedido,
   formulario,
   carrito,
   ventanaWhatsApp = null,
 }) {
+  const ajustes =
+    await obtenerAjustesPublicos();
+
   const mensaje =
     crearMensajeWhatsAppBro({
       pedido,
       formulario,
       carrito,
+      ajustes,
     });
 
   const texto =
     encodeURIComponent(
       mensaje
     );
+
+  const numeroPedidos =
+    ajustes.whatsappPedidos;
 
   const movil =
     esDispositivoMovil();
@@ -363,7 +372,7 @@ export function abrirWhatsAppBro({
   */
   if (movil) {
     const urlFallback =
-      `https://wa.me/${WHATSAPP_PEDIDOS}` +
+      `https://wa.me/${numeroPedidos}` +
       `?text=${texto}`;
 
     if (
@@ -381,7 +390,7 @@ export function abrirWhatsAppBro({
 
     if (android) {
       const urlWhatsAppNormal =
-        `intent://send?phone=${WHATSAPP_PEDIDOS}` +
+        `intent://send?phone=${numeroPedidos}` +
         `&text=${texto}` +
         '#Intent;' +
         'scheme=whatsapp;' +
@@ -396,7 +405,7 @@ export function abrirWhatsAppBro({
     }
 
     const urlWhatsApp =
-      `whatsapp://send?phone=${WHATSAPP_PEDIDOS}` +
+      `whatsapp://send?phone=${numeroPedidos}` +
       `&text=${texto}`;
 
     window.location.assign(
@@ -413,7 +422,7 @@ export function abrirWhatsAppBro({
   */
   const urlEscritorio =
     `https://web.whatsapp.com/send` +
-    `?phone=${WHATSAPP_PEDIDOS}` +
+    `?phone=${numeroPedidos}` +
     `&text=${texto}`;
 
   /*
