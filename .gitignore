@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Archivos generados por la app de escritorio de Claude
+Claude outputs/

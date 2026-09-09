@@ -50,6 +50,14 @@ const MODULOS = [
     estado: 'completo',
   },
   {
+    id: 'secciones',
+    icono: 'SC',
+    titulo: 'Secciones',
+    descripcion:
+      'Carruseles destacados del Home (Best Seller y más).',
+    estado: 'completo',
+  },
+  {
     id: 'ajustes',
     icono: '⚙',
     titulo: 'Ajustes',
@@ -152,4 +160,4 @@ function AdminDashboard({
   );
 }
 
-export default AdminDashboard;
+export default AdminDashboard;
