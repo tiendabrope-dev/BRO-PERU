@@ -5,6 +5,7 @@ import {
 
 import {
   actualizarProductoAdmin,
+  cambiarBestSellerAdmin,
   cambiarEstadoProductoAdmin,
   crearProductoAdmin,
   generarIdProducto,
@@ -79,6 +80,11 @@ function AdminProductos() {
   const [
     guardandoEstado,
     setGuardandoEstado,
+  ] = useState('');
+
+  const [
+    guardandoBestSeller,
+    setGuardandoBestSeller,
   ] = useState('');
 
   const [
@@ -648,6 +654,55 @@ function AdminProductos() {
     }
   }
 
+  async function cambiarBestSeller(
+    producto
+  ) {
+    if (
+      guardandoBestSeller
+    ) {
+      return;
+    }
+
+    setGuardandoBestSeller(
+      producto.producto_id
+    );
+
+    setError('');
+    setMensaje('');
+
+    try {
+      const actualizado =
+        await cambiarBestSellerAdmin(
+          producto.producto_id,
+          !producto.es_best_seller
+        );
+
+      setProductos(
+        (actuales) =>
+          actuales.map(
+            (item) =>
+              item.producto_id ===
+              actualizado.producto_id
+                ? actualizado
+                : item
+          )
+      );
+
+      notificarActualizacionProductos();
+    } catch (
+      errorCambio
+    ) {
+      setError(
+        errorCambio.message ||
+          'No se pudo actualizar el producto.'
+      );
+    } finally {
+      setGuardandoBestSeller(
+        ''
+      );
+    }
+  }
+
   const productosCuadros =
     productos.filter(
       (producto) =>
@@ -900,6 +955,50 @@ function AdminProductos() {
                               .activo
                               ? `Desactivar ${producto.nombre}`
                               : `Activar ${producto.nombre}`
+                          }
+                        >
+                          <span />
+                        </button>
+                      </div>
+
+                      <div className="admin-producto-estado">
+                        <span
+                          className={
+                            producto
+                              .es_best_seller
+                              ? 'activo'
+                              : 'inactivo'
+                          }
+                        >
+                          {producto
+                            .es_best_seller
+                            ? 'BEST SELLER'
+                            : 'NORMAL'}
+                        </span>
+
+                        <button
+                          type="button"
+                          className={`admin-producto-switch ${
+                            producto
+                              .es_best_seller
+                              ? 'on'
+                              : ''
+                          }`}
+                          disabled={
+                            guardandoBestSeller ===
+                            producto
+                              .producto_id
+                          }
+                          onClick={() =>
+                            cambiarBestSeller(
+                              producto
+                            )
+                          }
+                          aria-label={
+                            producto
+                              .es_best_seller
+                              ? `Quitar a ${producto.nombre} de Best Seller`
+                              : `Marcar a ${producto.nombre} como Best Seller`
                           }
                         >
                           <span />
