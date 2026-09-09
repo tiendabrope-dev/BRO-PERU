@@ -740,6 +740,394 @@
 }
 
 /* ==========================================================
+   OPINIONES (RESEÑAS)
+========================================================== */
+
+.bro-product-reviews {
+  width: 100%;
+
+  margin-top:
+    70px;
+
+  padding-top:
+    50px;
+
+  border-top:
+    1px solid
+    #D1D1D1;
+}
+
+.bro-product-reviews-heading {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  margin-bottom:
+    36px;
+}
+
+.bro-product-reviews-heading > div > span {
+  display: block;
+
+  margin-bottom:
+    10px;
+
+  color:
+    #2D5A3D;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.1em;
+
+  text-transform:
+    uppercase;
+}
+
+.bro-product-reviews-heading h2 {
+  margin: 0;
+
+  color:
+    #111111;
+
+  font-family:
+    'Syne',
+    sans-serif;
+
+  font-size:
+    32px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.05;
+
+  letter-spacing:
+    -0.02em;
+
+  text-transform:
+    uppercase;
+}
+
+.bro-product-reviews-heading p {
+  margin:
+    8px 0 0;
+
+  color:
+    #888888;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.4;
+}
+
+.bro-product-reviews-summary {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding:
+    14px 22px;
+
+  border-radius:
+    6px;
+
+  background:
+    #E8F0EA;
+}
+
+.bro-product-reviews-summary strong {
+  color:
+    #111111;
+
+  font-family:
+    'Syne',
+    sans-serif;
+
+  font-size:
+    30px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1;
+}
+
+.bro-product-reviews-summary-stars {
+  display: flex;
+
+  gap: 1px;
+
+  color:
+    #E9B000;
+
+  font-size:
+    15px;
+}
+
+.bro-product-reviews-summary small {
+  display: block;
+
+  margin-top:
+    4px;
+
+  color:
+    #888888;
+
+  font-size:
+    12px;
+}
+
+.bro-product-reviews-status,
+.bro-product-reviews-error,
+.bro-product-reviews-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding:
+    50px 20px;
+
+  border:
+    1px solid
+    #D1D1D1;
+
+  border-radius:
+    6px;
+
+  text-align:
+    center;
+}
+
+.bro-product-reviews-status {
+  color:
+    #888888;
+
+  font-size:
+    14px;
+}
+
+.bro-product-reviews-error {
+  border-color:
+    #E84040;
+
+  color:
+    #E84040;
+
+  font-size:
+    14px;
+
+  font-weight:
+    600;
+}
+
+.bro-product-reviews-empty strong {
+  color:
+    #111111;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.04em;
+
+  text-transform:
+    uppercase;
+}
+
+.bro-product-reviews-empty span {
+  max-width:
+    420px;
+
+  color:
+    #888888;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.5;
+}
+
+.bro-product-reviews-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.bro-product-review-card {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+
+  padding:
+    22px;
+
+  border:
+    1px solid
+    #D1D1D1;
+
+  border-radius:
+    6px;
+
+  background:
+    #ffffff;
+}
+
+.bro-product-review-card.con-foto {
+  flex-direction: row;
+
+  align-items: flex-start;
+}
+
+.bro-product-review-photo {
+  flex-shrink: 0;
+
+  width: 84px;
+  height: 84px;
+
+  overflow: hidden;
+
+  border-radius:
+    6px;
+}
+
+.bro-product-review-photo img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.bro-product-review-content {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.bro-product-review-top {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.bro-product-review-top strong {
+  display: block;
+
+  color:
+    #111111;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+}
+
+.bro-product-review-top span {
+  display: inline-block;
+
+  margin-top:
+    4px;
+
+  padding:
+    2px 8px;
+
+  border-radius:
+    999px;
+
+  background:
+    #E8F0EA;
+
+  color:
+    #2D5A3D;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    0.04em;
+
+  text-transform:
+    uppercase;
+}
+
+.bro-product-review-top time {
+  flex-shrink: 0;
+
+  color:
+    #888888;
+
+  font-size:
+    12px;
+}
+
+.bro-product-review-stars {
+  display: flex;
+
+  gap: 1px;
+
+  color:
+    #E9B000;
+
+  font-size:
+    13px;
+}
+
+.bro-product-review-content p {
+  margin: 0;
+
+  color:
+    #111111;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
+}
+
+/* ==========================================================
    TABLET
 ========================================================== */
 
@@ -759,6 +1147,11 @@
   .bro-product-main-image.guia img {
     max-width:
       620px;
+  }
+
+  .bro-product-reviews-grid {
+    gap:
+      16px;
   }
 }
 
@@ -1281,6 +1674,61 @@
     font-size:
       11px;
   }
+
+  /* ==========================================
+     OPINIONES (RESEÑAS)
+  ========================================== */
+
+  .bro-product-reviews {
+    margin-top:
+      50px;
+
+    padding-top:
+      36px;
+  }
+
+  .bro-product-reviews-heading {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 16px;
+
+    margin-bottom:
+      26px;
+  }
+
+  .bro-product-reviews-heading h2 {
+    font-size:
+      24px;
+  }
+
+  .bro-product-reviews-summary {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+
+  .bro-product-reviews-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: 14px;
+  }
+
+  .bro-product-review-card {
+    padding:
+      18px;
+  }
+
+  .bro-product-review-card.con-foto {
+    flex-direction: column;
+  }
+
+  .bro-product-review-photo {
+    width: 100%;
+    height: 160px;
+  }
 }
 
 /* ==========================================================
@@ -1321,4 +1769,14 @@
     padding-right:
       13px;
   }
-}
+
+  .bro-product-reviews-heading h2 {
+    font-size:
+      21px;
+  }
+
+  .bro-product-review-card {
+    padding:
+      15px;
+  }
+}
