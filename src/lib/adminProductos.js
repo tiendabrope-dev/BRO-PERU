@@ -9,7 +9,6 @@ const SELECT_PRODUCTO = `
   imagen_url,
   cantidad_resenas,
   promedio_resenas_base,
-  es_best_seller,
   creado_en,
   actualizado_en
 `;
@@ -166,44 +165,6 @@ export async function cambiarEstadoProductoAdmin(
   if (error) {
     console.error(
       'Error actualizando producto:',
-      error
-    );
-
-    throw new Error(
-      'No se pudo actualizar el producto.'
-    );
-  }
-
-  return data;
-}
-
-export async function cambiarBestSellerAdmin(
-  productoId,
-  esBestSeller
-) {
-  const { data, error } =
-    await supabase
-      .from('bro_productos')
-      .update({
-        es_best_seller:
-          Boolean(esBestSeller),
-
-        actualizado_en:
-          new Date()
-            .toISOString(),
-      })
-      .eq(
-        'producto_id',
-        String(productoId)
-      )
-      .select(
-        SELECT_PRODUCTO
-      )
-      .single();
-
-  if (error) {
-    console.error(
-      'Error actualizando best seller:',
       error
     );
 
