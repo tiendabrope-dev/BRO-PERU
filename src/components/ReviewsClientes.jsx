@@ -12,6 +12,8 @@ import {
 
 import '../styles/reviews-clientes.css';
 
+import ContadorVisitas from './ContadorVisitas';
+
 function Estrellas({
   valor,
   interactivas = false,
@@ -685,6 +687,8 @@ function ReviewsClientes({
           >
             PUBLICAR TU RESEÑA
           </button>
+
+          <ContadorVisitas />
         </div>
 
       </div>

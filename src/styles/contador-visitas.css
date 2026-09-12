@@ -1,0 +1,155 @@
+/* ==================================================
+   CONTADOR DE VISITAS (flip counter / split-flap)
+   Se muestra dentro de ReviewsClientes, debajo del
+   botón "PUBLICAR TU RESEÑA".
+================================================== */
+
+.bro-contador-visitas {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.bro-contador-fichas {
+  display: flex;
+  gap: 30px;
+}
+
+.bro-contador-etiqueta {
+  color: #767676;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ============ FICHA (cada dígito) ============ */
+
+.bro-contador-ficha {
+  position: relative;
+  box-sizing: border-box;
+  width: 44px;
+  height: 58px;
+  margin-top: 7px;
+  border-radius: 5px;
+  background: #111111;
+  box-shadow: 0 5px 10px rgba(17, 17, 17, 0.2);
+}
+
+.bro-contador-visor {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 5px;
+  perspective: 260px;
+}
+
+/* Línea divisoria central, como en un reloj flip real */
+.bro-contador-visor::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-0.5px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.bro-contador-carta {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg);
+  transition: transform 170ms cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+.bro-contador-carta.girando {
+  transform: rotateX(-180deg);
+}
+
+.bro-contador-carta.sin-transicion {
+  transition: none;
+}
+
+.bro-contador-cara {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  color: #ffffff;
+  font-family: 'Syne', 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.bro-contador-cara span {
+  display: block;
+  transform: translateY(-1px);
+}
+
+.bro-contador-cara-atras {
+  transform: rotateX(180deg);
+}
+
+/* ============ ANILLADO (decoración superior) ============ */
+
+.bro-contador-anillado {
+  position: absolute;
+  top: -5px;
+  left: 5px;
+  right: 5px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.bro-contador-anillado i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2d5a3d;
+  border: 1.5px solid #f4f1ec;
+  box-sizing: content-box;
+}
+
+/* ============ MÓVIL ============ */
+
+@media (max-width: 480px) {
+  .bro-contador-ficha {
+    width: 34px;
+    height: 46px;
+  }
+
+  .bro-contador-cara {
+    font-size: 23px;
+  }
+
+  .bro-contador-fichas {
+    gap: 12px;
+  }
+
+  .bro-contador-anillado i {
+    width: 4px;
+    height: 4px;
+  }
+}
