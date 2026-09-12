@@ -330,10 +330,10 @@ function BestSellers({
               1036px;
 
             margin:
-              0 auto;
+              0 auto -20px;
 
             padding:
-              0 0 6px;
+              0 0 26px;
 
             box-sizing:
               border-box;
@@ -433,6 +433,41 @@ function BestSellers({
 
             cursor:
               pointer;
+
+            filter:
+              drop-shadow(
+                0 9px
+                14px
+                rgba(
+                  17,
+                  17,
+                  17,
+                  0.16
+                )
+              );
+
+            transition:
+              filter
+              0.3s ease;
+          }
+
+          @media (
+            hover: hover
+          ) {
+            .bro-best-sellers-v2
+            .bro-product-image-button:hover {
+              filter:
+                drop-shadow(
+                  0 12px
+                  18px
+                  rgba(
+                    17,
+                    17,
+                    17,
+                    0.2
+                  )
+                );
+            }
           }
 
           .bro-best-sellers-v2
@@ -902,12 +937,12 @@ function BestSellers({
 
               margin:
                 0 -18px
-                0 0
+                -20px 0
                 !important;
 
               padding:
                 0 18px
-                6px 0
+                26px 0
                 !important;
 
               box-sizing:
