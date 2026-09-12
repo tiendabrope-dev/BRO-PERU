@@ -12,6 +12,10 @@ import {
   obtenerAjustesPublicos,
 } from '../lib/ajustes';
 
+import {
+  registrarVisitaBro,
+} from '../lib/visitas';
+
 function Footer({
   onCategoria,
   onPreguntas,
@@ -43,6 +47,11 @@ function Footer({
     AJUSTES_POR_DEFECTO
   );
 
+  const [
+    contadorVisitas,
+    setContadorVisitas,
+  ] = useState(null);
+
   useEffect(() => {
     let activo = true;
 
@@ -58,6 +67,41 @@ function Footer({
     }
 
     cargarAjustes();
+
+    return () => {
+      activo = false;
+    };
+  }, []);
+
+  /*
+    Contador de visitas totales.
+
+    Se registra una sola vez por
+    carga de la tienda (el Footer
+    vive fuera del enrutado de
+    páginas en App.jsx, así que
+    monta una sola vez por sesión
+    de navegación, no en cada
+    cambio de página interno).
+  */
+  useEffect(() => {
+    let activo = true;
+
+    async function registrarVisita() {
+      const total =
+        await registrarVisitaBro();
+
+      if (
+        activo &&
+        total !== null
+      ) {
+        setContadorVisitas(
+          total
+        );
+      }
+    }
+
+    registrarVisita();
 
     return () => {
       activo = false;
@@ -1659,6 +1703,17 @@ function Footer({
       >
         <span className="bro-footer-copyright">
           © 2026 BRO PERU · Todos los derechos reservados.
+          {contadorVisitas !== null && (
+            <>
+              {' '}
+              · +
+              {contadorVisitas.toLocaleString(
+                'es-PE'
+              )}
+              {' '}
+              visitas
+            </>
+          )}
         </span>
 
         <span className="bro-footer-slogan">
@@ -1669,4 +1724,4 @@ function Footer({
   );
 }
 
-export default Footer;
+export default Footer;
