@@ -46,7 +46,7 @@
     minmax(0, 1.18fr)
     minmax(380px, 0.82fr);
 
-  gap: 45px;
+  gap: 32px;
 
   align-items: start;
 }
@@ -87,7 +87,7 @@
 
 .bro-product-main-image {
   width: 100%;
-  max-width: 390px;
+  max-width: 270px;
 
   display: flex;
 
@@ -97,13 +97,17 @@
   overflow: hidden;
 
   background: transparent;
+
+  box-shadow:
+    0 12px 28px
+    rgba(17, 17, 17, 0.16);
 }
 
 .bro-product-main-image img {
   display: block;
 
   width: 100%;
-  max-width: 390px;
+  max-width: 270px;
 
   height: auto;
 
@@ -113,14 +117,14 @@
 /* GUÍA DE TAMAÑOS */
 
 .bro-product-main-image.guia {
-  max-width: 700px;
+  max-width: 490px;
 
   overflow: visible;
 }
 
 .bro-product-main-image.guia img {
   width: 100%;
-  max-width: 700px;
+  max-width: 490px;
 
   height: auto;
 
@@ -133,9 +137,9 @@
 
 .bro-product-thumbnails {
   width: 100%;
-  max-width: 700px;
+  max-width: 490px;
 
-  margin-top: 24px;
+  margin-top: 17px;
 
   display: flex;
 
@@ -144,12 +148,12 @@
 
   flex-wrap: wrap;
 
-  gap: 18px;
+  gap: 13px;
 }
 
 .bro-product-thumbnail {
-  width: 92px;
-  height: 108px;
+  width: 64px;
+  height: 76px;
 
   padding: 0;
 
@@ -203,8 +207,8 @@
 }
 
 .bro-product-thumbnail.guia-thumb {
-  width: 150px;
-  height: 108px;
+  width: 105px;
+  height: 76px;
 }
 
 /* ==========================================================
@@ -221,10 +225,10 @@
   align-items: center;
   justify-content: center;
 
-  min-height: 30px;
+  min-height: 22px;
 
   padding:
-    5px 14px;
+    4px 10px;
 
   border-radius:
     999px;
@@ -236,7 +240,7 @@
     #ffffff;
 
   font-size:
-    11px;
+    10px;
 
   font-weight:
     700;
@@ -253,13 +257,13 @@
 
 .bro-product-category-detail {
   margin:
-    14px 0 0;
+    10px 0 0;
 
   color:
     #2D5A3D;
 
   font-size:
-    13px;
+    12px;
 
   font-weight:
     700;
@@ -275,8 +279,8 @@
   width: 100%;
 
   margin:
-    17px 0
-    10px;
+    12px 0
+    7px;
 
   color:
     #111111;
@@ -286,7 +290,7 @@
     sans-serif;
 
   font-size:
-    42px;
+    30px;
 
   font-weight:
     800;
@@ -309,10 +313,10 @@
 
   align-items: center;
 
-  gap: 7px;
+  gap: 5px;
 
   margin-bottom:
-    8px;
+    6px;
 }
 
 .bro-product-stars-detail {
@@ -324,7 +328,7 @@
     #E9B000;
 
   font-size:
-    16px;
+    14px;
 }
 
 .bro-product-rating-count-detail {
@@ -332,18 +336,18 @@
     #888888;
 
   font-size:
-    13px;
+    12px;
 }
 
 .bro-product-price-detail {
   margin:
-    0 0 22px;
+    0 0 16px;
 
   color:
     #111111;
 
   font-size:
-    26px;
+    21px;
 
   font-weight:
     700;
@@ -360,10 +364,10 @@
   width: 100%;
 
   margin-bottom:
-    30px;
+    21px;
 
   padding:
-    16px 20px;
+    11px 14px;
 
   border-radius:
     6px;
@@ -375,7 +379,7 @@
     #ffffff;
 
   font-size:
-    13px;
+    12px;
 
   font-weight:
     700;
@@ -404,7 +408,7 @@
 
   flex-direction: column;
 
-  gap: 22px;
+  gap: 16px;
 }
 
 .bro-product-option-group {
@@ -415,13 +419,13 @@
   display: block;
 
   margin-bottom:
-    10px;
+    7px;
 
   color:
     #111111;
 
   font-size:
-    13px;
+    12px;
 
   font-weight:
     700;
@@ -443,14 +447,14 @@
 
   flex-wrap: wrap;
 
-  gap: 10px;
+  gap: 7px;
 }
 
 .bro-btn-option {
-  min-height: 48px;
+  min-height: 38px;
 
   padding:
-    10px 22px;
+    7px 16px;
 
   border:
     1px solid
@@ -470,7 +474,7 @@
     sans-serif;
 
   font-size:
-    14px;
+    13px;
 
   font-weight:
     600;
@@ -512,10 +516,10 @@
 
 .bro-wallpaper-message {
   margin-top:
-    10px;
+    7px;
 
   padding:
-    12px 14px;
+    8px 10px;
 
   border-radius:
     6px;
@@ -527,7 +531,7 @@
     #555555;
 
   font-size:
-    12px;
+    11px;
 
   line-height:
     1.5;
@@ -558,8 +562,8 @@
 }
 
 .bro-product-quantity button {
-  width: 46px;
-  height: 46px;
+  width: 36px;
+  height: 36px;
 
   padding: 0;
 
@@ -581,7 +585,7 @@
     sans-serif;
 
   font-size:
-    17px;
+    15px;
 
   font-weight:
     700;
@@ -598,12 +602,12 @@
 }
 
 .bro-product-quantity span {
-  min-width: 42px;
+  min-width: 34px;
 
   text-align: center;
 
   font-size:
-    15px;
+    14px;
 
   font-weight:
     700;
@@ -617,13 +621,13 @@
   width: 100%;
 
   min-height:
-    56px;
+    42px;
 
   margin-top:
-    4px;
+    3px;
 
   padding:
-    0 24px;
+    0 16px;
 
   border:
     0;
@@ -642,7 +646,7 @@
     sans-serif;
 
   font-size:
-    13px;
+    12px;
 
   font-weight:
     700;
@@ -1140,13 +1144,13 @@
       minmax(340px, 0.85fr);
 
     gap:
-      35px;
+      25px;
   }
 
   .bro-product-main-image.guia,
   .bro-product-main-image.guia img {
     max-width:
-      620px;
+      430px;
   }
 
   .bro-product-reviews-grid {
@@ -1357,18 +1361,18 @@
       100%;
 
     padding-top:
-      16px;
+      11px;
   }
 
   .bro-product-main-image {
     width:
       min(
-        78vw,
-        290px
+        65vw,
+        220px
       );
 
     max-width:
-      290px;
+      220px;
 
     margin:
       0 auto;
@@ -1379,7 +1383,7 @@
       100%;
 
     max-width:
-      290px;
+      220px;
 
     height:
       auto;
@@ -1389,11 +1393,11 @@
     width:
       min(
         100%,
-        340px
+        240px
       );
 
     max-width:
-      340px;
+      240px;
   }
 
   .bro-product-main-image.guia img {
@@ -1401,7 +1405,7 @@
       100%;
 
     max-width:
-      340px;
+      240px;
   }
 
   /* ==========================================
@@ -1416,19 +1420,19 @@
       320px;
 
     margin:
-      13px auto
+      9px auto
       0;
 
     gap:
-      10px;
+      7px;
   }
 
   .bro-product-thumbnail {
     width:
-      58px;
+      42px;
 
     height:
-      68px;
+      48px;
 
     border-width:
       1px;
@@ -1444,10 +1448,10 @@
 
   .bro-product-thumbnail.guia-thumb {
     width:
-      94px;
+      68px;
 
     height:
-      68px;
+      48px;
   }
 
   /* ==========================================
@@ -1456,26 +1460,26 @@
 
   .bro-product-info-panel {
     padding:
-      0 12px;
+      0 8px;
   }
 
   .bro-product-badge-detail {
     min-height:
-      28px;
+      20px;
 
     padding:
-      5px 12px;
+      4px 9px;
 
     font-size:
-      10px;
+      9px;
   }
 
   .bro-product-category-detail {
     margin-top:
-      13px;
+      7px;
 
     font-size:
-      11px;
+      10px;
   }
 
   /* ==========================================
@@ -1490,14 +1494,14 @@
       100%;
 
     margin:
-      15px 0
-      10px;
+      8px 0
+      6px;
 
     font-size:
       clamp(
-        25px,
-        7.3vw,
-        29px
+        19px,
+        6.2vw,
+        22px
       );
 
     line-height:
@@ -1518,26 +1522,26 @@
 
   .bro-product-rating-detail {
     margin-bottom:
-      8px;
+      4px;
   }
 
   .bro-product-stars-detail {
     font-size:
-      15px;
+      13px;
   }
 
   .bro-product-rating-count-detail {
     font-size:
-      12px;
+      11px;
   }
 
   .bro-product-price-detail {
     margin:
       0 0
-      19px;
+      10px;
 
     font-size:
-      24px;
+      18px;
   }
 
   /* ==========================================
@@ -1546,19 +1550,19 @@
 
   .bro-product-custom-note {
     margin-bottom:
-      24px;
+      13px;
 
     padding:
-      13px 14px;
+      8px 10px;
 
     border-radius:
       5px;
 
     font-size:
-      10.5px;
+      10px;
 
     line-height:
-      1.45;
+      1.4;
 
     letter-spacing:
       0.015em;
@@ -1570,15 +1574,15 @@
 
   .bro-product-options {
     gap:
-      22px;
+      11px;
   }
 
   .bro-section-label {
     margin-bottom:
-      10px;
+      5px;
 
     font-size:
-      11px;
+      10px;
 
     letter-spacing:
       0.11em;
@@ -1586,24 +1590,24 @@
 
   .bro-option-row {
     gap:
-      8px;
+      6px;
   }
 
   .bro-btn-option {
     min-width:
-      72px;
+      56px;
 
     min-height:
-      48px;
+      38px;
 
     padding:
-      9px 16px;
+      6px 10px;
 
     border-radius:
       5px;
 
     font-size:
-      13px;
+      12px;
   }
 
   .bro-product-option-group
@@ -1618,7 +1622,7 @@
 
   .bro-product-quantity {
     height:
-      48px;
+      38px;
 
     border-radius:
       5px;
@@ -1626,21 +1630,21 @@
 
   .bro-product-quantity button {
     width:
-      44px;
+      36px;
 
     height:
-      46px;
+      36px;
 
     font-size:
-      16px;
+      14px;
   }
 
   .bro-product-quantity span {
     min-width:
-      38px;
+      32px;
 
     font-size:
-      14px;
+      13px;
   }
 
   /* ==========================================
@@ -1652,19 +1656,19 @@
       100%;
 
     min-height:
-      56px;
+      42px;
 
     margin-top:
       2px;
 
     padding:
-      0 14px;
+      0 10px;
 
     border-radius:
       5px;
 
     font-size:
-      10.5px;
+      10px;
 
     letter-spacing:
       0.11em;
@@ -1672,7 +1676,7 @@
 
   .bro-wallpaper-message {
     font-size:
-      11px;
+      10px;
   }
 
   /* ==========================================
@@ -1756,18 +1760,18 @@
 
   .bro-product-title-detail {
     font-size:
-      24px;
+      19px;
   }
 
   .bro-btn-option {
     min-width:
-      68px;
+      56px;
 
     padding-left:
-      13px;
+      10px;
 
     padding-right:
-      13px;
+      10px;
   }
 
   .bro-product-reviews-heading h2 {
@@ -1781,39 +1785,10 @@
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Producto css agregar · CSS
- 
 /* ==========================================================
    BOTÓN DE COMPARTIR (ficha de producto)
    ========================================================== */
- 
+
 .bro-product-title-row {
   display: flex;
   align-items: flex-start;
@@ -1821,65 +1796,63 @@ Producto css agregar · CSS
   gap: 12px;
   width: 100%;
 }
- 
+
 .bro-product-title-row
 .bro-product-title-detail {
-  margin: 17px 0 10px;
+  margin: 12px 0 7px;
   flex: 1;
 }
- 
+
 .bro-product-share-btn {
   display: flex;
   align-items: center;
   gap: 6px;
- 
+
   flex-shrink: 0;
-  margin-top: 17px;
- 
-  padding: 8px 14px;
- 
+  margin-top: 12px;
+
+  padding: 7px 12px;
+
   border: 1px solid #D1D1D1;
   border-radius: 999px;
- 
+
   background: #ffffff;
   color: #111111;
- 
+
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
- 
+
   cursor: pointer;
- 
+
   transition:
     border-color .15s ease,
     background .15s ease;
 }
- 
+
 .bro-product-share-btn:hover {
   border-color: #111111;
   background: #F4F1EC;
 }
- 
+
 .bro-product-share-btn svg {
   flex-shrink: 0;
 }
- 
+
 @media (max-width: 760px) {
- 
+
   .bro-product-title-row {
     flex-wrap: wrap;
   }
- 
+
   .bro-product-title-row
   .bro-product-title-detail {
     margin: 15px 0 10px;
   }
- 
+
   .bro-product-share-btn {
     margin-top: 15px;
     padding: 7px 12px;
     font-size: 12px;
   }
 }
- 
-
