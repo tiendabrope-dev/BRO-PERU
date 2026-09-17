@@ -42,14 +42,6 @@ const MODULOS = [
     estado: 'urgente',
   },
   {
-    id: 'ticker',
-    icono: 'TX',
-    titulo: 'Promociones',
-    descripcion:
-      'Modificar el roll promocional.',
-    estado: 'completo',
-  },
-  {
     id: 'cupones',
     icono: '%',
     titulo: 'Cupones',
@@ -58,19 +50,11 @@ const MODULOS = [
     estado: 'urgente',
   },
   {
-    id: 'secciones',
-    icono: 'SC',
-    titulo: 'Secciones',
-    descripcion:
-      'Carruseles destacados del Home (Best Seller y más).',
-    estado: 'completo',
-  },
-  {
     id: 'ajustes',
     icono: '⚙',
     titulo: 'Ajustes',
     descripcion:
-      'Configuración general.',
+      'Configuración general, promociones, secciones y más.',
     estado: 'completo',
   },
 ];

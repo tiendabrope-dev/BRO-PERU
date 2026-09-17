@@ -327,6 +327,236 @@ export async function subirImagenProductoAdmin(
   return url;
 }
 
+/*
+  ETAPA 5B — marca de agua retroactiva.
+
+  Actualiza únicamente imagen_url de un producto ya existente,
+  sin tocar nombre, slug ni el resto de sus campos.
+*/
+export async function actualizarImagenUrlProductoAdmin(
+  productoId,
+  imagenUrl
+) {
+  if (!productoId) {
+    throw new Error(
+      'Producto inválido.'
+    );
+  }
+
+  if (!imagenUrl) {
+    throw new Error(
+      'URL de imagen inválida.'
+    );
+  }
+
+  const { data, error } =
+    await supabase
+      .from('bro_productos')
+      .update({
+        imagen_url:
+          imagenUrl,
+
+        actualizado_en:
+          new Date()
+            .toISOString(),
+      })
+      .eq(
+        'producto_id',
+        String(productoId)
+      )
+      .select(
+        SELECT_PRODUCTO
+      )
+      .single();
+
+  if (error) {
+    console.error(
+      'Error actualizando imagen del producto:',
+      error
+    );
+
+    throw new Error(
+      'No se pudo actualizar la imagen del producto.'
+    );
+  }
+
+  return data;
+}
+
+function obtenerExtensionDesdeTipo(
+  tipo
+) {
+  const mapa = {
+    'image/jpeg':
+      'jpg',
+
+    'image/png':
+      'png',
+
+    'image/webp':
+      'webp',
+
+    'image/avif':
+      'avif',
+  };
+
+  return (
+    mapa[tipo] || 'jpg'
+  );
+}
+
+/*
+  Marca visualmente (en el nombre de archivo) que una
+  imagen ya pasó por el proceso retroactivo de marca de
+  agua, para que la herramienta la salte automáticamente
+  si se vuelve a abrir — así nunca se aplica dos veces
+  la marca sobre la misma imagen.
+*/
+export function imagenYaTieneMarcaDeAguaRetro(
+  imagenUrl
+) {
+  return Boolean(
+    imagenUrl &&
+    String(imagenUrl).includes(
+      '-retro.'
+    )
+  );
+}
+
+/*
+  Descarga la imagen ACTUAL de un producto, le aplica la
+  misma marca de agua horneada que usan las subidas nuevas
+  (Etapa 5A), la sube como una imagen nueva (no sobrescribe
+  la original) y actualiza el producto para que apunte a
+  esa nueva imagen.
+*/
+export async function aplicarMarcaDeAguaRetroactivaAdmin(
+  producto
+) {
+  const productoId =
+    producto?.producto_id;
+
+  const imagenUrlActual =
+    producto?.imagen_url;
+
+  if (
+    !productoId ||
+    !imagenUrlActual
+  ) {
+    throw new Error(
+      'Producto sin imagen para procesar.'
+    );
+  }
+
+  if (
+    imagenYaTieneMarcaDeAguaRetro(
+      imagenUrlActual
+    )
+  ) {
+    return {
+      yaProcesada: true,
+      url: imagenUrlActual,
+    };
+  }
+
+  const respuesta =
+    await fetch(
+      imagenUrlActual
+    );
+
+  if (!respuesta.ok) {
+    throw new Error(
+      'No se pudo descargar la imagen actual del producto.'
+    );
+  }
+
+  const blobOriginal =
+    await respuesta.blob();
+
+  const tipoOriginal =
+    blobOriginal.type ||
+    'image/jpeg';
+
+  const archivoOriginal =
+    new File(
+      [blobOriginal],
+      `original.${obtenerExtensionDesdeTipo(
+        tipoOriginal
+      )}`,
+      {
+        type: tipoOriginal,
+      }
+    );
+
+  const archivoConMarcaDeAgua =
+    await aplicarMarcaDeAguaBro(
+      archivoOriginal
+    );
+
+  const extension =
+    obtenerExtensionDesdeTipo(
+      archivoConMarcaDeAgua.type
+    );
+
+  const ruta =
+    `cuadros/${productoId}/` +
+    `${Date.now()}-retro.${extension}`;
+
+  const {
+    error: errorSubida,
+  } = await supabase.storage
+    .from('bro-productos')
+    .upload(
+      ruta,
+      archivoConMarcaDeAgua,
+      {
+        cacheControl:
+          '3600',
+
+        upsert: false,
+      }
+    );
+
+  if (errorSubida) {
+    console.error(
+      'Error subiendo imagen con marca de agua retroactiva:',
+      errorSubida
+    );
+
+    throw new Error(
+      'No se pudo subir la imagen con marca de agua.'
+    );
+  }
+
+  const {
+    data: datosPublicos,
+  } = supabase.storage
+    .from('bro-productos')
+    .getPublicUrl(
+      ruta
+    );
+
+  const nuevaUrl =
+    datosPublicos
+      ?.publicUrl;
+
+  if (!nuevaUrl) {
+    throw new Error(
+      'No se pudo obtener la URL de la imagen procesada.'
+    );
+  }
+
+  await actualizarImagenUrlProductoAdmin(
+    productoId,
+    nuevaUrl
+  );
+
+  return {
+    yaProcesada: false,
+    url: nuevaUrl,
+  };
+}
+
 export async function crearProductoAdmin({
   productoId,
   nombre,

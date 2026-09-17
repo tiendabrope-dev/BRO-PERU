@@ -27,8 +27,10 @@ import AdminResenas from './AdminResenas';
 import AdminSuscriptores from './AdminSuscriptores';
 import AdminPromociones from './AdminPromociones';
 import AdminCupones from './AdminCupones';
+import AdminMarcaDeAguaRetro from './AdminMarcaDeAguaRetro';
 import AdminSecciones from './AdminSecciones';
 import AdminAjustes from './AdminAjustes';
+import AdminAjustesContacto from './AdminAjustesContacto';
 
 import './admin.css';
 import './admin-pedido-detalle.css';
@@ -61,11 +63,17 @@ const RUTAS_MODULOS = {
   cupones:
     '/cuenta/inicio/cupones',
 
+  marcaDeAguaRetro:
+    '/cuenta/inicio/marca-de-agua',
+
   secciones:
     '/cuenta/inicio/secciones',
 
   ajustes:
     '/cuenta/inicio/ajustes',
+
+  ajustesContacto:
+    '/cuenta/inicio/ajustes/contacto',
 };
 
 function resolverRutaCuenta(
@@ -179,11 +187,17 @@ function resolverRutaCuenta(
     '/cuenta/inicio/cupones':
       'cupones',
 
+    '/cuenta/inicio/marca-de-agua':
+      'marcaDeAguaRetro',
+
     '/cuenta/inicio/secciones':
       'secciones',
 
     '/cuenta/inicio/ajustes':
       'ajustes',
+
+    '/cuenta/inicio/ajustes/contacto':
+      'ajustesContacto',
   };
 
   if (
@@ -573,6 +587,15 @@ function AdminApp() {
 
     if (
       modulo ===
+      'marcaDeAguaRetro'
+    ) {
+      return (
+        <AdminMarcaDeAguaRetro />
+      );
+    }
+
+    if (
+      modulo ===
       'secciones'
     ) {
       return (
@@ -613,7 +636,20 @@ function AdminApp() {
       'ajustes'
     ) {
       return (
-        <AdminAjustes />
+        <AdminAjustes
+          onAbrirModulo={
+            abrirModulo
+          }
+        />
+      );
+    }
+
+    if (
+      modulo ===
+      'ajustesContacto'
+    ) {
+      return (
+        <AdminAjustesContacto />
       );
     }
 
