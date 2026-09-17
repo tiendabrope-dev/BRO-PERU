@@ -26,6 +26,7 @@ import AdminProductos from './AdminProductos';
 import AdminResenas from './AdminResenas';
 import AdminSuscriptores from './AdminSuscriptores';
 import AdminPromociones from './AdminPromociones';
+import AdminCupones from './AdminCupones';
 import AdminSecciones from './AdminSecciones';
 import AdminAjustes from './AdminAjustes';
 
@@ -56,6 +57,9 @@ const RUTAS_MODULOS = {
 
   ticker:
     '/cuenta/inicio/promociones',
+
+  cupones:
+    '/cuenta/inicio/cupones',
 
   secciones:
     '/cuenta/inicio/secciones',
@@ -171,6 +175,9 @@ function resolverRutaCuenta(
 
     '/cuenta/inicio/promociones':
       'ticker',
+
+    '/cuenta/inicio/cupones':
+      'cupones',
 
     '/cuenta/inicio/secciones':
       'secciones',
@@ -552,6 +559,15 @@ function AdminApp() {
     ) {
       return (
         <AdminPromociones />
+      );
+    }
+
+    if (
+      modulo ===
+      'cupones'
+    ) {
+      return (
+        <AdminCupones />
       );
     }
 

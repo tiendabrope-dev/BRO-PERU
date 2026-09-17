@@ -50,6 +50,14 @@ const MODULOS = [
     estado: 'completo',
   },
   {
+    id: 'cupones',
+    icono: '%',
+    titulo: 'Cupones',
+    descripcion:
+      'Crear y administrar códigos de descuento.',
+    estado: 'urgente',
+  },
+  {
     id: 'secciones',
     icono: 'SC',
     titulo: 'Secciones',
