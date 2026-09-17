@@ -15,6 +15,8 @@ import {
   verificarAdmin,
 } from '../lib/admin';
 
+import { activarNotificacionesPush } from '../lib/pushNotificaciones';
+
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import AdminPrecios from './AdminPrecios';
@@ -408,6 +410,30 @@ function AdminApp() {
     usuario,
     rutaCuenta.valida,
     navigate,
+  ]);
+
+  useEffect(() => {
+    if (
+      cargando ||
+      !usuario
+    ) {
+      return;
+    }
+
+    /*
+      NOTIFICACIONES PUSH (PEDIDOS)
+
+      Al confirmar sesión de admin, se intenta activar
+      la suscripción push del navegador. Si el navegador
+      no la soporta, o el admin no da permiso, no pasa
+      nada más (no rompe el resto del panel).
+    */
+    activarNotificacionesPush(
+      usuario.id
+    );
+  }, [
+    cargando,
+    usuario,
   ]);
 
   function accesoCorrecto(

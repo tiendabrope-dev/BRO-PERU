@@ -1,0 +1,21 @@
+{
+  "name": "BRO Perú - Panel Admin",
+  "short_name": "BRO Admin",
+  "start_url": "/cuenta/inicio",
+  "scope": "/cuenta",
+  "display": "standalone",
+  "background_color": "#F4F1EC",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "/bro-b-favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/bro-b-favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
