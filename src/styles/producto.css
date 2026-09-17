@@ -1779,4 +1779,107 @@
     padding:
       15px;
   }
-}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Producto css agregar · CSS
+ 
+/* ==========================================================
+   BOTÓN DE COMPARTIR (ficha de producto)
+   ========================================================== */
+ 
+.bro-product-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+ 
+.bro-product-title-row
+.bro-product-title-detail {
+  margin: 17px 0 10px;
+  flex: 1;
+}
+ 
+.bro-product-share-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+ 
+  flex-shrink: 0;
+  margin-top: 17px;
+ 
+  padding: 8px 14px;
+ 
+  border: 1px solid #D1D1D1;
+  border-radius: 999px;
+ 
+  background: #ffffff;
+  color: #111111;
+ 
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+ 
+  cursor: pointer;
+ 
+  transition:
+    border-color .15s ease,
+    background .15s ease;
+}
+ 
+.bro-product-share-btn:hover {
+  border-color: #111111;
+  background: #F4F1EC;
+}
+ 
+.bro-product-share-btn svg {
+  flex-shrink: 0;
+}
+ 
+@media (max-width: 760px) {
+ 
+  .bro-product-title-row {
+    flex-wrap: wrap;
+  }
+ 
+  .bro-product-title-row
+  .bro-product-title-detail {
+    margin: 15px 0 10px;
+  }
+ 
+  .bro-product-share-btn {
+    margin-top: 15px;
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+}
+ 
+

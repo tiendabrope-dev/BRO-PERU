@@ -74,6 +74,11 @@ function Producto({
     setImagenActiva,
   ] = useState(0);
 
+  const [
+    compartido,
+    setCompartido,
+  ] = useState(false);
+
   const imagenesProducto =
     useMemo(() => {
       if (
@@ -328,6 +333,67 @@ function Producto({
           actual + 1
       );
     }
+  }
+
+  /*
+    COMPARTIR
+
+    - Celular con soporte de Web Share API:
+      abre el menú nativo de compartir
+      (WhatsApp, Instagram, etc.).
+
+    - Escritorio / navegadores sin soporte:
+      abre WhatsApp Web directo con el
+      mensaje y el link del producto.
+  */
+  async function handleShare() {
+    if (!producto) {
+      return;
+    }
+
+    const url =
+      window.location.href;
+
+    const texto =
+      `Mira este cuadro en BRO: ${producto.nombre}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title:
+            producto.nombre,
+
+          text: texto,
+
+          url,
+        });
+      } catch {
+        /*
+          El usuario canceló el
+          share nativo o el navegador
+          lo bloqueó. No hacemos nada.
+        */
+      }
+
+      return;
+    }
+
+    const urlWhatsApp =
+      `https://wa.me/?text=${encodeURIComponent(
+        `${texto} ${url}`
+      )}`;
+
+    window.open(
+      urlWhatsApp,
+      '_blank',
+      'noopener,noreferrer'
+    );
+
+    setCompartido(true);
+
+    setTimeout(() => {
+      setCompartido(false);
+    }, 2000);
   }
 
   function handleAddToCart() {
@@ -701,11 +767,44 @@ function Producto({
               }
             </p>
 
-            <h1 className="bro-product-title-detail">
-              {
-                producto.nombre
-              }
-            </h1>
+            <div className="bro-product-title-row">
+              <h1 className="bro-product-title-detail">
+                {
+                  producto.nombre
+                }
+              </h1>
+
+              <button
+                type="button"
+                className="bro-product-share-btn"
+                onClick={
+                  handleShare
+                }
+                aria-label="Compartir este producto"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.6" y1="10.6" x2="15.4" y2="6.4" />
+                  <line x1="8.6" y1="13.4" x2="15.4" y2="17.6" />
+                </svg>
+
+                {compartido
+                  ? '¡Listo!'
+                  : 'Compartir'}
+              </button>
+            </div>
 
             <div className="bro-product-rating-detail">
 
