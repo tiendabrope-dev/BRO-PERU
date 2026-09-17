@@ -193,6 +193,7 @@ export function crearMensajeWhatsAppBro({
   pedido,
   formulario,
   carrito,
+  codigoCupon,
   ajustes = AJUSTES_POR_DEFECTO,
 }) {
   const codigoPedido =
@@ -222,6 +223,12 @@ export function crearMensajeWhatsAppBro({
   const total =
     Number(
       pedido.total
+    );
+
+  const descuento =
+    Number(
+      pedido.descuento ||
+        0
     );
 
   const productos =
@@ -297,6 +304,15 @@ export function crearMensajeWhatsAppBro({
       delivery
     )}`,
 
+    descuento > 0
+      ? `Cupón (${(
+          codigoCupon ||
+          ''
+        ).toUpperCase()}): -${formatearDinero(
+          descuento
+        )}`
+      : null,
+
     `*TOTAL: ${formatearDinero(
       total
     )}*`,
@@ -336,6 +352,7 @@ export async function abrirWhatsAppBro({
   pedido,
   formulario,
   carrito,
+  codigoCupon,
   ventanaWhatsApp = null,
 }) {
   const ajustes =
@@ -346,6 +363,7 @@ export async function abrirWhatsAppBro({
       pedido,
       formulario,
       carrito,
+      codigoCupon,
       ajustes,
     });
 

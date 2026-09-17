@@ -33,6 +33,8 @@ function Checkout({
   onCerrar,
   onVolverCarrito,
   onActualizarCampo,
+  codigoCupon,
+  onCambiarCupon,
   onConfirmarPedido,
 }) {
   const [paso, setPaso] =
@@ -1268,6 +1270,28 @@ function Checkout({
                 )}
 
               </div>
+
+              <label className="checkout-field checkout-cupon">
+                <span>
+                  ¿TIENES UN CUPÓN?
+                </span>
+
+                <input
+                  type="text"
+                  name="codigoCupon"
+                  value={
+                    codigoCupon
+                  }
+                  onChange={
+                    onCambiarCupon
+                  }
+                  placeholder="CÓDIGO (OPCIONAL)"
+                  autoComplete="off"
+                  disabled={
+                    guardandoPedido
+                  }
+                />
+              </label>
 
               <div className="checkout-totals">
 

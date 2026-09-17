@@ -1522,6 +1522,14 @@ img {
   font-size: 12px;
 }
 
+.checkout-cupon {
+  margin-top: 24px;
+}
+
+.checkout-cupon input {
+  text-transform: uppercase;
+}
+
 .checkout-totals {
   margin-top: 28px;
   padding-top: 20px;

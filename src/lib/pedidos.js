@@ -3,6 +3,7 @@ import { supabase } from './supabase';
 export async function crearPedidoBro({
   formulario,
   carrito,
+  codigoCupon,
 }) {
   if (
     !carrito ||
@@ -121,6 +122,14 @@ export async function crearPedidoBro({
 
       p_items:
         items,
+
+      p_codigo_cupon:
+        codigoCupon &&
+        codigoCupon.trim()
+          ? codigoCupon
+              .trim()
+              .toUpperCase()
+          : null,
     }
   );
 

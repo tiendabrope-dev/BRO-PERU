@@ -957,6 +957,11 @@ function App() {
       'yape',
   });
 
+  const [
+    codigoCupon,
+    setCodigoCupon,
+  ] = useState('');
+
   const costoDelivery =
     !esCarritoSoloDigital &&
     formulario.servicio ===
@@ -1079,6 +1084,18 @@ function App() {
         [name]:
           value,
       })
+    );
+
+    setErrorCheckout(
+      ''
+    );
+  }
+
+  function actualizarCodigoCupon(
+    evento
+  ) {
+    setCodigoCupon(
+      evento.target.value
     );
 
     setErrorCheckout(
@@ -1265,6 +1282,7 @@ function App() {
         await crearPedidoBro({
           formulario,
           carrito,
+          codigoCupon,
         });
 
       const codigo =
@@ -1288,6 +1306,7 @@ function App() {
               ...item,
             })
           ),
+        codigoCupon,
       });
 
       localStorage.removeItem(
@@ -1311,6 +1330,8 @@ function App() {
         metodoPago:
           'yape',
       });
+
+      setCodigoCupon('');
 
       setCheckoutAbierto(
         false
@@ -1679,6 +1700,12 @@ function App() {
         onActualizarCampo={
           actualizarCampo
         }
+        codigoCupon={
+          codigoCupon
+        }
+        onCambiarCupon={
+          actualizarCodigoCupon
+        }
         onConfirmarPedido={
           confirmarDatosPedido
         }
@@ -1755,6 +1782,35 @@ function App() {
               }
             </strong>
 
+            {Number(
+              whatsappPendiente
+                .pedido
+                .descuento
+            ) > 0 && (
+              <p
+                style={{
+                  margin:
+                    '-14px 0 22px',
+                  color: '#2D5A3D',
+                  fontWeight: 700,
+                  fontSize: '14px',
+                }}
+              >
+                Cupón aplicado: −S/{' '}
+                {Number(
+                  whatsappPendiente
+                    .pedido
+                    .descuento
+                ).toFixed(2)}
+                {' · Total: S/ '}
+                {Number(
+                  whatsappPendiente
+                    .pedido
+                    .total
+                ).toFixed(2)}
+              </p>
+            )}
+
             <button
               type="button"
               onClick={() => {
@@ -1777,6 +1833,10 @@ function App() {
                   carrito:
                     datosWhatsApp
                       .carrito,
+
+                  codigoCupon:
+                    datosWhatsApp
+                      .codigoCupon,
                 });
               }}
               style={{
