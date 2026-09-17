@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { aplicarMarcaDeAguaBro } from './watermark';
 
 const SELECT_PRODUCTO = `
   producto_id,
@@ -265,9 +266,14 @@ export async function subirImagenProductoAdmin(
     );
   }
 
+  const archivoConMarcaDeAgua =
+    await aplicarMarcaDeAguaBro(
+      archivo
+    );
+
   const extension =
     obtenerExtensionArchivo(
-      archivo
+      archivoConMarcaDeAgua
     );
 
   const ruta =
@@ -280,7 +286,7 @@ export async function subirImagenProductoAdmin(
     .from('bro-productos')
     .upload(
       ruta,
-      archivo,
+      archivoConMarcaDeAgua,
       {
         cacheControl:
           '3600',
