@@ -253,7 +253,7 @@ function App() {
     if (pagina === 'inicio') {
       actualizarSeoPagina({
         titulo:
-          'Regalos para hombres en Perú | Cuadros de autos personalizados – BRO',
+          'BRO Perú | Regalos para hombres en Perú - Cuadros de autos personalizados',
         descripcion:
           'El regalo ideal para tu novio, enamorado o esposo: cuadros de autos personalizados (Ferrari, Lamborghini, Porsche y más). Compra online con envíos a todo el Perú.',
         ruta: '/',
@@ -261,7 +261,7 @@ function App() {
     } else if (pagina === 'cuadros') {
       actualizarSeoPagina({
         titulo:
-          'Cuadros de autos Ferrari, Lamborghini, Porsche y más | BRO Perú',
+          'BRO Perú | Cuadros de autos Ferrari, Lamborghini, Porsche y más',
         descripcion:
           'Cuadros de autos Perú: Ferrari, Lamborghini, Porsche, BMW y más. El regalo perfecto para tu novio, enamorado o esposo. Cuadros personalizados con envíos a todo el país.',
         ruta: '/cuadros',
@@ -271,7 +271,7 @@ function App() {
       productoSeleccionado
     ) {
       actualizarSeoPagina({
-        titulo: `${productoSeleccionado.nombre} | Cuadro personalizado BRO Perú`,
+        titulo: `BRO Perú | ${productoSeleccionado.nombre} - Cuadro personalizado`,
         descripcion: `Cuadro de ${productoSeleccionado.nombre} personalizado — el regalo ideal para tu novio, enamorado o esposo. Compra online en BRO Perú con envíos a todo el país.`,
         ruta: `/producto/${productoSeleccionado.slug}`,
       });
