@@ -34,6 +34,10 @@ import {
   cerrarSesionAdmin,
 } from './lib/admin';
 
+import {
+  actualizarSeoPagina,
+} from './lib/seo';
+
 import Header from './components/Header';
 import Carrito from './components/Carrito';
 import Checkout from './components/Checkout';
@@ -235,6 +239,96 @@ function App() {
 
   const productoSeleccionado =
     rutaActual.producto;
+
+  /*
+    SEO — título y meta description por página.
+
+    La app es una SPA, así que sin esto todas las
+    páginas comparten el <title>/description
+    genéricos de index.html. No toca /cuenta ni
+    /admin (el panel admin no necesita SEO propio
+    y ya está bloqueado en robots.txt).
+  */
+  useEffect(() => {
+    if (pagina === 'inicio') {
+      actualizarSeoPagina({
+        titulo:
+          'Regalos para hombres en Perú | Cuadros de autos personalizados – BRO',
+        descripcion:
+          'El regalo ideal para tu novio, enamorado o esposo: cuadros de autos personalizados (Ferrari, Lamborghini, Porsche y más). Compra online con envíos a todo el Perú.',
+        ruta: '/',
+      });
+    } else if (pagina === 'cuadros') {
+      actualizarSeoPagina({
+        titulo:
+          'Cuadros de autos Ferrari, Lamborghini, Porsche y más | BRO Perú',
+        descripcion:
+          'Cuadros de autos Perú: Ferrari, Lamborghini, Porsche, BMW y más. El regalo perfecto para tu novio, enamorado o esposo. Cuadros personalizados con envíos a todo el país.',
+        ruta: '/cuadros',
+      });
+    } else if (
+      pagina === 'producto' &&
+      productoSeleccionado
+    ) {
+      actualizarSeoPagina({
+        titulo: `${productoSeleccionado.nombre} | Cuadro personalizado BRO Perú`,
+        descripcion: `Cuadro de ${productoSeleccionado.nombre} personalizado — el regalo ideal para tu novio, enamorado o esposo. Compra online en BRO Perú con envíos a todo el país.`,
+        ruta: `/producto/${productoSeleccionado.slug}`,
+      });
+    } else if (pagina === 'preguntas') {
+      actualizarSeoPagina({
+        titulo:
+          'Preguntas frecuentes | BRO Perú',
+        descripcion:
+          'Resuelve tus dudas sobre pedidos, envíos, pagos y personalización de los cuadros de BRO Perú.',
+        ruta: '/preguntas-frecuentes',
+      });
+    } else if (pagina === 'afiliados') {
+      actualizarSeoPagina({
+        titulo:
+          'Programa de afiliados | BRO Perú',
+        descripcion:
+          'Conoce el programa de afiliados de BRO Perú.',
+        ruta: '/afiliados',
+      });
+    } else if (pagina === 'terminos') {
+      actualizarSeoPagina({
+        titulo:
+          'Términos y condiciones | BRO Perú',
+        descripcion:
+          'Términos y condiciones de compra en BRO Perú.',
+        ruta: '/terminos-condiciones',
+      });
+    } else if (
+      pagina === 'privacidad'
+    ) {
+      actualizarSeoPagina({
+        titulo:
+          'Política de privacidad | BRO Perú',
+        descripcion:
+          'Política de privacidad de BRO Perú.',
+        ruta: '/politica-privacidad',
+      });
+    } else if (pagina === 'cambios') {
+      actualizarSeoPagina({
+        titulo:
+          'Cambios y devoluciones | BRO Perú',
+        descripcion:
+          'Política de cambios y devoluciones de BRO Perú.',
+        ruta: '/cambios-devoluciones',
+      });
+    } else if (pagina === 'pedido') {
+      actualizarSeoPagina({
+        titulo: 'Mi pedido | BRO Perú',
+        descripcion:
+          'Revisa el estado de tu pedido en BRO Perú.',
+        ruta: '/mi-pedido',
+      });
+    }
+  }, [
+    pagina,
+    productoSeleccionado,
+  ]);
 
   /*
     /admin queda como compatibilidad
