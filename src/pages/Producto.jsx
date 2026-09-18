@@ -696,6 +696,10 @@ function Producto({
                     imagenActiva +
                     1
                   }`}
+                  draggable="false"
+                  onContextMenu={(evento) =>
+                    evento.preventDefault()
+                  }
                 />
               )}
             </div>
@@ -737,6 +741,10 @@ function Producto({
                           imagen
                         }
                         alt=""
+                        draggable="false"
+                        onContextMenu={(evento) =>
+                          evento.preventDefault()
+                        }
                       />
                     </button>
                   )

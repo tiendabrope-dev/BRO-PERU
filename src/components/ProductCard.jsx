@@ -106,6 +106,10 @@ function ProductCard({
             src={producto.imagen}
             alt={producto.nombre}
             loading="lazy"
+            draggable="false"
+            onContextMenu={(evento) =>
+              evento.preventDefault()
+            }
           />
 
           {producto.badge && (
