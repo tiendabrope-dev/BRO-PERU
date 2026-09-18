@@ -407,10 +407,18 @@ function obtenerExtensionDesdeTipo(
 
 /*
   Marca visualmente (en el nombre de archivo) que una
-  imagen ya pasó por el proceso retroactivo de marca de
-  agua, para que la herramienta la salte automáticamente
-  si se vuelve a abrir — así nunca se aplica dos veces
-  la marca sobre la misma imagen.
+  imagen ya pasó por el proceso de marca de agua "para
+  web" (redimensionada + JPEG comprimido), para que la
+  herramienta retroactiva la salte automáticamente si se
+  vuelve a abrir — así nunca se aplica dos veces la marca
+  sobre la misma imagen.
+
+  Nota: antes el marcador era "-retro.". Se cambió a
+  "-web." al corregir el bug de peso de archivo (las
+  imágenes procesadas con el marcador viejo pesaban varias
+  veces más de lo necesario), para que ese lote antiguo se
+  vuelva a marcar como PENDIENTE y se reprocese una sola
+  vez más con la lógica corregida.
 */
 export function imagenYaTieneMarcaDeAguaRetro(
   imagenUrl
@@ -418,17 +426,96 @@ export function imagenYaTieneMarcaDeAguaRetro(
   return Boolean(
     imagenUrl &&
     String(imagenUrl).includes(
-      '-retro.'
+      '-web.'
     )
   );
 }
 
 /*
-  Descarga la imagen ACTUAL de un producto, le aplica la
-  misma marca de agua horneada que usan las subidas nuevas
-  (Etapa 5A), la sube como una imagen nueva (no sobrescribe
-  la original) y actualiza el producto para que apunte a
-  esa nueva imagen.
+  Busca, dentro de la carpeta de Storage del producto, el
+  archivo de imagen ORIGINAL sin procesar (sin marca de
+  agua), es decir el que no lleva ni "-retro." (marcador
+  viejo, con el bug de peso) ni "-web." (marcador nuevo).
+
+  Esto es necesario porque, si imagen_url ya apunta a un
+  archivo "-retro." (procesado con el bug), no podemos
+  volver a aplicarle la marca de agua a ESE archivo: ya
+  tiene la marca horneada encima y quedaría duplicada. El
+  archivo original (sin marca) nunca se borra ni se
+  sobrescribe, así que sigue estando en la misma carpeta.
+*/
+async function encontrarImagenOriginalAdmin(
+  productoId,
+  imagenUrlActual
+) {
+  const yaEsMarcada =
+    String(imagenUrlActual).includes('-retro.') ||
+    String(imagenUrlActual).includes('-web.');
+
+  if (!yaEsMarcada) {
+    return imagenUrlActual;
+  }
+
+  const {
+    data: archivos,
+    error: errorListado,
+  } = await supabase.storage
+    .from('bro-productos')
+    .list(`cuadros/${productoId}`, {
+      limit: 100,
+    });
+
+  if (errorListado) {
+    console.error(
+      'Error listando imágenes del producto:',
+      errorListado
+    );
+
+    throw new Error(
+      'No se pudo revisar la carpeta de imágenes de este producto.'
+    );
+  }
+
+  const archivoOriginal = (archivos || []).find(
+    (archivo) =>
+      archivo?.name &&
+      !archivo.name.includes('-retro.') &&
+      !archivo.name.includes('-web.')
+  );
+
+  if (!archivoOriginal) {
+    throw new Error(
+      'No se encontró la imagen original sin marca de agua para este producto. Revisar manualmente.'
+    );
+  }
+
+  const {
+    data: datosPublicos,
+  } = supabase.storage
+    .from('bro-productos')
+    .getPublicUrl(
+      `cuadros/${productoId}/${archivoOriginal.name}`
+    );
+
+  const urlOriginal = datosPublicos?.publicUrl;
+
+  if (!urlOriginal) {
+    throw new Error(
+      'No se pudo obtener la URL de la imagen original de este producto.'
+    );
+  }
+
+  return urlOriginal;
+}
+
+/*
+  Toma la imagen ORIGINAL de un producto (buscando la
+  versión sin marca de agua si imagen_url ya apunta a una
+  versión procesada por un intento anterior), le aplica la
+  misma marca de agua horneada + redimensión/compresión
+  que usan las subidas nuevas (Etapa 5A), la sube como una
+  imagen nueva (no sobrescribe la original) y actualiza el
+  producto para que apunte a esa nueva imagen.
 */
 export async function aplicarMarcaDeAguaRetroactivaAdmin(
   producto
@@ -459,14 +546,20 @@ export async function aplicarMarcaDeAguaRetroactivaAdmin(
     };
   }
 
+  const imagenOrigenUrl =
+    await encontrarImagenOriginalAdmin(
+      productoId,
+      imagenUrlActual
+    );
+
   const respuesta =
     await fetch(
-      imagenUrlActual
+      imagenOrigenUrl
     );
 
   if (!respuesta.ok) {
     throw new Error(
-      'No se pudo descargar la imagen actual del producto.'
+      'No se pudo descargar la imagen original del producto.'
     );
   }
 
@@ -493,14 +586,14 @@ export async function aplicarMarcaDeAguaRetroactivaAdmin(
       archivoOriginal
     );
 
-  const extension =
-    obtenerExtensionDesdeTipo(
-      archivoConMarcaDeAgua.type
-    );
-
+  /*
+    aplicarMarcaDeAguaBro ahora siempre devuelve un JPEG
+    (ver src/lib/watermark.js), así que la extensión de
+    salida siempre es "jpg".
+  */
   const ruta =
     `cuadros/${productoId}/` +
-    `${Date.now()}-retro.${extension}`;
+    `${Date.now()}-web.jpg`;
 
   const {
     error: errorSubida,

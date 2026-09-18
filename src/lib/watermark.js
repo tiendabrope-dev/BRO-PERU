@@ -4,6 +4,22 @@ const FUENTE_MARCA_AGUA =
   "'Black Ops One', sans-serif";
 
 /*
+  Las fotos de producto se suben en resolución de
+  impresión (varios miles de píxeles de ancho), pero en
+  la web nunca se muestran a más de unos cientos de
+  píxeles. Subir el archivo completo a ese tamaño hace
+  que la tienda cargue lento. MAX_DIMENSION limita el
+  lado más largo de la imagen que se sube a la web —
+  de sobra para verse nítida incluso en pantallas de
+  alta densidad, muy por debajo del archivo de impresión
+  original (que nunca se toca: esto solo afecta la copia
+  que sale del panel admin hacia la web).
+*/
+const MAX_DIMENSION = 1400;
+
+const CALIDAD_JPEG = 0.88;
+
+/*
   La tipografía de marca (Black Ops One) ya se carga
   globalmente vía Google Fonts en App.css. Antes de dibujar
   texto en un <canvas> con una fuente web hay que asegurarse
@@ -74,6 +90,46 @@ function cargarImagenDesdeArchivo(
   );
 }
 
+function calcularDimensionesWeb(
+  anchoOriginal,
+  altoOriginal
+) {
+  const ladoMasLargo =
+    Math.max(
+      anchoOriginal,
+      altoOriginal
+    );
+
+  /*
+    Solo achica, nunca agranda una imagen
+    que ya venga más chica que el límite.
+  */
+  const escala =
+    Math.min(
+      1,
+      MAX_DIMENSION /
+        ladoMasLargo
+    );
+
+  return {
+    ancho: Math.max(
+      1,
+      Math.round(
+        anchoOriginal *
+          escala
+      )
+    ),
+
+    alto: Math.max(
+      1,
+      Math.round(
+        altoOriginal *
+          escala
+      )
+    ),
+  };
+}
+
 function dibujarMarcaDeAguaTileada(
   contexto,
   ancho,
@@ -86,7 +142,7 @@ function dibujarMarcaDeAguaTileada(
   */
   const tamanoFuente =
     Math.max(
-      28,
+      20,
       Math.round(
         Math.min(
           ancho,
@@ -197,23 +253,20 @@ function canvasABlob(
   );
 }
 
-const EXTENSIONES_POR_TIPO = {
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-};
-
 /*
-  Toma el archivo de imagen original seleccionado
-  en el panel admin y devuelve un nuevo archivo
-  con el texto "BRO" horneado en diagonal sobre
-  la imagen (no es un overlay CSS: queda parte
-  del archivo).
+  Toma el archivo de imagen original seleccionado (o
+  descargado, en el caso de la herramienta retroactiva)
+  y devuelve un nuevo archivo JPEG, redimensionado a un
+  tamaño razonable para la web (ver MAX_DIMENSION) y con
+  el texto "BRO" horneado en diagonal sobre la imagen (no
+  es un overlay CSS: queda parte del archivo).
 
-  AVIF: los navegadores no soportan de forma
-  confiable codificar AVIF desde <canvas>. Si el
-  original es AVIF, se exporta en WEBP en su lugar
-  (buena calidad y compresión, amplio soporte).
+  Se exporta siempre como JPEG: son fotos de producto (no
+  necesitan transparencia) y JPEG comprime muchísimo mejor
+  que PNG para este tipo de contenido — el PNG que salía
+  del <canvas> antes pesaba varias veces más que el
+  original, empeorando el problema de carga lenta en vez
+  de solucionarlo.
 */
 export async function aplicarMarcaDeAguaBro(
   archivo
@@ -234,18 +287,29 @@ export async function aplicarMarcaDeAguaBro(
       archivo
     );
 
+  const anchoOriginal =
+    imagen.naturalWidth ||
+    imagen.width;
+
+  const altoOriginal =
+    imagen.naturalHeight ||
+    imagen.height;
+
+  const {
+    ancho,
+    alto,
+  } = calcularDimensionesWeb(
+    anchoOriginal,
+    altoOriginal
+  );
+
   const canvas =
     document.createElement(
       'canvas'
     );
 
-  canvas.width =
-    imagen.naturalWidth ||
-    imagen.width;
-
-  canvas.height =
-    imagen.naturalHeight ||
-    imagen.height;
+  canvas.width = ancho;
+  canvas.height = alto;
 
   const contexto =
     canvas.getContext(
@@ -257,6 +321,21 @@ export async function aplicarMarcaDeAguaBro(
       'Tu navegador no soporta el procesamiento de imágenes necesario para la marca de agua.'
     );
   }
+
+  /*
+    Fondo blanco antes de dibujar: JPEG no soporta
+    transparencia, así que si el original tuviera
+    canal alfa, evitamos que se vea negro.
+  */
+  contexto.fillStyle =
+    '#ffffff';
+
+  contexto.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
   contexto.drawImage(
     imagen,
@@ -272,30 +351,12 @@ export async function aplicarMarcaDeAguaBro(
     canvas.height
   );
 
-  const tipoSalida =
-    archivo.type ===
-    'image/avif'
-      ? 'image/webp'
-      : archivo.type ||
-        'image/jpeg';
-
-  const calidad =
-    tipoSalida ===
-    'image/png'
-      ? undefined
-      : 0.92;
-
   const blob =
     await canvasABlob(
       canvas,
-      tipoSalida,
-      calidad
+      'image/jpeg',
+      CALIDAD_JPEG
     );
-
-  const extension =
-    EXTENSIONES_POR_TIPO[
-      tipoSalida
-    ] || 'jpg';
 
   const nombreBase =
     String(
@@ -308,9 +369,9 @@ export async function aplicarMarcaDeAguaBro(
 
   return new File(
     [blob],
-    `${nombreBase}.${extension}`,
+    `${nombreBase}.jpg`,
     {
-      type: tipoSalida,
+      type: 'image/jpeg',
       lastModified:
         Date.now(),
     }
