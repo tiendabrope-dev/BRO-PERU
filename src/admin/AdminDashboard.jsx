@@ -1,6 +1,6 @@
 import './admin-dashboard.css';
 
-const MODULOS = [
+export const MODULOS = [
   {
     id: 'pedidos',
     icono: 'PD',

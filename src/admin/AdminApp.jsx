@@ -18,6 +18,8 @@ import {
 import { activarNotificacionesPush } from '../lib/pushNotificaciones';
 
 import AdminLogin from './AdminLogin';
+import AdminInicio from './AdminInicio';
+import AdminMenuRapido from './AdminMenuRapido';
 import AdminDashboard from './AdminDashboard';
 import AdminPrecios from './AdminPrecios';
 import AdminPedidos from './AdminPedidos';
@@ -41,6 +43,9 @@ const CLAVE_RECARGA =
 const RUTAS_MODULOS = {
   dashboard:
     '/cuenta/inicio',
+
+  modulos:
+    '/cuenta/inicio/modulos',
 
   pedidos:
     '/cuenta/inicio/pedidos',
@@ -169,6 +174,9 @@ function resolverRutaCuenta(
   }
 
   const rutas = {
+    '/cuenta/inicio/modulos':
+      'modulos',
+
     '/cuenta/inicio/precios':
       'precios',
 
@@ -533,6 +541,19 @@ function AdminApp() {
   function renderModulo() {
     if (
       modulo ===
+      'modulos'
+    ) {
+      return (
+        <AdminDashboard
+          onAbrirModulo={
+            abrirModulo
+          }
+        />
+      );
+    }
+
+    if (
+      modulo ===
       'precios'
     ) {
       return (
@@ -695,14 +716,24 @@ function AdminApp() {
           BRO
         </button>
 
-        <button
-          type="button"
-          onClick={
-            salir
-          }
-        >
-          CERRAR SESIÓN
-        </button>
+        <div className="bro-admin-header-actions">
+
+          <AdminMenuRapido
+            onAbrirModulo={
+              abrirModulo
+            }
+          />
+
+          <button
+            type="button"
+            onClick={
+              salir
+            }
+          >
+            CERRAR SESIÓN
+          </button>
+
+        </div>
 
       </header>
 
@@ -710,7 +741,7 @@ function AdminApp() {
 
         {modulo ===
         'dashboard' ? (
-          <AdminDashboard
+          <AdminInicio
             onAbrirModulo={
               abrirModulo
             }

@@ -334,6 +334,117 @@
   letter-spacing: 0.04em;
 }
 
+.bro-admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ==========================================================
+   MENÚ RÁPIDO DE MÓDULOS (HEADER)
+========================================================== */
+
+.bro-admin-menu-rapido {
+  position: relative;
+}
+
+.bro-admin-menu-boton {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.bro-admin-menu-boton:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.bro-admin-menu-lista {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 40;
+
+  width: 240px;
+  padding: 8px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  background: #ffffff;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(17, 17, 17, 0.16);
+}
+
+.bro-admin-menu-item {
+  width: 100%;
+  padding: 9px 10px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #111111;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+
+  transition: background 0.14s ease;
+}
+
+.bro-admin-menu-item:hover {
+  background: #f4f1ec;
+}
+
+.bro-admin-menu-icono {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.bro-admin-menu-icono-todos {
+  background: #eeeeee;
+  color: #444444;
+  font-size: 15px;
+}
+
+.bro-admin-menu-separador {
+  margin: 6px 4px;
+  height: 1px;
+  background: #ece7df;
+}
+
+@media (max-width: 600px) {
+  .bro-admin-menu-lista {
+    width: 220px;
+  }
+}
+
 /* ==========================================================
    MÓVIL
 ========================================================== */
