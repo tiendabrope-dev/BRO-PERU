@@ -706,17 +706,7 @@ function AdminApp() {
 
       <header className="bro-admin-header">
 
-        <button
-          type="button"
-          className="bro-admin-home"
-          onClick={
-            volverDashboard
-          }
-        >
-          BRO
-        </button>
-
-        <div className="bro-admin-header-actions">
+        <div className="bro-admin-header-left">
 
           <AdminMenuRapido
             onAbrirModulo={
@@ -726,14 +716,24 @@ function AdminApp() {
 
           <button
             type="button"
+            className="bro-admin-home"
             onClick={
-              salir
+              volverDashboard
             }
           >
-            CERRAR SESIÓN
+            BR<span>O</span>
           </button>
 
         </div>
+
+        <button
+          type="button"
+          onClick={
+            salir
+          }
+        >
+          CERRAR SESIÓN
+        </button>
 
       </header>
 

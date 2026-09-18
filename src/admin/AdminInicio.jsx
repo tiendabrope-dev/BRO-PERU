@@ -27,7 +27,7 @@ function AdminInicio({
         </span>
 
         <h1>
-          Bienvenido de nuevo
+          Bienvenido, Diego
         </h1>
 
         <p>
