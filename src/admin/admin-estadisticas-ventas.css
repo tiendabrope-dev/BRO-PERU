@@ -1,0 +1,126 @@
+.admin-estadisticas-ventas {
+  padding: 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #fff;
+  border: 1px solid #dfdad2;
+  border-radius: 14px;
+}
+
+.admin-estadisticas-heading {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-estadisticas-heading strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #767676;
+  text-transform: uppercase;
+}
+
+.admin-estadisticas-heading span {
+  display: block;
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 900;
+  color: #111111;
+}
+
+.admin-estadisticas-selector {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+
+  background: #f4f1ec;
+  border-radius: 8px;
+}
+
+.admin-estadisticas-selector button {
+  padding: 6px 10px;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #767676;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.admin-estadisticas-selector button.activo {
+  background: #2d5a3d;
+  color: #ffffff;
+}
+
+.admin-estadisticas-grafico {
+  flex: 1;
+  min-height: 140px;
+
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.admin-estadisticas-barra-columna {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-estadisticas-barra-riel {
+  width: 100%;
+  height: 120px;
+
+  display: flex;
+  align-items: flex-end;
+}
+
+.admin-estadisticas-barra {
+  width: 100%;
+  min-height: 3px;
+
+  background: #4a8c60;
+  border-radius: 4px 4px 0 0;
+
+  transition: height 0.2s ease;
+}
+
+.admin-estadisticas-barra-columna span {
+  color: #a1a1a1;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .admin-estadisticas-ventas {
+    padding: 16px;
+  }
+
+  .admin-estadisticas-grafico {
+    gap: 3px;
+  }
+
+  .admin-estadisticas-barra-riel {
+    height: 100px;
+  }
+}

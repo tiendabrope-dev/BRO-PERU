@@ -27,6 +27,19 @@
   text-transform: capitalize;
 }
 
+.admin-inicio-stats {
+  margin-bottom: 24px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.admin-inicio-stats > * {
+  min-height: 260px;
+}
+
 .admin-inicio-info {
   display: grid;
   gap: 14px;
@@ -75,9 +88,20 @@
   background: #244b33;
 }
 
+@media (max-width: 860px) {
+  .admin-inicio-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 560px) {
   .admin-inicio-heading {
     margin-bottom: 22px;
+  }
+
+  .admin-inicio-stats {
+    margin-bottom: 18px;
+    gap: 12px;
   }
 
   .admin-inicio-info {

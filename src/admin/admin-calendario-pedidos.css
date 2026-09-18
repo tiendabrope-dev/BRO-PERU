@@ -1,0 +1,113 @@
+.admin-calendario {
+  padding: 20px;
+  box-sizing: border-box;
+
+  background: #fff;
+  border: 1px solid #dfdad2;
+  border-radius: 14px;
+}
+
+.admin-calendario-heading {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-calendario-heading strong {
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.admin-calendario-heading span {
+  color: #767676;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-calendario-dias-semana {
+  margin-bottom: 6px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.admin-calendario-dias-semana span {
+  text-align: center;
+  color: #a1a1a1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.admin-calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.admin-calendario-celda {
+  aspect-ratio: 1;
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 5px;
+  box-sizing: border-box;
+
+  border-radius: 8px;
+  background: #f8f6f2;
+}
+
+.admin-calendario-celda-vacia {
+  background: transparent;
+}
+
+.admin-calendario-celda-hoy {
+  background: #e8f0ea;
+  box-shadow: inset 0 0 0 1.5px #2d5a3d;
+}
+
+.admin-calendario-numero {
+  color: #444;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-calendario-celda-hoy .admin-calendario-numero {
+  color: #2d5a3d;
+  font-weight: 900;
+}
+
+.admin-calendario-badge {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 999px;
+  background: #2d5a3d;
+  color: #ffffff;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+@media (max-width: 560px) {
+  .admin-calendario {
+    padding: 16px;
+  }
+
+  .admin-calendario-numero {
+    font-size: 10px;
+  }
+}
