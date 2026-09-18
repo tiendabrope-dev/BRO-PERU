@@ -3,6 +3,8 @@ import {
   useState,
 } from 'react';
 
+import { formatearSoles } from '../lib/estadisticas';
+
 import './admin-estadisticas-ventas.css';
 
 const OPCIONES_PERIODO = [
@@ -66,19 +68,6 @@ function inicioDeSemana(
   );
 
   return copia;
-}
-
-function formatearSoles(
-  valor
-) {
-  return (
-    'S/ ' +
-    Math.round(
-      valor
-    ).toLocaleString(
-      'es-PE'
-    )
-  );
 }
 
 function pedidoCuentaComoIngreso(

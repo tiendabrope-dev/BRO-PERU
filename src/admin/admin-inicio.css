@@ -3,7 +3,7 @@
 }
 
 .admin-inicio-heading {
-  margin-bottom: 30px;
+  margin-bottom: 26px;
 }
 
 .admin-inicio-heading > span {
@@ -27,6 +27,43 @@
   text-transform: capitalize;
 }
 
+.admin-inicio-resumen {
+  margin-bottom: 18px;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-inicio-resumen-item {
+  padding: 16px 18px;
+  box-sizing: border-box;
+
+  background: #fff;
+  border: 1px solid #dfdad2;
+  border-radius: 14px;
+}
+
+.admin-inicio-resumen-item span {
+  display: block;
+  margin-bottom: 6px;
+  color: #767676;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.admin-inicio-resumen-item strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 900;
+  color: #111111;
+}
+
+.admin-inicio-resumen-item-alerta strong {
+  color: #9b5c00;
+}
+
 .admin-inicio-stats {
   margin-bottom: 24px;
 
@@ -37,38 +74,25 @@
 }
 
 .admin-inicio-stats > * {
-  min-height: 260px;
+  min-height: 300px;
 }
 
-.admin-inicio-info {
-  display: grid;
-  gap: 14px;
-  margin-bottom: 30px;
-  max-width: 480px;
+.admin-inicio-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.admin-inicio-info-item {
-  padding: 18px 20px;
-  box-sizing: border-box;
-
-  background: #fff;
-  border: 1px solid #dfdad2;
-  border-radius: 14px;
-}
-
-.admin-inicio-info-item strong {
-  display: block;
-  margin-bottom: 4px;
-  color: #111111;
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-}
-
-.admin-inicio-info-item span {
+.admin-inicio-pie p {
+  margin: 0;
   color: #767676;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 12px;
+}
+
+.admin-inicio-pie p strong {
+  color: #111111;
 }
 
 .admin-inicio-ver-modulos {
@@ -92,11 +116,26 @@
   .admin-inicio-stats {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .admin-inicio-stats > * {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-inicio-resumen {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 560px) {
   .admin-inicio-heading {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+  }
+
+  .admin-inicio-resumen {
+    margin-bottom: 14px;
+    gap: 10px;
   }
 
   .admin-inicio-stats {
@@ -104,7 +143,8 @@
     gap: 12px;
   }
 
-  .admin-inicio-info {
-    max-width: 100%;
+  .admin-inicio-pie {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

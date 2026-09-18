@@ -1,9 +1,14 @@
 import {
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 
-import { obtenerPedidosParaEstadisticasAdmin } from '../lib/estadisticas';
+import {
+  calcularResumenMes,
+  formatearSoles,
+  obtenerPedidosParaEstadisticasAdmin,
+} from '../lib/estadisticas';
 
 import AdminCalendarioPedidos from './AdminCalendarioPedidos';
 import AdminEstadisticasVentas from './AdminEstadisticasVentas';
@@ -74,6 +79,16 @@ function AdminInicio({
     };
   }, []);
 
+  const resumen = useMemo(
+    () =>
+      calcularResumenMes(
+        pedidos
+      ),
+    [
+      pedidos,
+    ]
+  );
+
   return (
     <section className="admin-inicio">
 
@@ -89,6 +104,48 @@ function AdminInicio({
         <p>
           {obtenerFechaTexto()}
         </p>
+      </div>
+
+      <div className="admin-inicio-resumen">
+
+        <div className="admin-inicio-resumen-item">
+          <span>
+            Pedidos este mes
+          </span>
+
+          <strong>
+            {cargandoPedidos
+              ? '—'
+              : resumen.pedidosMes}
+          </strong>
+        </div>
+
+        <div className="admin-inicio-resumen-item">
+          <span>
+            Ingresos este mes
+          </span>
+
+          <strong>
+            {cargandoPedidos
+              ? '—'
+              : formatearSoles(
+                  resumen.ingresosMes
+                )}
+          </strong>
+        </div>
+
+        <div className="admin-inicio-resumen-item admin-inicio-resumen-item-alerta">
+          <span>
+            Pedidos por atender
+          </span>
+
+          <strong>
+            {cargandoPedidos
+              ? '—'
+              : resumen.pendientes}
+          </strong>
+        </div>
+
       </div>
 
       <div className="admin-inicio-stats">
@@ -113,41 +170,28 @@ function AdminInicio({
 
       </div>
 
-      <div className="admin-inicio-info">
+      <div className="admin-inicio-pie">
 
-        <div className="admin-inicio-info-item">
+        <p>
           <strong>
-            Tienda
-          </strong>
+            BRO Perú
+          </strong>{' '}
+          — brotienda.com
+        </p>
 
-          <span>
-            BRO Perú — brotienda.com
-          </span>
-        </div>
-
-        <div className="admin-inicio-info-item">
-          <strong>
-            Navegación
-          </strong>
-
-          <span>
-            Usa el ícono de la esquina superior izquierda para moverte rápido entre módulos.
-          </span>
-        </div>
+        <button
+          type="button"
+          className="admin-inicio-ver-modulos"
+          onClick={() =>
+            onAbrirModulo(
+              'modulos'
+            )
+          }
+        >
+          Ver todos los módulos →
+        </button>
 
       </div>
-
-      <button
-        type="button"
-        className="admin-inicio-ver-modulos"
-        onClick={() =>
-          onAbrirModulo(
-            'modulos'
-          )
-        }
-      >
-        Ver todos los módulos →
-      </button>
 
     </section>
   );
