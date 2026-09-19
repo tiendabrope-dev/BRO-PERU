@@ -9,7 +9,7 @@
 .admin-precios-heading > span {
   display: block;
   margin-bottom: 6px;
-  color: #2d5a3d;
+  color: var(--bro-verde);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -23,7 +23,7 @@
 
 .admin-precios-heading p {
   margin: 7px 0 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   line-height: 1.4;
 }
 
@@ -37,8 +37,8 @@
 }
 
 .admin-precios-success {
-  background: #e8f0ea;
-  color: #2d5a3d;
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
 }
 
 .admin-precios-error {
@@ -53,8 +53,8 @@
 
 .admin-precio-card {
   padding: 18px 20px;
-  background: #fff;
-  border: 1px solid #dfdad2;
+  background: var(--bro-panel);
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 12px;
 
   display: flex;
@@ -66,7 +66,7 @@
 .admin-precio-card small {
   display: block;
   margin-bottom: 5px;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -75,6 +75,7 @@
 
 .admin-precio-card strong {
   display: block;
+  color: var(--bro-texto);
   font-size: 16px;
 }
 
@@ -85,6 +86,7 @@
 }
 
 .admin-precio-editor > span {
+  color: var(--bro-texto);
   font-size: 14px;
   font-weight: 900;
 }
@@ -94,18 +96,18 @@
   height: 42px;
   padding: 0 10px;
 
-  border: 1px solid #ccc6bd;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 7px;
 
-  background: #fff;
-  color: #111;
+  background: var(--bro-panel);
+  color: var(--bro-texto);
 
   font: inherit;
   font-weight: 800;
 }
 
 .admin-precio-editor input:focus {
-  outline: 2px solid #2d5a3d;
+  outline: 2px solid var(--bro-verde);
   outline-offset: 1px;
 }
 
@@ -116,7 +118,7 @@
   border: 0;
   border-radius: 7px;
 
-  background: #2d5a3d;
+  background: var(--bro-verde);
   color: #fff;
 
   cursor: pointer;
@@ -132,6 +134,7 @@
 
 .admin-precios-status {
   padding: 30px 0;
+  color: var(--bro-texto-tenue);
   font-weight: 800;
 }
 

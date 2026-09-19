@@ -45,7 +45,7 @@ function AdminAjustes({
           .admin-ajustes-head > span {
             display: block;
             margin-bottom: 6px;
-            color: #2d5a3d;
+            color: var(--bro-verde);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .14em;
@@ -53,13 +53,13 @@ function AdminAjustes({
 
           .admin-ajustes-head h2 {
             margin: 0 0 7px;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 30px;
           }
 
           .admin-ajustes-head p {
             margin: 0 0 24px;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 13px;
             line-height: 1.5;
           }
@@ -67,9 +67,9 @@ function AdminAjustes({
           .admin-ajustes-sub-lista {
             display: flex;
             flex-direction: column;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
             overflow: hidden;
           }
 
@@ -80,8 +80,8 @@ function AdminAjustes({
             gap: 14px;
             align-items: center;
             border: 0;
-            border-bottom: 1px solid #e2dcd4;
-            background: #fff;
+            border-bottom: 1px solid var(--bro-borde-fuerte);
+            background: var(--bro-panel);
             cursor: pointer;
             text-align: left;
             font: inherit;
@@ -93,7 +93,7 @@ function AdminAjustes({
           }
 
           .admin-ajustes-sub-fila:hover {
-            background: #f8f6f2;
+            background: var(--bro-hover);
           }
 
           .admin-ajustes-sub-icon {
@@ -103,8 +103,8 @@ function AdminAjustes({
             align-items: center;
             justify-content: center;
             border-radius: 8px;
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
             font-size: 13px;
             font-weight: 900;
           }
@@ -115,20 +115,20 @@ function AdminAjustes({
 
           .admin-ajustes-sub-texto strong {
             display: block;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 14px;
           }
 
           .admin-ajustes-sub-texto span {
             display: block;
             margin-top: 3px;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 12px;
             line-height: 1.4;
           }
 
           .admin-ajustes-sub-flecha {
-            color: #c3bcb0;
+            color: var(--bro-texto-tenue-2);
             font-size: 16px;
           }
         `}

@@ -166,7 +166,7 @@ function AdminCupones() {
           .admin-cupones-head-text > span {
             display: block;
             margin-bottom: 6px;
-            color: #2d5a3d;
+            color: var(--bro-verde);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .14em;
@@ -174,23 +174,23 @@ function AdminCupones() {
 
           .admin-cupones-head h2 {
             margin: 0 0 7px;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 30px;
           }
 
           .admin-cupones-head p {
             margin: 0;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 13px;
           }
 
           .admin-cupones-refresh {
             min-height: 39px;
             padding: 0 15px;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 7px;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             cursor: pointer;
             font-size: 9px;
             font-weight: 900;
@@ -207,8 +207,8 @@ function AdminCupones() {
           .admin-cupones-resumen span {
             padding: 7px 10px;
             border-radius: 999px;
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
             font-size: 9px;
             font-weight: 900;
             letter-spacing: .08em;
@@ -220,9 +220,9 @@ function AdminCupones() {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-cupones-nueva input,
@@ -230,11 +230,11 @@ function AdminCupones() {
             height: 42px;
             padding: 0 12px;
             box-sizing: border-box;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
             outline: none;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             font: inherit;
             font-size: 12px;
           }
@@ -257,7 +257,7 @@ function AdminCupones() {
           .admin-cupon-codigo:focus,
           .admin-cupon-monto:focus,
           .admin-cupon-tipo-uso:focus {
-            border-color: #2d5a3d;
+            border-color: var(--bro-verde);
             box-shadow: 0 0 0 3px rgba(45, 90, 61, .08);
           }
 
@@ -265,9 +265,9 @@ function AdminCupones() {
             min-width: 100px;
             min-height: 42px;
             padding: 0 14px;
-            border: 1px solid #2d5a3d;
+            border: 1px solid var(--bro-verde);
             border-radius: 6px;
-            background: #2d5a3d;
+            background: var(--bro-verde);
             color: #fff;
             cursor: pointer;
             font-size: 9px;
@@ -292,9 +292,9 @@ function AdminCupones() {
             grid-template-columns: 150px 100px minmax(190px, 1fr) 90px auto;
             gap: 10px;
             align-items: center;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-cupon-codigo,
@@ -303,11 +303,11 @@ function AdminCupones() {
             height: 40px;
             padding: 0 11px;
             box-sizing: border-box;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
             outline: none;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             font: inherit;
             font-size: 12px;
           }
@@ -324,13 +324,13 @@ function AdminCupones() {
             align-items: center;
             justify-content: center;
             gap: 6px;
-            color: #555;
+            color: var(--bro-texto-tenue);
             font-size: 9px;
             font-weight: 900;
           }
 
           .admin-cupon-activo input {
-            accent-color: #2d5a3d;
+            accent-color: var(--bro-verde);
           }
 
           .admin-cupon-acciones {
@@ -341,10 +341,10 @@ function AdminCupones() {
           .admin-cupon-acciones button {
             min-height: 36px;
             padding: 0 12px;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             cursor: pointer;
             font-size: 8px;
             font-weight: 900;
@@ -352,8 +352,8 @@ function AdminCupones() {
           }
 
           .admin-cupon-acciones .guardar {
-            border-color: #2d5a3d;
-            background: #2d5a3d;
+            border-color: var(--bro-verde);
+            background: var(--bro-verde);
             color: #fff;
           }
 
@@ -376,16 +376,16 @@ function AdminCupones() {
           }
 
           .admin-cupones-ok {
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
           }
 
           .admin-cupones-status {
             padding: 32px 20px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
-            color: #777;
+            background: var(--bro-panel);
+            color: var(--bro-texto-tenue);
             text-align: center;
             font-size: 12px;
           }

@@ -306,7 +306,7 @@ function AdminSuscriptores() {
           .admin-suscriptores-heading > div:first-child > span {
             display: block;
             margin-bottom: 7px;
-            color: #2d5a3d;
+            color: var(--bro-verde);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .14em;
@@ -314,13 +314,13 @@ function AdminSuscriptores() {
 
           .admin-suscriptores-heading h2 {
             margin: 0 0 7px;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 30px;
           }
 
           .admin-suscriptores-heading p {
             margin: 0;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 13px;
           }
 
@@ -334,10 +334,10 @@ function AdminSuscriptores() {
           .admin-suscriptores-heading-actions button {
             min-height: 39px;
             padding: 0 15px;
-            border: 1px solid #d8d2c9;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 7px;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             cursor: pointer;
             font-size: 9px;
             font-weight: 900;
@@ -345,8 +345,8 @@ function AdminSuscriptores() {
           }
 
           .admin-suscriptores-heading-actions button.principal {
-            border-color: #2d5a3d;
-            background: #2d5a3d;
+            border-color: var(--bro-verde);
+            background: var(--bro-verde);
             color: #fff;
           }
 
@@ -360,22 +360,22 @@ function AdminSuscriptores() {
 
           .admin-suscriptores-stat {
             padding: 18px;
-            border: 1px solid #e3ddd5;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-suscriptores-stat span {
             display: block;
             margin-bottom: 5px;
-            color: #8c867e;
+            color: var(--bro-texto-tenue);
             font-size: 9px;
             font-weight: 800;
             letter-spacing: .11em;
           }
 
           .admin-suscriptores-stat strong {
-            color: #111;
+            color: var(--bro-texto);
             font-size: 27px;
             line-height: 1;
           }
@@ -389,17 +389,17 @@ function AdminSuscriptores() {
             height: 44px;
             padding: 0 14px;
             box-sizing: border-box;
-            border: 1px solid #d8d2c9;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 7px;
             outline: 0;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             font: inherit;
             font-size: 13px;
           }
 
           .admin-suscriptores-toolbar input:focus {
-            border-color: #2d5a3d;
+            border-color: var(--bro-verde);
             box-shadow:
               0 0 0 3px
               rgba(45, 90, 61, .08);
@@ -407,9 +407,9 @@ function AdminSuscriptores() {
 
           .admin-suscriptores-lista {
             overflow: hidden;
-            border: 1px solid #e3ddd5;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-suscriptor-fila {
@@ -424,7 +424,7 @@ function AdminSuscriptores() {
             gap: 14px;
             align-items: center;
             border-bottom:
-              1px solid #eee9e2;
+              1px solid var(--bro-borde);
           }
 
           .admin-suscriptor-fila:last-child {
@@ -438,7 +438,7 @@ function AdminSuscriptores() {
           .admin-suscriptor-email strong {
             display: block;
             overflow: hidden;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 13px;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -447,7 +447,7 @@ function AdminSuscriptores() {
           .admin-suscriptor-email small {
             display: block;
             margin-top: 3px;
-            color: #aaa39a;
+            color: var(--bro-texto-tenue-2);
             font-size: 9px;
           }
 
@@ -455,29 +455,29 @@ function AdminSuscriptores() {
             width: max-content;
             padding: 5px 8px;
             border-radius: 999px;
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
             font-size: 8px;
             font-weight: 900;
             letter-spacing: .08em;
           }
 
           .admin-suscriptor-estado.inactivo {
-            background: #f0eeee;
-            color: #8a8580;
+            background: var(--bro-hover-fuerte);
+            color: var(--bro-texto-tenue);
           }
 
           .admin-suscriptor-fecha {
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 10px;
           }
 
           .admin-suscriptor-copiar {
             min-height: 32px;
-            border: 1px solid #ddd7cf;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             cursor: pointer;
             font-size: 8px;
             font-weight: 900;
@@ -487,7 +487,7 @@ function AdminSuscriptores() {
           .admin-suscriptores-status,
           .admin-suscriptores-vacio {
             padding: 30px 20px;
-            color: #817b74;
+            color: var(--bro-texto-tenue);
             text-align: center;
             font-size: 12px;
           }
@@ -507,8 +507,8 @@ function AdminSuscriptores() {
           }
 
           .admin-suscriptores-exito {
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
           }
 
           @media (max-width: 760px) {
