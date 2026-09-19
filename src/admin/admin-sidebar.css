@@ -1,0 +1,228 @@
+/* ==========================================================
+   ESTRUCTURA GENERAL (sidebar + contenido)
+========================================================== */
+
+.bro-admin {
+  display: flex;
+}
+
+.bro-admin-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.bro-sidebar {
+  width: 240px;
+  height: 100%;
+  flex: 0 0 240px;
+  box-sizing: border-box;
+
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+
+  background: #f4f1ec;
+  border-right: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.bro-sidebar-logo {
+  padding: 0;
+  margin: 4px 8px 24px;
+
+  border: 0;
+  background: transparent;
+  color: #111111;
+  cursor: pointer;
+  text-align: left;
+
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 24px;
+  letter-spacing: 0.04em;
+}
+
+.bro-sidebar-logo span {
+  color: #2d5a3d;
+}
+
+.bro-sidebar-etiqueta {
+  padding: 0 8px;
+  margin: 16px 0 8px;
+
+  color: #767676;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.bro-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bro-sidebar-item {
+  width: 100%;
+  padding: 9px 10px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #111111;
+  cursor: pointer;
+  text-align: left;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: background 0.14s ease;
+}
+
+.bro-sidebar-item:hover {
+  background: rgba(17, 17, 17, 0.05);
+}
+
+.bro-sidebar-item.activo {
+  background: #e8f0ea;
+  color: #2d5a3d;
+}
+
+.bro-sidebar-icono {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 7px;
+  background: rgba(17, 17, 17, 0.06);
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.bro-sidebar-footer {
+  margin-top: auto;
+  padding: 14px 8px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.bro-sidebar-salir {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #111111;
+  cursor: pointer;
+  text-align: left;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.bro-sidebar-footer span {
+  color: #a1a1a1;
+  font-size: 10px;
+}
+
+/* ==========================================================
+   BARRA SUPERIOR MÓVIL (reemplaza al sidebar fijo)
+========================================================== */
+
+.bro-admin-topbar-movil {
+  display: none;
+}
+
+/* ==========================================================
+   PANEL DESLIZANTE (sidebar en móvil)
+========================================================== */
+
+.bro-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+
+  display: none;
+
+  background: rgba(17, 17, 17, 0.45);
+}
+
+@media (max-width: 900px) {
+  .bro-admin > .bro-sidebar {
+    display: none;
+  }
+
+  .bro-admin-topbar-movil {
+    padding: 0 16px;
+    min-height: 60px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    background: #f4f1ec;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  }
+
+  .bro-admin-hamburguesa,
+  .bro-admin-topbar-buscar {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #111111;
+    cursor: pointer;
+  }
+
+  .bro-admin-hamburguesa:hover,
+  .bro-admin-topbar-buscar:hover {
+    background: rgba(17, 17, 17, 0.08);
+  }
+
+  .bro-admin-topbar-logo {
+    font-family: 'Black Ops One', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    color: #111111;
+  }
+
+  .bro-admin-topbar-logo span {
+    color: #2d5a3d;
+  }
+
+  .bro-sidebar-overlay {
+    display: flex;
+  }
+
+  .bro-sidebar-overlay .bro-sidebar {
+    width: 76vw;
+    max-width: 280px;
+    box-shadow: 0 0 40px rgba(17, 17, 17, 0.3);
+  }
+}

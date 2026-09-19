@@ -19,7 +19,7 @@ import { activarNotificacionesPush } from '../lib/pushNotificaciones';
 
 import AdminLogin from './AdminLogin';
 import AdminInicio from './AdminInicio';
-import AdminMenuRapido from './AdminMenuRapido';
+import AdminSidebar from './AdminSidebar';
 import AdminCommandPalette from './AdminCommandPalette';
 import AdminDashboard from './AdminDashboard';
 import AdminPrecios from './AdminPrecios';
@@ -84,9 +84,10 @@ const RUTAS_MODULOS = {
 
 /*
   Sub-módulos que viven "dentro" de Ajustes (ver
-  AdminAjustes.jsx / SUBMODULOS). Para estos, el botón
-  "← VOLVER AL PANEL" debe regresar a Ajustes, no a la
-  rejilla completa de módulos.
+  AdminAjustes.jsx / SUBMODULOS). El sidebar solo tiene
+  una entrada "Ajustes" — cuando el módulo activo es uno
+  de estos, la entrada que se resalta como activa en el
+  sidebar sigue siendo "Ajustes".
 */
 const SUBMODULOS_DE_AJUSTES = [
   'ticker',
@@ -94,6 +95,20 @@ const SUBMODULOS_DE_AJUSTES = [
   'marcaDeAguaRetro',
   'ajustesContacto',
 ];
+
+function resolverGrupoSidebar(
+  modulo
+) {
+  if (
+    SUBMODULOS_DE_AJUSTES.includes(
+      modulo
+    )
+  ) {
+    return 'ajustes';
+  }
+
+  return modulo;
+}
 
 function resolverRutaCuenta(
   pathname
@@ -271,6 +286,11 @@ function AdminApp() {
     setPaletaAbierta,
   ] = useState(false);
 
+  const [
+    sidebarMovilAbierta,
+    setSidebarMovilAbierta,
+  ] = useState(false);
+
   const rutaCuenta =
     useMemo(
       () =>
@@ -357,6 +377,10 @@ function AdminApp() {
         'Escape'
       ) {
         setPaletaAbierta(
+          false
+        );
+
+        setSidebarMovilAbierta(
           false
         );
       }
@@ -576,53 +600,6 @@ function AdminApp() {
     );
   }
 
-  function volverDashboard() {
-    navigate(
-      '/cuenta/inicio'
-    );
-  }
-
-  function volverModulos() {
-    navigate(
-      '/cuenta/inicio/modulos'
-    );
-  }
-
-  /*
-    Botón "← VOLVER AL PANEL", genérico para todos los
-    módulos — el destino depende de dónde estás parado:
-    - Dentro de un sub-módulo de Ajustes → vuelve a Ajustes
-      (un nivel arriba), no a la rejilla completa.
-    - Dentro de la rejilla de módulos ('modulos') → vuelve
-      al panel principal (AdminInicio), un nivel arriba.
-    - Cualquier otro módulo de primer nivel (Pedidos,
-      Precios, Productos, etc.) → vuelve a la rejilla.
-  */
-  function volverAtras() {
-    if (
-      SUBMODULOS_DE_AJUSTES.includes(
-        modulo
-      )
-    ) {
-      abrirModulo(
-        'ajustes'
-      );
-
-      return;
-    }
-
-    if (
-      modulo ===
-      'modulos'
-    ) {
-      volverDashboard();
-
-      return;
-    }
-
-    volverModulos();
-  }
-
   function abrirModulo(
     nombreModulo
   ) {
@@ -818,80 +795,147 @@ function AdminApp() {
   return (
     <main className="bro-admin">
 
-      <header className="bro-admin-header">
+      <AdminSidebar
+        activo={resolverGrupoSidebar(
+          modulo
+        )}
+        onAbrirModulo={
+          abrirModulo
+        }
+        onCerrarSesion={
+          salir
+        }
+      />
 
-        <div className="bro-admin-header-left">
+      <div className="bro-admin-topbar-movil">
 
-          <AdminMenuRapido
-            onAbrirModulo={
-              abrirModulo
-            }
-          />
+        <button
+          type="button"
+          className="bro-admin-hamburguesa"
+          aria-label="Abrir menú"
+          onClick={() =>
+            setSidebarMovilAbierta(
+              true
+            )
+          }
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="19"
+            height="19"
+            aria-hidden="true"
+          >
+            <line
+              x1="3"
+              y1="6"
+              x2="21"
+              y2="6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
 
-          <button
-            type="button"
-            className="bro-admin-home"
-            onClick={
-              volverDashboard
+            <line
+              x1="3"
+              y1="12"
+              x2="21"
+              y2="12"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+
+            <line
+              x1="3"
+              y1="18"
+              x2="21"
+              y2="18"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+
+        <span className="bro-admin-topbar-logo">
+          BR<span>O</span>
+        </span>
+
+        <button
+          type="button"
+          className="bro-admin-topbar-buscar"
+          title="Buscar (Ctrl+K)"
+          aria-label="Abrir la paleta de comandos"
+          onClick={() =>
+            setPaletaAbierta(
+              true
+            )
+          }
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="17"
+            height="17"
+            aria-hidden="true"
+          >
+            <circle
+              cx="10.5"
+              cy="10.5"
+              r="6.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+
+            <line
+              x1="15.5"
+              y1="15.5"
+              x2="21"
+              y2="21"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+
+      </div>
+
+      {sidebarMovilAbierta && (
+        <div
+          className="bro-sidebar-overlay"
+          onClick={() =>
+            setSidebarMovilAbierta(
+              false
+            )
+          }
+        >
+          <div
+            onClick={(
+              evento
+            ) =>
+              evento.stopPropagation()
             }
           >
-            BR<span>O</span>
-          </button>
-
+            <AdminSidebar
+              activo={resolverGrupoSidebar(
+                modulo
+              )}
+              onAbrirModulo={
+                abrirModulo
+              }
+              onCerrarSesion={
+                salir
+              }
+              onNavegar={() =>
+                setSidebarMovilAbierta(
+                  false
+                )
+              }
+            />
+          </div>
         </div>
-
-        <div className="bro-admin-header-right">
-
-          <button
-            type="button"
-            className="bro-admin-menu-boton"
-            title="Buscar (Ctrl+K)"
-            aria-label="Abrir la paleta de comandos"
-            onClick={() =>
-              setPaletaAbierta(
-                true
-              )
-            }
-          >
-            <svg
-              viewBox="0 0 24 24"
-              width="17"
-              height="17"
-              aria-hidden="true"
-            >
-              <circle
-                cx="10.5"
-                cy="10.5"
-                r="6.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-
-              <line
-                x1="15.5"
-                y1="15.5"
-                x2="21"
-                y2="21"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            onClick={
-              salir
-            }
-          >
-            CERRAR SESIÓN
-          </button>
-
-        </div>
-
-      </header>
+      )}
 
       <AdminCommandPalette
         abierto={
@@ -913,34 +957,22 @@ function AdminApp() {
         }
       />
 
-      <div className="bro-admin-content">
+      <div className="bro-admin-main">
 
-        {modulo ===
-        'dashboard' ? (
-          <AdminInicio
-            onAbrirModulo={
-              abrirModulo
-            }
-          />
-        ) : (
-          <>
+        <div className="bro-admin-content">
 
-            {!pedidoId && (
-              <button
-                type="button"
-                className="admin-module-back"
-                onClick={
-                  volverAtras
-                }
-              >
-                ← VOLVER AL PANEL
-              </button>
-            )}
+          {modulo ===
+          'dashboard' ? (
+            <AdminInicio
+              onAbrirModulo={
+                abrirModulo
+              }
+            />
+          ) : (
+            renderModulo()
+          )}
 
-            {renderModulo()}
-
-          </>
-        )}
+        </div>
 
       </div>
 
