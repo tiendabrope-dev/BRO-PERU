@@ -7,7 +7,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #2d5a3d;
+  color: var(--bro-verde);
   cursor: pointer;
   font-size: 12px;
   font-weight: 900;
@@ -24,7 +24,7 @@
 .admin-pedido-detalle-header > div > span {
   display: block;
   margin-bottom: 5px;
-  color: #2d5a3d;
+  color: var(--bro-verde);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -37,7 +37,7 @@
 
 .admin-pedido-detalle-header p {
   margin: 5px 0 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
 }
 
 .admin-pedido-detalle-total {
@@ -54,8 +54,8 @@
 .admin-pedido-panel,
 .admin-pedido-productos,
 .admin-pedido-totales {
-  background: #fff;
-  border: 1px solid #dfdad2;
+  background: var(--bro-panel);
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 12px;
 }
 
@@ -71,7 +71,7 @@
 
 .admin-pedido-panel p {
   margin: 6px 0;
-  color: #555;
+  color: var(--bro-texto);
   font-size: 13px;
 }
 
@@ -80,10 +80,10 @@
   height: 42px;
   padding: 0 10px;
   margin-bottom: 8px;
-  border: 1px solid #ccc6bd;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 7px;
-  background: #fff;
-  color: #111;
+  background: var(--bro-panel);
+  color: var(--bro-texto);
   font: inherit;
   font-weight: 700;
 }
@@ -99,7 +99,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 14px 0;
-  border-top: 1px solid #eee9e2;
+  border-top: 1px solid var(--bro-borde);
 }
 
 .admin-pedido-item:first-of-type {
@@ -113,7 +113,7 @@
 
 .admin-pedido-item span,
 .admin-pedido-item small {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 12px;
 }
 
@@ -133,7 +133,7 @@
 .admin-pedido-totales .total {
   margin-top: 5px;
   padding-top: 13px;
-  border-top: 1px solid #ddd7ce;
+  border-top: 1px solid var(--bro-borde-fuerte);
   font-size: 18px;
 }
 

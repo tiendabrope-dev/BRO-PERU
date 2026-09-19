@@ -13,7 +13,7 @@
 .admin-pedidos-heading span {
   display: block;
   margin-bottom: 6px;
-  color: #2d5a3d;
+  color: var(--bro-verde);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -27,7 +27,7 @@
 
 .admin-pedidos-heading p {
   margin: 7px 0 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
 }
 
 .admin-pedidos-heading > button {
@@ -54,20 +54,20 @@
   width: min(100%, 480px);
   height: 44px;
   padding: 0 14px;
-  border: 1px solid #ccc6bd;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 8px;
-  background: #fff;
-  color: #111;
+  background: var(--bro-panel);
+  color: var(--bro-texto);
   font: inherit;
 }
 
 .admin-pedidos-toolbar input:focus {
-  outline: 2px solid #2d5a3d;
+  outline: 2px solid var(--bro-verde);
   outline-offset: 1px;
 }
 
 .admin-pedidos-toolbar strong {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -85,10 +85,10 @@
 .admin-pedidos-vacio,
 .admin-pedidos-status {
   padding: 32px;
-  border: 1px solid #dfdad2;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 12px;
-  background: #fff;
-  color: #767676;
+  background: var(--bro-panel);
+  color: var(--bro-texto-tenue);
   font-weight: 700;
 }
 
@@ -101,10 +101,10 @@
   width: 100%;
   min-height: 92px;
   padding: 16px 18px;
-  border: 1px solid #dfdad2;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 12px;
-  background: #fff;
-  color: #111;
+  background: var(--bro-panel);
+  color: var(--bro-texto);
   cursor: pointer;
   text-align: left;
 
@@ -127,10 +127,10 @@
 
 .admin-pedido-card:hover {
   transform: translateY(-2px);
-  border-color: #bdb5aa;
+  border-color: var(--bro-verde);
   box-shadow:
     0 10px 28px
-    rgba(17, 17, 17, 0.07);
+    rgba(0, 0, 0, 0.16);
 }
 
 .admin-pedido-principal {
@@ -147,7 +147,7 @@
 }
 
 .admin-pedido-principal > small {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 11px;
 }
 
@@ -159,7 +159,7 @@
 
 .admin-pedido-servicio small,
 .admin-pedido-total small {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -231,7 +231,7 @@
 }
 
 .admin-pedido-flecha {
-  color: #2d5a3d;
+  color: var(--bro-verde-fuerte);
   font-size: 20px;
   font-weight: 900;
   text-align: right;

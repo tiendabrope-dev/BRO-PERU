@@ -9,7 +9,7 @@
 .admin-resenas-heading > span {
   display: block;
   margin-bottom: 7px;
-  color: #2d5a3d;
+  color: var(--bro-verde);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -17,14 +17,14 @@
 
 .admin-resenas-heading h2 {
   margin: 0;
-  color: #111111;
+  color: var(--bro-texto);
   font-size: 30px;
   line-height: 1.1;
 }
 
 .admin-resenas-heading p {
   margin: 8px 0 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -44,14 +44,14 @@
 }
 
 .admin-resenas-exito {
-  background: #e8f0ea;
-  color: #2d5a3d;
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
 }
 
 .admin-resenas-status,
 .admin-resenas-vacio {
   padding: 30px 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 13px;
   font-weight: 700;
 }
@@ -76,9 +76,9 @@
     auto;
   align-items: center;
   gap: 16px;
-  border: 1px solid #dfdad2;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 13px;
-  background: #ffffff;
+  background: var(--bro-panel);
   text-align: left;
   cursor: pointer;
   transition:
@@ -89,10 +89,10 @@
 
 .admin-resenas-opcion:hover {
   transform: translateY(-2px);
-  border-color: #bcb5aa;
+  border-color: var(--bro-verde);
   box-shadow:
     0 10px 24px
-    rgba(17, 17, 17, 0.06);
+    rgba(0, 0, 0, 0.16);
 }
 
 .admin-resenas-opcion-icono {
@@ -101,8 +101,8 @@
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: #e8f0ea;
-  color: #2d5a3d;
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
   font-size: 24px;
   font-weight: 900;
 }
@@ -113,20 +113,20 @@
 }
 
 .admin-resenas-opcion strong {
-  color: #111111;
+  color: var(--bro-texto);
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 0.05em;
 }
 
 .admin-resenas-opcion span {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 11px;
   line-height: 1.45;
 }
 
 .admin-resenas-flecha {
-  color: #2d5a3d !important;
+  color: var(--bro-verde-fuerte) !important;
   font-size: 20px !important;
   font-weight: 900;
 }
@@ -137,21 +137,21 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  border: 1px solid #d7dfd8;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 10px;
-  background: #eef3ef;
+  background: var(--bro-verde-palido);
 }
 
 .admin-resenas-info strong {
   flex: 0 0 auto;
-  color: #2d5a3d;
+  color: var(--bro-verde-fuerte);
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.08em;
 }
 
 .admin-resenas-info span {
-  color: #5f685f;
+  color: var(--bro-texto-tenue);
   font-size: 11px;
   line-height: 1.5;
 }
@@ -163,8 +163,8 @@
   align-items: center;
   gap: 10px;
   border-radius: 9px;
-  background: #fff7df;
-  color: #725500;
+  background: var(--bro-ambar-palido);
+  color: var(--bro-ambar);
 }
 
 .admin-resenas-pendientes strong {
@@ -181,7 +181,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.06em;
@@ -197,9 +197,9 @@
     minmax(0, 1fr)
     300px;
   gap: 24px;
-  border: 1px solid #dfdad2;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 14px;
-  background: #ffffff;
+  background: var(--bro-panel);
 }
 
 .admin-resenas-form-campos {
@@ -215,7 +215,7 @@
 
 .admin-resenas-form label > span,
 .admin-resenas-calificacion > span {
-  color: #555555;
+  color: var(--bro-texto-tenue);
   font-size: 9px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -226,11 +226,11 @@
 .admin-resenas-form textarea {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #d6d0c7;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 8px;
   outline: 0;
-  background: #ffffff;
-  color: #111111;
+  background: var(--bro-panel);
+  color: var(--bro-texto);
   font: inherit;
   font-size: 12px;
 }
@@ -250,7 +250,7 @@
 .admin-resenas-form input:focus,
 .admin-resenas-form select:focus,
 .admin-resenas-form textarea:focus {
-  border-color: #2d5a3d;
+  border-color: var(--bro-verde);
   box-shadow:
     0 0 0 2px
     rgba(45, 90, 61, 0.08);
@@ -270,13 +270,13 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #d1ccc4;
+  color: var(--bro-texto-tenue);
   font-size: 27px;
   cursor: pointer;
 }
 
 .admin-resenas-calificacion button.activa {
-  color: #2d5a3d;
+  color: var(--bro-verde-fuerte);
 }
 
 .admin-resenas-publicar {
@@ -285,9 +285,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  border: 1px solid #ddd7cf;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 9px;
-  background: #f4f1ec;
+  background: var(--bro-fondo);
 }
 
 .admin-resenas-publicar > div {
@@ -296,12 +296,13 @@
 }
 
 .admin-resenas-publicar strong {
+  color: var(--bro-texto);
   font-size: 9px;
   letter-spacing: 0.08em;
 }
 
 .admin-resenas-publicar span {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 10px;
 }
 
@@ -311,7 +312,7 @@
   padding: 3px;
   border: 0;
   border-radius: 999px;
-  background: #c9c5bf;
+  background: var(--bro-borde-fuerte);
   cursor: pointer;
 }
 
@@ -329,7 +330,7 @@
 }
 
 .admin-resenas-switch.on {
-  background: #2d5a3d;
+  background: var(--bro-verde);
 }
 
 .admin-resenas-switch.on > span {
@@ -348,9 +349,9 @@
   overflow: hidden;
   display: grid;
   place-items: center;
-  border: 1px dashed #cfc8be;
+  border: 1px dashed var(--bro-borde-fuerte);
   border-radius: 12px;
-  background: #f4f1ec;
+  background: var(--bro-fondo);
 }
 
 .admin-resenas-preview img {
@@ -368,13 +369,13 @@
 }
 
 .admin-resenas-preview strong {
-  color: #555555;
+  color: var(--bro-texto-tenue);
   font-size: 10px;
   font-weight: 900;
 }
 
 .admin-resenas-preview span {
-  color: #888888;
+  color: var(--bro-texto-tenue-2);
   font-size: 10px;
   line-height: 1.5;
 }
@@ -386,7 +387,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  border: 1px solid #d6d0c7;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 9px;
   cursor: pointer;
 }
@@ -396,13 +397,13 @@
 }
 
 .admin-resenas-upload strong {
-  color: #111111;
+  color: var(--bro-texto);
   font-size: 10px;
   font-weight: 900;
 }
 
 .admin-resenas-upload span {
-  color: #929292;
+  color: var(--bro-texto-tenue-2);
   font-size: 9px;
 }
 
@@ -412,7 +413,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  border-top: 1px solid #eeeae4;
+  border-top: 1px solid var(--bro-borde);
 }
 
 .admin-resenas-form-actions button {
@@ -425,13 +426,14 @@
 }
 
 .admin-resenas-form-actions .secundario {
-  border: 1px solid #d2ccc3;
+  border: 1px solid var(--bro-borde-fuerte);
   background: transparent;
+  color: var(--bro-texto);
 }
 
 .admin-resenas-form-actions .principal {
   border: 0;
-  background: #2d5a3d;
+  background: var(--bro-verde);
   color: #ffffff;
 }
 
@@ -454,19 +456,19 @@
 .admin-resenas-filtros button {
   min-height: 34px;
   padding: 0 11px;
-  border: 1px solid #ddd7cf;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 7px;
-  background: #ffffff;
-  color: #767676;
+  background: var(--bro-panel);
+  color: var(--bro-texto-tenue);
   font-size: 8px;
   font-weight: 900;
   cursor: pointer;
 }
 
 .admin-resenas-filtros button.activo {
-  border-color: #2d5a3d;
-  background: #e8f0ea;
-  color: #2d5a3d;
+  border-color: var(--bro-verde);
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
 }
 
 /* LISTA */
@@ -483,9 +485,9 @@
     auto
     minmax(0, 1fr);
   gap: 15px;
-  border: 1px solid #dfdad2;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--bro-panel);
 }
 
 .admin-resena-foto {
@@ -512,12 +514,12 @@
 }
 
 .admin-resena-superior strong {
-  color: #111111;
+  color: var(--bro-texto);
   font-size: 13px;
 }
 
 .admin-resena-superior span {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 10px;
 }
 
@@ -531,13 +533,13 @@
 }
 
 .admin-resena-estado.pendiente {
-  background: #fff3cf;
-  color: #765a00;
+  background: var(--bro-ambar-palido);
+  color: var(--bro-ambar);
 }
 
 .admin-resena-estado.aprobada {
-  background: #e8f0ea;
-  color: #2d5a3d;
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
 }
 
 .admin-resena-estado.rechazada {
@@ -552,14 +554,14 @@
 
 .admin-resena-estrellas {
   margin-top: 7px;
-  color: #2d5a3d;
+  color: var(--bro-verde-fuerte);
   font-size: 14px;
   letter-spacing: 0.05em;
 }
 
 .admin-resena-card p {
   margin: 8px 0;
-  color: #444444;
+  color: var(--bro-texto);
   font-size: 11.5px;
   line-height: 1.55;
 }
@@ -571,7 +573,7 @@
 }
 
 .admin-resena-meta span {
-  color: #999999;
+  color: var(--bro-texto-tenue-2);
   font-size: 8px;
   font-weight: 800;
 }
@@ -586,18 +588,18 @@
 .admin-resena-acciones button {
   min-height: 31px;
   padding: 0 10px;
-  border: 1px solid #d6d0c7;
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 6px;
-  background: #ffffff;
-  color: #555555;
+  background: var(--bro-panel);
+  color: var(--bro-texto-tenue);
   font-size: 8px;
   font-weight: 900;
   cursor: pointer;
 }
 
 .admin-resena-acciones button.aprobar {
-  border-color: #2d5a3d;
-  background: #2d5a3d;
+  border-color: var(--bro-verde);
+  background: var(--bro-verde);
   color: #ffffff;
 }
 
