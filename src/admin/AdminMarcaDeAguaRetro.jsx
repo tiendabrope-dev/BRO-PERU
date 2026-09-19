@@ -129,7 +129,7 @@ function AdminMarcaDeAguaRetro() {
           .admin-marca-retro-head span {
             display: block;
             margin-bottom: 6px;
-            color: #2d5a3d;
+            color: var(--bro-verde);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .14em;
@@ -137,13 +137,13 @@ function AdminMarcaDeAguaRetro() {
 
           .admin-marca-retro-head h2 {
             margin: 0 0 7px;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 30px;
           }
 
           .admin-marca-retro-head p {
             margin: 0;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 13px;
             max-width: 640px;
             line-height: 1.6;
@@ -152,10 +152,10 @@ function AdminMarcaDeAguaRetro() {
           .admin-marca-retro-aviso {
             margin: 14px 0 18px;
             padding: 12px 14px;
-            border: 1px solid #d4c4a8;
+            border: 1px solid var(--bro-ambar);
             border-radius: 8px;
-            background: #f4f1ec;
-            color: #6b5a3d;
+            background: var(--bro-ambar-palido);
+            color: var(--bro-ambar);
             font-size: 12px;
             line-height: 1.6;
           }
@@ -170,8 +170,8 @@ function AdminMarcaDeAguaRetro() {
           .admin-marca-retro-resumen span {
             padding: 7px 10px;
             border-radius: 999px;
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
             font-size: 9px;
             font-weight: 900;
             letter-spacing: .08em;
@@ -197,9 +197,9 @@ function AdminMarcaDeAguaRetro() {
           .admin-marca-retro-acciones button {
             min-height: 42px;
             padding: 0 16px;
-            border: 1px solid #2d5a3d;
+            border: 1px solid var(--bro-verde);
             border-radius: 6px;
-            background: #2d5a3d;
+            background: var(--bro-verde);
             color: #fff;
             cursor: pointer;
             font-size: 10px;
@@ -208,9 +208,9 @@ function AdminMarcaDeAguaRetro() {
           }
 
           .admin-marca-retro-acciones button.secundario {
-            border-color: #d8d2ca;
-            background: #fff;
-            color: #111;
+            border-color: var(--bro-borde-fuerte);
+            background: var(--bro-panel);
+            color: var(--bro-texto);
           }
 
           .admin-marca-retro-acciones button:disabled {
@@ -229,9 +229,9 @@ function AdminMarcaDeAguaRetro() {
             grid-template-columns: 56px 1fr auto auto;
             gap: 12px;
             align-items: center;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-marca-retro-card img {
@@ -239,7 +239,7 @@ function AdminMarcaDeAguaRetro() {
             height: 56px;
             object-fit: cover;
             border-radius: 6px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
           }
 
           .admin-marca-retro-nombre {
@@ -248,7 +248,7 @@ function AdminMarcaDeAguaRetro() {
 
           .admin-marca-retro-nombre strong {
             display: block;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 13px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -272,23 +272,23 @@ function AdminMarcaDeAguaRetro() {
           }
 
           .admin-marca-retro-estado.pendiente {
-            background: #f4f1ec;
-            color: #767676;
+            background: var(--bro-hover-fuerte);
+            color: var(--bro-texto-tenue);
           }
 
           .admin-marca-retro-estado.procesando {
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
           }
 
           .admin-marca-retro-estado.listo {
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
           }
 
           .admin-marca-retro-estado.omitida {
-            background: #ebebeb;
-            color: #555;
+            background: var(--bro-hover-fuerte);
+            color: var(--bro-texto-tenue);
           }
 
           .admin-marca-retro-estado.error {
@@ -297,17 +297,17 @@ function AdminMarcaDeAguaRetro() {
           }
 
           .admin-marca-retro-estado.sin-imagen {
-            background: #ebebeb;
-            color: #767676;
+            background: var(--bro-hover-fuerte);
+            color: var(--bro-texto-tenue);
           }
 
           .admin-marca-retro-card button {
             min-height: 34px;
             padding: 0 12px;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             cursor: pointer;
             font-size: 9px;
             font-weight: 900;
@@ -321,10 +321,10 @@ function AdminMarcaDeAguaRetro() {
 
           .admin-marca-retro-status {
             padding: 32px 20px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
-            color: #777;
+            background: var(--bro-panel);
+            color: var(--bro-texto-tenue);
             text-align: center;
             font-size: 12px;
           }

@@ -154,7 +154,7 @@ function AdminAjustesContacto() {
           .admin-ajustes-contacto-head > span {
             display: block;
             margin-bottom: 6px;
-            color: #2d5a3d;
+            color: var(--bro-verde);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .14em;
@@ -162,13 +162,13 @@ function AdminAjustesContacto() {
 
           .admin-ajustes-contacto-head h2 {
             margin: 0 0 7px;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 30px;
           }
 
           .admin-ajustes-contacto-head p {
             margin: 0 0 24px;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 13px;
             line-height: 1.5;
           }
@@ -177,9 +177,9 @@ function AdminAjustesContacto() {
             display: grid;
             gap: 16px;
             padding: 20px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-ajustes-contacto-field {
@@ -188,7 +188,7 @@ function AdminAjustesContacto() {
           }
 
           .admin-ajustes-contacto-field span {
-            color: #555;
+            color: var(--bro-texto-tenue);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .06em;
@@ -198,24 +198,24 @@ function AdminAjustesContacto() {
             height: 42px;
             padding: 0 12px;
             box-sizing: border-box;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
             outline: none;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             font: inherit;
             font-size: 13px;
           }
 
           .admin-ajustes-contacto-field input:focus {
-            border-color: #2d5a3d;
+            border-color: var(--bro-verde);
             box-shadow:
               0 0 0 3px
               rgba(45, 90, 61, .08);
           }
 
           .admin-ajustes-contacto-field small {
-            color: #999;
+            color: var(--bro-texto-tenue-2);
             font-size: 10.5px;
             line-height: 1.4;
           }
@@ -224,9 +224,9 @@ function AdminAjustesContacto() {
             min-height: 44px;
             margin-top: 4px;
             padding: 0 18px;
-            border: 1px solid #2d5a3d;
+            border: 1px solid var(--bro-verde);
             border-radius: 6px;
-            background: #2d5a3d;
+            background: var(--bro-verde);
             color: #fff;
             cursor: pointer;
             font-size: 10px;
@@ -254,16 +254,16 @@ function AdminAjustesContacto() {
           }
 
           .admin-ajustes-contacto-ok {
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
           }
 
           .admin-ajustes-contacto-status {
             padding: 32px 20px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
-            color: #777;
+            background: var(--bro-panel);
+            color: var(--bro-texto-tenue);
             text-align: center;
             font-size: 12px;
           }

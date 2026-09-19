@@ -704,7 +704,7 @@ function AdminSecciones() {
           .admin-secciones-head-text > span {
             display: block;
             margin-bottom: 6px;
-            color: #2d5a3d;
+            color: var(--bro-verde);
             font-size: 10px;
             font-weight: 900;
             letter-spacing: .14em;
@@ -712,23 +712,23 @@ function AdminSecciones() {
 
           .admin-secciones-head h2 {
             margin: 0 0 7px;
-            color: #111;
+            color: var(--bro-texto);
             font-size: 30px;
           }
 
           .admin-secciones-head p {
             margin: 0;
-            color: #767676;
+            color: var(--bro-texto-tenue);
             font-size: 13px;
           }
 
           .admin-secciones-refresh {
             min-height: 39px;
             padding: 0 15px;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 7px;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             cursor: pointer;
             font-size: 9px;
             font-weight: 900;
@@ -745,8 +745,8 @@ function AdminSecciones() {
           .admin-secciones-resumen span {
             padding: 7px 10px;
             border-radius: 999px;
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
             font-size: 9px;
             font-weight: 900;
             letter-spacing: .08em;
@@ -757,9 +757,9 @@ function AdminSecciones() {
             margin-bottom: 18px;
             display: flex;
             gap: 8px;
-            border: 1px dashed #d8d2ca;
+            border: 1px dashed var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-secciones-nueva input {
@@ -768,17 +768,17 @@ function AdminSecciones() {
             height: 42px;
             padding: 0 12px;
             box-sizing: border-box;
-            border: 1px solid #d8d2ca;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 6px;
             outline: none;
-            background: #fff;
-            color: #111;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
             font: inherit;
             font-size: 12px;
           }
 
           .admin-secciones-nueva input:focus {
-            border-color: #2d5a3d;
+            border-color: var(--bro-verde);
             box-shadow:
               0 0 0 3px
               rgba(45, 90, 61, .08);
@@ -788,9 +788,9 @@ function AdminSecciones() {
             min-width: 100px;
             min-height: 42px;
             padding: 0 14px;
-            border: 1px solid #2d5a3d;
+            border: 1px solid var(--bro-verde);
             border-radius: 6px;
-            background: #2d5a3d;
+            background: var(--bro-verde);
             color: #fff;
             cursor: pointer;
             font-size: 9px;
@@ -813,16 +813,16 @@ function AdminSecciones() {
             align-items: center;
             gap: 12px;
             padding: 12px 14px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 10px;
-            background: #fff;
+            background: var(--bro-panel);
           }
 
           .admin-seccion-arrastrar {
             border: none;
             background: transparent;
             padding: 4px;
-            color: #cfc7ba;
+            color: var(--bro-texto-tenue-2);
             font-size: 15px;
             letter-spacing: -2px;
             line-height: 1;
@@ -858,12 +858,12 @@ function AdminSecciones() {
             font: inherit;
             font-size: 14px;
             font-weight: 700;
-            color: #111;
+            color: var(--bro-texto);
           }
 
           .admin-seccion-nombre:focus {
-            border-color: #2d5a3d;
-            background: #fff;
+            border-color: var(--bro-verde);
+            background: var(--bro-panel);
             box-shadow:
               0 0 0 3px
               rgba(45, 90, 61, .08);
@@ -877,15 +877,15 @@ function AdminSecciones() {
             padding: 0 7px;
             font-family: monospace;
             font-size: 11px;
-            color: #9a9a9a;
+            color: var(--bro-texto-tenue-2);
           }
 
           .admin-seccion-principal {
             flex-shrink: 0;
             padding: 5px 9px;
             border-radius: 999px;
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
             font-size: 9px;
             font-weight: 900;
             letter-spacing: .04em;
@@ -899,7 +899,7 @@ function AdminSecciones() {
             position: relative;
             border: none;
             border-radius: 20px;
-            background: #ebe6de;
+            background: var(--bro-borde-fuerte);
             cursor: pointer;
             padding: 0;
           }
@@ -910,7 +910,7 @@ function AdminSecciones() {
           }
 
           .admin-seccion-switch.on {
-            background: #2d5a3d;
+            background: var(--bro-verde);
           }
 
           .admin-seccion-switch span {
@@ -934,7 +934,7 @@ function AdminSecciones() {
             padding: 0 12px;
             border: 1px solid #f0d8d8;
             border-radius: 6px;
-            background: #fff;
+            background: var(--bro-panel);
             color: #b42318;
             cursor: pointer;
             font-size: 8px;
@@ -962,16 +962,16 @@ function AdminSecciones() {
           }
 
           .admin-secciones-ok {
-            background: #e8f0ea;
-            color: #2d5a3d;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
           }
 
           .admin-secciones-status {
             padding: 32px 20px;
-            border: 1px solid #e2dcd4;
+            border: 1px solid var(--bro-borde-fuerte);
             border-radius: 9px;
-            background: #fff;
-            color: #777;
+            background: var(--bro-panel);
+            color: var(--bro-texto-tenue);
             text-align: center;
             font-size: 12px;
           }
