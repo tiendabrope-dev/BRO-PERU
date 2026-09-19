@@ -108,42 +108,60 @@ function AdminInicio({
 
       <div className="admin-inicio-resumen">
 
-        <div className="admin-inicio-resumen-item">
-          <span>
-            Pedidos este mes
-          </span>
+        <div className="admin-inicio-resumen-item admin-inicio-resumen-item-negro">
+          <div className="admin-inicio-resumen-icono">
+            PD
+          </div>
 
-          <strong>
-            {cargandoPedidos
-              ? '—'
-              : resumen.pedidosMes}
-          </strong>
+          <div className="admin-inicio-resumen-texto">
+            <span>
+              Pedidos este mes
+            </span>
+
+            <strong>
+              {cargandoPedidos
+                ? '—'
+                : resumen.pedidosMes}
+            </strong>
+          </div>
         </div>
 
-        <div className="admin-inicio-resumen-item">
-          <span>
-            Ingresos este mes
-          </span>
+        <div className="admin-inicio-resumen-item admin-inicio-resumen-item-verde">
+          <div className="admin-inicio-resumen-icono">
+            S/
+          </div>
 
-          <strong>
-            {cargandoPedidos
-              ? '—'
-              : formatearSoles(
-                  resumen.ingresosMes
-                )}
-          </strong>
+          <div className="admin-inicio-resumen-texto">
+            <span>
+              Ingresos este mes
+            </span>
+
+            <strong>
+              {cargandoPedidos
+                ? '—'
+                : formatearSoles(
+                    resumen.ingresosMes
+                  )}
+            </strong>
+          </div>
         </div>
 
         <div className="admin-inicio-resumen-item admin-inicio-resumen-item-alerta">
-          <span>
-            Pedidos por atender
-          </span>
+          <div className="admin-inicio-resumen-icono">
+            !
+          </div>
 
-          <strong>
-            {cargandoPedidos
-              ? '—'
-              : resumen.pendientes}
-          </strong>
+          <div className="admin-inicio-resumen-texto">
+            <span>
+              Pedidos por atender
+            </span>
+
+            <strong>
+              {cargandoPedidos
+                ? '—'
+                : resumen.pendientes}
+            </strong>
+          </div>
         </div>
 
       </div>
