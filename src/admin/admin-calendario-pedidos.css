@@ -2,8 +2,8 @@
   padding: 16px;
   box-sizing: border-box;
 
-  background: #fff;
-  border: 1px solid #dfdad2;
+  background: var(--bro-panel);
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 14px;
 }
 
@@ -20,10 +20,11 @@
   font-size: 15px;
   font-weight: 900;
   text-transform: capitalize;
+  color: var(--bro-texto);
 }
 
 .admin-calendario-heading span {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 11px;
   font-weight: 700;
 }
@@ -36,7 +37,7 @@
 
 .admin-calendario-dias-semana span {
   text-align: center;
-  color: #a1a1a1;
+  color: var(--bro-texto-tenue-2);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -60,7 +61,7 @@
   box-sizing: border-box;
 
   border-radius: 9px;
-  background: #f8f6f2;
+  background: var(--bro-hover);
 }
 
 .admin-calendario-celda-vacia {
@@ -68,19 +69,19 @@
 }
 
 .admin-calendario-celda-hoy {
-  background: #e8f0ea;
-  box-shadow: inset 0 0 0 1.5px #2d5a3d;
+  background: var(--bro-verde-palido);
+  box-shadow: inset 0 0 0 1.5px var(--bro-verde);
 }
 
 .admin-calendario-numero {
-  color: #444;
+  color: var(--bro-texto);
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
 }
 
 .admin-calendario-celda-hoy .admin-calendario-numero {
-  color: #2d5a3d;
+  color: var(--bro-verde-fuerte);
   font-weight: 900;
 }
 
@@ -93,7 +94,7 @@
   place-items: center;
 
   border-radius: 999px;
-  background: #2d5a3d;
+  background: var(--bro-verde);
   color: #ffffff;
 
   font-size: 8px;

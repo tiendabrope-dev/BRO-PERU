@@ -25,8 +25,9 @@
   display: flex;
   flex-direction: column;
 
-  background: #f4f1ec;
-  border-right: 1px solid rgba(17, 17, 17, 0.08);
+  background: var(--bro-fondo-sidebar);
+  border-right: 1px solid var(--bro-borde);
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .bro-sidebar-logo {
@@ -35,7 +36,7 @@
 
   border: 0;
   background: transparent;
-  color: #111111;
+  color: var(--bro-texto-sidebar);
   cursor: pointer;
   text-align: left;
 
@@ -45,14 +46,14 @@
 }
 
 .bro-sidebar-logo span {
-  color: #2d5a3d;
+  color: var(--bro-verde-fuerte);
 }
 
 .bro-sidebar-etiqueta {
   padding: 0 8px;
   margin: 16px 0 8px;
 
-  color: #767676;
+  color: var(--bro-texto-tenue);
 
   font-size: 10px;
   font-weight: 900;
@@ -78,7 +79,7 @@
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: #111111;
+  color: var(--bro-texto-sidebar);
   cursor: pointer;
   text-align: left;
 
@@ -90,12 +91,12 @@
 }
 
 .bro-sidebar-item:hover {
-  background: rgba(17, 17, 17, 0.05);
+  background: var(--bro-hover);
 }
 
 .bro-sidebar-item.activo {
-  background: #e8f0ea;
-  color: #2d5a3d;
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
 }
 
 .bro-sidebar-icono {
@@ -107,7 +108,7 @@
   place-items: center;
 
   border-radius: 7px;
-  background: rgba(17, 17, 17, 0.06);
+  background: var(--bro-icono-fondo);
 
   font-size: 10px;
   font-weight: 900;
@@ -121,14 +122,14 @@
   flex-direction: column;
   gap: 10px;
 
-  border-top: 1px solid rgba(17, 17, 17, 0.08);
+  border-top: 1px solid var(--bro-borde);
 }
 
 .bro-sidebar-salir {
   padding: 0;
   border: 0;
   background: transparent;
-  color: #111111;
+  color: var(--bro-texto-sidebar);
   cursor: pointer;
   text-align: left;
 
@@ -138,8 +139,30 @@
   letter-spacing: 0.05em;
 }
 
+.bro-sidebar-tema {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bro-texto-tenue);
+  cursor: pointer;
+  text-align: left;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.bro-sidebar-tema svg {
+  flex: 0 0 auto;
+}
+
 .bro-sidebar-footer span {
-  color: #a1a1a1;
+  color: var(--bro-texto-tenue-2);
   font-size: 10px;
 }
 
@@ -180,8 +203,9 @@
     justify-content: space-between;
     gap: 12px;
 
-    background: #f4f1ec;
-    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+    background: var(--bro-fondo-sidebar);
+    border-bottom: 1px solid var(--bro-borde);
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
 
   .bro-admin-hamburguesa,
@@ -196,24 +220,24 @@
     border: 0;
     border-radius: 8px;
     background: transparent;
-    color: #111111;
+    color: var(--bro-texto-sidebar);
     cursor: pointer;
   }
 
   .bro-admin-hamburguesa:hover,
   .bro-admin-topbar-buscar:hover {
-    background: rgba(17, 17, 17, 0.08);
+    background: var(--bro-hover-fuerte);
   }
 
   .bro-admin-topbar-logo {
     font-family: 'Black Ops One', sans-serif;
     font-size: 18px;
     letter-spacing: 0.04em;
-    color: #111111;
+    color: var(--bro-texto-sidebar);
   }
 
   .bro-admin-topbar-logo span {
-    color: #2d5a3d;
+    color: var(--bro-verde-fuerte);
   }
 
   .bro-sidebar-overlay {

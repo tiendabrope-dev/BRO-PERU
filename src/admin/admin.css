@@ -3,13 +3,79 @@
    ACCESO + ADMIN
 ========================================================== */
 
-.bro-admin,
+/*
+  VARIABLES DE TEMA (panel autenticado)
+
+  El panel admin (.bro-admin) usa estas variables para sus
+  colores. Por defecto son los valores claros de siempre.
+  Cuando el usuario activa el modo oscuro, AdminApp.jsx agrega
+  el atributo data-tema="oscuro" a .bro-admin y el bloque de
+  abajo reemplaza los valores — ningún componente necesita
+  saber en qué tema está, solo usan var(--bro-...).
+
+  La pantalla de acceso (.bro-admin-login) y la de carga
+  (.bro-admin-loading) se quedan fuera de este sistema por
+  ahora: siempre claras, ya que el toggle solo aparece dentro
+  del panel una vez iniciada la sesión.
+*/
+.bro-admin {
+  --bro-fondo: #f4f1ec;
+  --bro-fondo-sidebar: #f4f1ec;
+  --bro-panel: #ffffff;
+  --bro-borde: rgba(17, 17, 17, 0.08);
+  --bro-borde-fuerte: #dfdad2;
+  --bro-texto: #111111;
+  --bro-texto-sidebar: #111111;
+  --bro-texto-tenue: #767676;
+  --bro-texto-tenue-2: #a1a1a1;
+  --bro-verde: #2d5a3d;
+  --bro-verde-fuerte: #2d5a3d;
+  --bro-verde-palido: #e8f0ea;
+  --bro-ambar: #9b5c00;
+  --bro-ambar-palido: #fbe8cf;
+  --bro-hover: rgba(17, 17, 17, 0.05);
+  --bro-hover-fuerte: rgba(17, 17, 17, 0.08);
+  --bro-icono-fondo: rgba(17, 17, 17, 0.06);
+  --bro-icono-negro-bg: #111111;
+  --bro-icono-negro-color: #ffffff;
+}
+
+.bro-admin[data-tema='oscuro'] {
+  --bro-fondo: #0e0f0d;
+  --bro-fondo-sidebar: #0a0b09;
+  --bro-panel: #171815;
+  --bro-borde: #2a2b27;
+  --bro-borde-fuerte: #2a2b27;
+  --bro-texto: #f4f1ec;
+  --bro-texto-sidebar: #cfccc3;
+  --bro-texto-tenue: #8c897f;
+  --bro-texto-tenue-2: #8c897f;
+  --bro-verde: #4a8c60;
+  --bro-verde-fuerte: #6fbf8a;
+  --bro-verde-palido: rgba(74, 140, 96, 0.16);
+  --bro-ambar: #d99a3f;
+  --bro-ambar-palido: rgba(217, 154, 63, 0.16);
+  --bro-hover: rgba(255, 255, 255, 0.05);
+  --bro-hover-fuerte: rgba(255, 255, 255, 0.08);
+  --bro-icono-fondo: rgba(255, 255, 255, 0.06);
+  --bro-icono-negro-bg: #33342f;
+  --bro-icono-negro-color: #f4f1ec;
+}
+
 .bro-admin-login,
 .bro-admin-loading {
   min-height: 100vh;
   background: #f4f1ec;
   color: #111111;
   font-family: 'DM Sans', sans-serif;
+}
+
+.bro-admin {
+  min-height: 100vh;
+  background: var(--bro-fondo);
+  color: var(--bro-texto);
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .bro-admin-loading {
@@ -335,7 +401,7 @@
 
 .bro-admin-content p {
   margin: 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
 }
 
 .bro-admin-home {

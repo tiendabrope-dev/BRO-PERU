@@ -9,7 +9,7 @@
 .admin-inicio-heading > span {
   display: block;
   margin-bottom: 6px;
-  color: #2d5a3d;
+  color: var(--bro-verde);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0.14em;
@@ -23,7 +23,7 @@
 
 .admin-inicio-heading p {
   margin: 9px 0 0;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   text-transform: capitalize;
 }
 
@@ -43,8 +43,8 @@
   align-items: center;
   gap: 12px;
 
-  background: #fff;
-  border: 1px solid #dfdad2;
+  background: var(--bro-panel);
+  border: 1px solid var(--bro-borde-fuerte);
   border-radius: 12px;
 }
 
@@ -57,26 +57,26 @@
   place-items: center;
 
   border-radius: 10px;
-  background: rgba(17, 17, 17, 0.08);
-  color: #111111;
+  background: var(--bro-icono-fondo);
+  color: var(--bro-texto);
 
   font-size: 12px;
   font-weight: 900;
 }
 
 .admin-inicio-resumen-item-negro .admin-inicio-resumen-icono {
-  background: #111111;
-  color: #ffffff;
+  background: var(--bro-icono-negro-bg);
+  color: var(--bro-icono-negro-color);
 }
 
 .admin-inicio-resumen-item-verde .admin-inicio-resumen-icono {
-  background: #e8f0ea;
-  color: #2d5a3d;
+  background: var(--bro-verde-palido);
+  color: var(--bro-verde-fuerte);
 }
 
 .admin-inicio-resumen-item-alerta .admin-inicio-resumen-icono {
-  background: #fbe8cf;
-  color: #9b5c00;
+  background: var(--bro-ambar-palido);
+  color: var(--bro-ambar);
 }
 
 .admin-inicio-resumen-texto {
@@ -86,7 +86,7 @@
 .admin-inicio-resumen-texto span {
   display: block;
   margin-bottom: 4px;
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -96,11 +96,11 @@
   display: block;
   font-size: 19px;
   font-weight: 900;
-  color: #111111;
+  color: var(--bro-texto);
 }
 
 .admin-inicio-resumen-item-alerta .admin-inicio-resumen-texto strong {
-  color: #9b5c00;
+  color: var(--bro-ambar);
 }
 
 .admin-inicio-stats {
@@ -127,13 +127,13 @@
 .admin-inicio-powered {
   margin: 24px 0 0;
   text-align: center;
-  color: #a1a1a1;
+  color: var(--bro-texto-tenue-2);
   font-size: 11px;
   letter-spacing: 0.02em;
 }
 
 .admin-inicio-powered strong {
-  color: #767676;
+  color: var(--bro-texto-tenue);
   font-weight: 800;
 }
 
@@ -141,17 +141,17 @@
   padding: 13px 22px;
   border: 0;
   border-radius: 8px;
-  background: #2d5a3d;
+  background: var(--bro-verde);
   color: #ffffff;
   font-weight: 900;
   font-size: 12px;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: filter 0.15s ease;
 }
 
 .admin-inicio-ver-modulos:hover {
-  background: #244b33;
+  filter: brightness(0.9);
 }
 
 @media (max-width: 860px) {

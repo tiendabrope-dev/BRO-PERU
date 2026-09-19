@@ -41,6 +41,9 @@ import './admin-pedido-detalle.css';
 const CLAVE_RECARGA =
   'bro-cuenta-recarga';
 
+const CLAVE_TEMA =
+  'bro-admin-tema';
+
 const RUTAS_MODULOS = {
   dashboard:
     '/cuenta/inicio',
@@ -290,6 +293,50 @@ function AdminApp() {
     sidebarMovilAbierta,
     setSidebarMovilAbierta,
   ] = useState(false);
+
+  /*
+    MODO OSCURO
+
+    La preferencia se guarda en localStorage del navegador
+    (no en Supabase) — es una preferencia visual del
+    dispositivo, no del usuario en la base de datos. Se lee
+    una sola vez al montar el componente.
+  */
+  const [
+    tema,
+    setTema,
+  ] = useState(() => {
+    try {
+      return (
+        localStorage.getItem(
+          CLAVE_TEMA
+        ) || 'claro'
+      );
+    } catch {
+      return 'claro';
+    }
+  });
+
+  function cambiarTema() {
+    setTema((actual) => {
+      const siguiente =
+        actual === 'oscuro'
+          ? 'claro'
+          : 'oscuro';
+
+      try {
+        localStorage.setItem(
+          CLAVE_TEMA,
+          siguiente
+        );
+      } catch {
+        // Si el navegador bloquea localStorage, el
+        // toggle igual funciona durante la sesión.
+      }
+
+      return siguiente;
+    });
+  }
 
   const rutaCuenta =
     useMemo(
@@ -793,7 +840,12 @@ function AdminApp() {
   }
 
   return (
-    <main className="bro-admin">
+    <main
+      className="bro-admin"
+      data-tema={
+        tema
+      }
+    >
 
       <AdminSidebar
         activo={resolverGrupoSidebar(
@@ -804,6 +856,12 @@ function AdminApp() {
         }
         onCerrarSesion={
           salir
+        }
+        tema={
+          tema
+        }
+        onCambiarTema={
+          cambiarTema
         }
       />
 
@@ -931,6 +989,12 @@ function AdminApp() {
                 setSidebarMovilAbierta(
                   false
                 )
+              }
+              tema={
+                tema
+              }
+              onCambiarTema={
+                cambiarTema
               }
             />
           </div>
