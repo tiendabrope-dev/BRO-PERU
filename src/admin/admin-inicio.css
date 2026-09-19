@@ -17,6 +17,7 @@
 
 .admin-inicio-heading h1 {
   margin: 0;
+  color: var(--bro-texto);
   font-size: clamp(28px, 4vw, 42px);
   line-height: 1.05;
 }

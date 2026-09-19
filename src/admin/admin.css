@@ -603,3 +603,20 @@
     font-size: 22px;
   }
 }
+
+/*
+  index.css trae una regla global "arreglar el color de los
+  títulos en celular" que fuerza h1/h2/h3 a negro con
+  !important debajo de 768px, pensada para la tienda pública.
+  Esa regla también alcanzaría los títulos del panel admin
+  (ej. AdminInicio) y rompería el modo oscuro en celular, así
+  que acá la neutralizamos solo dentro de .bro-admin con la
+  misma especificidad (!important + selector más específico).
+*/
+@media (max-width: 768px) {
+  .bro-admin h1,
+  .bro-admin h2,
+  .bro-admin h3 {
+    color: var(--bro-texto) !important;
+  }
+}
