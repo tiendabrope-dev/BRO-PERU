@@ -30,6 +30,15 @@
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
+/* Sidebar de escritorio: se queda fijo en pantalla mientras
+   solo el contenido de la derecha hace scroll. */
+.bro-admin > .bro-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
 .bro-sidebar-logo {
   padding: 0;
   margin: 4px 8px 24px;

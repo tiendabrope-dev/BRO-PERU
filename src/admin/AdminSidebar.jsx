@@ -9,10 +9,9 @@ const ITEM_DASHBOARD = {
 };
 
 /*
-  Reusa la misma lista MODULOS que ya usaban la rejilla
-  de tarjetas (AdminDashboard.jsx) y el menú ⊞ antiguo
-  (AdminMenuRapido.jsx) — un solo lugar define los
-  módulos disponibles. "Ajustes" se separa para ponerlo
+  Reusa la misma lista MODULOS que ya usaba la rejilla
+  de tarjetas (AdminDashboard.jsx) — un solo lugar define
+  los módulos disponibles. "Ajustes" se separa para ponerlo
   en su propia sección ("Sistema") en vez de mezclarlo
   con los módulos de tienda.
 */
