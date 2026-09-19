@@ -31,12 +31,20 @@
 }
 
 /* Sidebar de escritorio: se queda fijo en pantalla mientras
-   solo el contenido de la derecha hace scroll. */
+   solo el contenido de la derecha hace scroll. El scroll queda
+   habilitado por si el menú crece más que la pantalla, pero la
+   barra visual se oculta (no aporta nada estéticamente). */
 .bro-admin > .bro-sidebar {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge/IE legacy */
+}
+
+.bro-admin > .bro-sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
 }
 
 .bro-sidebar-logo {
