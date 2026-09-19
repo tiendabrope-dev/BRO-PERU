@@ -82,6 +82,19 @@ const RUTAS_MODULOS = {
     '/cuenta/inicio/ajustes/contacto',
 };
 
+/*
+  Sub-módulos que viven "dentro" de Ajustes (ver
+  AdminAjustes.jsx / SUBMODULOS). Para estos, el botón
+  "← VOLVER AL PANEL" debe regresar a Ajustes, no a la
+  rejilla completa de módulos.
+*/
+const SUBMODULOS_DE_AJUSTES = [
+  'ticker',
+  'secciones',
+  'marcaDeAguaRetro',
+  'ajustesContacto',
+];
+
 function resolverRutaCuenta(
   pathname
 ) {
@@ -575,6 +588,41 @@ function AdminApp() {
     );
   }
 
+  /*
+    Botón "← VOLVER AL PANEL", genérico para todos los
+    módulos — el destino depende de dónde estás parado:
+    - Dentro de un sub-módulo de Ajustes → vuelve a Ajustes
+      (un nivel arriba), no a la rejilla completa.
+    - Dentro de la rejilla de módulos ('modulos') → vuelve
+      al panel principal (AdminInicio), un nivel arriba.
+    - Cualquier otro módulo de primer nivel (Pedidos,
+      Precios, Productos, etc.) → vuelve a la rejilla.
+  */
+  function volverAtras() {
+    if (
+      SUBMODULOS_DE_AJUSTES.includes(
+        modulo
+      )
+    ) {
+      abrirModulo(
+        'ajustes'
+      );
+
+      return;
+    }
+
+    if (
+      modulo ===
+      'modulos'
+    ) {
+      volverDashboard();
+
+      return;
+    }
+
+    volverModulos();
+  }
+
   function abrirModulo(
     nombreModulo
   ) {
@@ -882,7 +930,7 @@ function AdminApp() {
                 type="button"
                 className="admin-module-back"
                 onClick={
-                  volverModulos
+                  volverAtras
                 }
               >
                 ← VOLVER AL PANEL
