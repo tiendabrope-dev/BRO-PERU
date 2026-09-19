@@ -313,6 +313,8 @@
 .bro-admin-header button {
   background: transparent;
   color: #111111;
+  font-size: 11px;
+  letter-spacing: 0.05em;
 }
 
 .bro-admin-content {
@@ -337,7 +339,7 @@
   color: #111111;
   cursor: pointer;
   font-family: 'Black Ops One', sans-serif;
-  font-size: 20px;
+  font-size: 27px;
   letter-spacing: 0.04em;
 }
 
@@ -526,6 +528,6 @@
   }
 
   .bro-admin-home {
-    font-size: 17px;
+    font-size: 22px;
   }
 }

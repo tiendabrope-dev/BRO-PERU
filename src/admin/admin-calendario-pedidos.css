@@ -1,5 +1,5 @@
 .admin-calendario {
-  padding: 20px;
+  padding: 16px;
   box-sizing: border-box;
 
   background: #fff;
@@ -8,7 +8,7 @@
 }
 
 .admin-calendario-heading {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -45,8 +45,8 @@
 .admin-calendario-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  grid-auto-rows: minmax(40px, 1fr);
-  gap: 5px;
+  grid-auto-rows: minmax(30px, 1fr);
+  gap: 4px;
 }
 
 .admin-calendario-celda {
@@ -103,14 +103,14 @@
 
 @media (max-width: 560px) {
   .admin-calendario {
-    padding: 16px;
+    padding: 14px;
   }
 
   .admin-calendario-grid {
-    grid-auto-rows: minmax(34px, 1fr);
+    grid-auto-rows: minmax(28px, 1fr);
   }
 
   .admin-calendario-numero {
-    font-size: 11px;
+    font-size: 10px;
   }
 }
