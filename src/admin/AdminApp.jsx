@@ -20,6 +20,7 @@ import { activarNotificacionesPush } from '../lib/pushNotificaciones';
 import AdminLogin from './AdminLogin';
 import AdminInicio from './AdminInicio';
 import AdminMenuRapido from './AdminMenuRapido';
+import AdminCommandPalette from './AdminCommandPalette';
 import AdminDashboard from './AdminDashboard';
 import AdminPrecios from './AdminPrecios';
 import AdminPedidos from './AdminPedidos';
@@ -252,6 +253,11 @@ function AdminApp() {
     setCargando,
   ] = useState(true);
 
+  const [
+    paletaAbierta,
+    setPaletaAbierta,
+  ] = useState(false);
+
   const rutaCuenta =
     useMemo(
       () =>
@@ -298,6 +304,60 @@ function AdminApp() {
       window.removeEventListener(
         'beforeunload',
         prepararRecarga
+      );
+    };
+  }, []);
+
+  /*
+    PALETA DE COMANDOS (Ctrl/Cmd+K)
+
+    Atajo global: abre/cierra la paleta desde cualquier
+    pantalla del admin. Escape también la cierra. El
+    listener vive siempre montado (no solo dentro del panel
+    autenticado) porque los hooks no pueden ser condicionales,
+    pero no tiene ningún efecto visible mientras no haya
+    sesión, ya que <AdminCommandPalette> solo se renderiza
+    dentro del panel autenticado más abajo.
+  */
+  useEffect(() => {
+    function alPresionarTecla(
+      evento
+    ) {
+      const esAtajoBusqueda =
+        (evento.metaKey ||
+          evento.ctrlKey) &&
+        evento.key.toLowerCase() ===
+          'k';
+
+      if (esAtajoBusqueda) {
+        evento.preventDefault();
+
+        setPaletaAbierta(
+          (actual) => !actual
+        );
+
+        return;
+      }
+
+      if (
+        evento.key ===
+        'Escape'
+      ) {
+        setPaletaAbierta(
+          false
+        );
+      }
+    }
+
+    window.addEventListener(
+      'keydown',
+      alPresionarTecla
+    );
+
+    return () => {
+      window.removeEventListener(
+        'keydown',
+        alPresionarTecla
       );
     };
   }, []);
@@ -506,6 +566,12 @@ function AdminApp() {
   function volverDashboard() {
     navigate(
       '/cuenta/inicio'
+    );
+  }
+
+  function volverModulos() {
+    navigate(
+      '/cuenta/inicio/modulos'
     );
   }
 
@@ -726,16 +792,78 @@ function AdminApp() {
 
         </div>
 
-        <button
-          type="button"
-          onClick={
-            salir
-          }
-        >
-          CERRAR SESIÓN
-        </button>
+        <div className="bro-admin-header-right">
+
+          <button
+            type="button"
+            className="bro-admin-menu-boton"
+            title="Buscar (Ctrl+K)"
+            aria-label="Abrir la paleta de comandos"
+            onClick={() =>
+              setPaletaAbierta(
+                true
+              )
+            }
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="17"
+              height="17"
+              aria-hidden="true"
+            >
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="6.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+
+              <line
+                x1="15.5"
+                y1="15.5"
+                x2="21"
+                y2="21"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={
+              salir
+            }
+          >
+            CERRAR SESIÓN
+          </button>
+
+        </div>
 
       </header>
+
+      <AdminCommandPalette
+        abierto={
+          paletaAbierta
+        }
+        onCerrar={() =>
+          setPaletaAbierta(
+            false
+          )
+        }
+        onAbrirModulo={
+          abrirModulo
+        }
+        onAbrirPedido={
+          abrirPedido
+        }
+        onCerrarSesion={
+          salir
+        }
+      />
 
       <div className="bro-admin-content">
 
@@ -754,7 +882,7 @@ function AdminApp() {
                 type="button"
                 className="admin-module-back"
                 onClick={
-                  volverDashboard
+                  volverModulos
                 }
               >
                 ← VOLVER AL PANEL

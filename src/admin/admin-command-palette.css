@@ -1,0 +1,166 @@
+.admin-cmdk-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  padding: 12vh 20px 20px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+
+  background: rgba(17, 17, 17, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.admin-cmdk-caja {
+  width: min(100%, 560px);
+  max-height: 70vh;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 30px 70px rgba(17, 17, 17, 0.28);
+  overflow: hidden;
+}
+
+.admin-cmdk-input {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+
+  border: 0;
+  border-bottom: 1px solid #ece7df;
+  outline: 0;
+  background: #ffffff;
+  color: #111111;
+
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+}
+
+.admin-cmdk-input::placeholder {
+  color: #a1a1a1;
+}
+
+.admin-cmdk-lista {
+  flex: 1;
+  min-height: 0;
+  padding: 8px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  overflow-y: auto;
+}
+
+.admin-cmdk-vacio {
+  padding: 24px 12px;
+  text-align: center;
+  color: #a1a1a1;
+  font-size: 13px;
+}
+
+.admin-cmdk-item {
+  width: 100%;
+  padding: 10px 12px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #111111;
+  text-align: left;
+  cursor: pointer;
+
+  transition: background 0.12s ease;
+}
+
+.admin-cmdk-item.activo,
+.admin-cmdk-item:hover {
+  background: #f4f1ec;
+}
+
+.admin-cmdk-tipo {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+
+  border-radius: 999px;
+  background: #ebebeb;
+  color: #767676;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.admin-cmdk-tipo-pedido {
+  background: #e8f0ea;
+  color: #2d5a3d;
+}
+
+.admin-cmdk-tipo-accion {
+  background: #f4ece0;
+  color: #9b5c00;
+}
+
+.admin-cmdk-texto {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-cmdk-texto strong {
+  font-size: 13px;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-cmdk-texto small {
+  color: #767676;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-cmdk-pie {
+  flex: 0 0 auto;
+  padding: 9px 16px;
+
+  display: flex;
+  gap: 14px;
+
+  border-top: 1px solid #ece7df;
+  background: #f8f6f2;
+  color: #a1a1a1;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 560px) {
+  .admin-cmdk-overlay {
+    padding: 8vh 12px 12px;
+  }
+
+  .admin-cmdk-pie span:nth-child(2) {
+    display: none;
+  }
+}

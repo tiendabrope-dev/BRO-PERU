@@ -172,13 +172,6 @@ function AdminInicio({
 
       <div className="admin-inicio-pie">
 
-        <p>
-          <strong>
-            BRO Perú
-          </strong>{' '}
-          — brotienda.com
-        </p>
-
         <button
           type="button"
           className="admin-inicio-ver-modulos"
@@ -192,6 +185,13 @@ function AdminInicio({
         </button>
 
       </div>
+
+      <p className="admin-inicio-powered">
+        Powered by{' '}
+        <strong>
+          Bro Engineering
+        </strong>
+      </p>
 
     </section>
   );

@@ -304,6 +304,12 @@
   gap: 14px;
 }
 
+.bro-admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .bro-admin-header strong {
   font-family: 'Black Ops One', sans-serif;
   font-size: 20px;

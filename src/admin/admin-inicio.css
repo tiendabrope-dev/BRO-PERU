@@ -80,19 +80,22 @@
 .admin-inicio-pie {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 16px;
   flex-wrap: wrap;
 }
 
-.admin-inicio-pie p {
-  margin: 0;
-  color: #767676;
-  font-size: 12px;
+.admin-inicio-powered {
+  margin: 24px 0 0;
+  text-align: center;
+  color: #a1a1a1;
+  font-size: 11px;
+  letter-spacing: 0.02em;
 }
 
-.admin-inicio-pie p strong {
-  color: #111111;
+.admin-inicio-powered strong {
+  color: #767676;
+  font-weight: 800;
 }
 
 .admin-inicio-ver-modulos {
