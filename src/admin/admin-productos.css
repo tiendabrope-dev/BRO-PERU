@@ -720,7 +720,9 @@ strong {
 }
 
 .admin-producto-form-column
-input {
+input,
+.admin-producto-form-column
+select {
   width: 100%;
   height: 44px;
 
@@ -740,11 +742,14 @@ input {
 
   color: var(--bro-texto);
 
+  font: inherit;
   font-size: 13px;
 }
 
 .admin-producto-form-column
-input:focus {
+input:focus,
+.admin-producto-form-column
+select:focus {
   border-color: var(--bro-verde);
 
   box-shadow:

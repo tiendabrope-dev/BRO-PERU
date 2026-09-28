@@ -30,7 +30,13 @@
   color: var(--bro-texto-tenue);
 }
 
-.admin-pedidos-heading > button {
+.admin-pedidos-heading-acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-pedidos-heading-acciones > button {
   height: 40px;
   padding: 0 16px;
   border: 0;
@@ -40,6 +46,64 @@
   cursor: pointer;
   font-size: 11px;
   font-weight: 900;
+}
+
+.admin-pedidos-exportar {
+  position: relative;
+}
+
+.admin-pedidos-exportar-boton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--bro-borde-fuerte);
+  border-radius: 7px;
+  background: var(--bro-panel);
+  color: var(--bro-texto);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.admin-pedidos-exportar-boton .bro-chevron {
+  font-size: 12px;
+}
+
+.admin-pedidos-exportar-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 160px;
+  overflow: hidden;
+  border: 1px solid var(--bro-borde-fuerte);
+  border-radius: 9px;
+  background: var(--bro-panel);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.admin-pedidos-exportar-menu button {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--bro-borde-fuerte);
+  background: transparent;
+  color: var(--bro-texto);
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-pedidos-exportar-menu button:last-child {
+  border-bottom: 0;
+}
+
+.admin-pedidos-exportar-menu button:hover {
+  background: var(--bro-icono-fondo);
 }
 
 .admin-pedidos-toolbar {
@@ -257,8 +321,9 @@
     flex-direction: column;
   }
 
-  .admin-pedidos-heading > button {
+  .admin-pedidos-heading-acciones {
     align-self: flex-start;
+    flex-wrap: wrap;
   }
 
   .admin-pedidos-toolbar {

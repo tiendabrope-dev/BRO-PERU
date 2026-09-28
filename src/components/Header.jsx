@@ -605,7 +605,18 @@ function Header({
                   type="button"
                   onClick={() =>
                     abrirCategoria(
-                      'cuadro'
+                      'todos'
+                    )
+                  }
+                >
+                  Todos
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    abrirCategoria(
+                      'cuadros'
                     )
                   }
                 >
@@ -616,33 +627,22 @@ function Header({
                   type="button"
                   onClick={() =>
                     abrirCategoria(
-                      'case'
+                      'productos'
                     )
                   }
                 >
-                  Cases
+                  Productos
                 </button>
 
                 <button
                   type="button"
                   onClick={() =>
                     abrirCategoria(
-                      'polo'
+                      'ropa'
                     )
                   }
                 >
-                  Polos
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    abrirCategoria(
-                      'wallpaper'
-                    )
-                  }
-                >
-                  Wallpapers
+                  Ropa
                 </button>
 
               </div>
@@ -716,7 +716,18 @@ function Header({
                 type="button"
                 onClick={() =>
                   abrirCategoria(
-                    'cuadro'
+                    'todos'
+                  )
+                }
+              >
+                TODOS
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  abrirCategoria(
+                    'cuadros'
                   )
                 }
               >
@@ -727,33 +738,22 @@ function Header({
                 type="button"
                 onClick={() =>
                   abrirCategoria(
-                    'case'
+                    'productos'
                   )
                 }
               >
-                CASES
+                PRODUCTOS
               </button>
 
               <button
                 type="button"
                 onClick={() =>
                   abrirCategoria(
-                    'polo'
+                    'ropa'
                   )
                 }
               >
-                POLOS
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  abrirCategoria(
-                    'wallpaper'
-                  )
-                }
-              >
-                WALLPAPERS
+                ROPA
               </button>
 
             </div>

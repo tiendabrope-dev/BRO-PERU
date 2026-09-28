@@ -5,10 +5,42 @@ import {
 
 import ProductCard from '../components/ProductCard';
 
+const TEXTOS_CATEGORIA = {
+  cuadros: {
+    eyebrow: 'COLECCIÓN BRO',
+    titulo: 'CUADROS',
+    toolbarTitulo: 'TODOS LOS CUADROS',
+    singular: 'DISEÑO',
+    plural: 'DISEÑOS',
+  },
+  productos: {
+    eyebrow: 'COLECCIÓN BRO',
+    titulo: 'PRODUCTOS',
+    toolbarTitulo: 'TODOS LOS PRODUCTOS',
+    singular: 'PRODUCTO',
+    plural: 'PRODUCTOS',
+  },
+  ropa: {
+    eyebrow: 'COLECCIÓN BRO',
+    titulo: 'ROPA',
+    toolbarTitulo: 'TODA LA ROPA',
+    singular: 'PRENDA',
+    plural: 'PRENDAS',
+  },
+  todos: {
+    eyebrow: 'COLECCIÓN BRO',
+    titulo: 'TODO BRO',
+    toolbarTitulo: 'TODOS LOS PRODUCTOS',
+    singular: 'PRODUCTO',
+    plural: 'PRODUCTOS',
+  },
+};
+
 function TodosCuadros({
   productos,
   onVerProducto,
   onVolver,
+  categoria = 'cuadros',
 }) {
   const [
     orden,
@@ -17,14 +49,22 @@ function TodosCuadros({
     'destacados'
   );
 
+  const textos =
+    TEXTOS_CATEGORIA[categoria] ||
+    TEXTOS_CATEGORIA.cuadros;
+
   const cuadros =
     useMemo(() => {
+      if (categoria === 'todos') {
+        return productos;
+      }
+
       return productos.filter(
         (producto) =>
           producto.categoria ===
-          'cuadros'
+          categoria
       );
-    }, [productos]);
+    }, [productos, categoria]);
 
   const cuadrosOrdenados =
     useMemo(() => {
@@ -87,6 +127,10 @@ function TodosCuadros({
 
   const personalizado =
     useMemo(() => {
+      if (categoria !== 'cuadros') {
+        return null;
+      }
+
       return (
         cuadros.find(
           (producto) =>
@@ -102,7 +146,7 @@ function TodosCuadros({
         cuadros[0] ||
         null
       );
-    }, [cuadros]);
+    }, [cuadros, categoria]);
 
   return (
     <main className="bro-catalogo-cuadros">
@@ -715,25 +759,25 @@ function TodosCuadros({
         <div className="bro-catalogo-heading">
           <div>
             <p className="bro-catalogo-eyebrow">
-              COLECCIÓN BRO
+              {textos.eyebrow}
             </p>
 
             <h1 className="bro-catalogo-title">
-              CUADROS
+              {textos.titulo}
             </h1>
           </div>
 
           <p className="bro-catalogo-count">
             {cuadros.length}{' '}
             {cuadros.length === 1
-              ? 'DISEÑO'
-              : 'DISEÑOS'}
+              ? textos.singular
+              : textos.plural}
           </p>
         </div>
 
         <div className="bro-catalogo-toolbar">
           <p className="bro-catalogo-toolbar-title">
-            TODOS LOS CUADROS
+            {textos.toolbarTitulo}
           </p>
 
           <div className="bro-catalogo-sort">

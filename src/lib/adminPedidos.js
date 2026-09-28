@@ -14,6 +14,8 @@ const CAMPOS_PEDIDO = `
   referencia,
   subtotal,
   delivery,
+  cupon_codigo,
+  descuento,
   total,
   metodo_pago,
   estado_pago,

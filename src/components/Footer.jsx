@@ -1157,7 +1157,7 @@ function Footer({
             }}
             onClick={() =>
               onCategoria(
-                'cuadro'
+                'cuadros'
               )
             }
           >
@@ -1193,11 +1193,11 @@ function Footer({
             }}
             onClick={() =>
               onCategoria(
-                'case'
+                'productos'
               )
             }
           >
-            Cases
+            Productos
           </button>
 
           <button
@@ -1229,47 +1229,11 @@ function Footer({
             }}
             onClick={() =>
               onCategoria(
-                'polo'
+                'ropa'
               )
             }
           >
-            Polos
-          </button>
-
-          <button
-            type="button"
-            style={{
-              fontSize:
-                '12.5px',
-
-              padding:
-                '3px 0',
-
-              display:
-                'block',
-
-              textAlign:
-                'left',
-
-              background:
-                'transparent',
-
-              border:
-                'none',
-
-              color:
-                '#888',
-
-              cursor:
-                'pointer',
-            }}
-            onClick={() =>
-              onCategoria(
-                'wallpaper'
-              )
-            }
-          >
-            Wallpapers
+            Ropa
           </button>
         </div>
 

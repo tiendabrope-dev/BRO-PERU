@@ -8,6 +8,11 @@ import {
   obtenerPedidosAdmin,
 } from '../lib/adminPedidos';
 
+import {
+  exportarPedidosExcel,
+  exportarPedidosPDF,
+} from '../lib/exportarPedidos';
+
 import './admin-pedidos.css';
 
 function AdminPedidos({
@@ -25,9 +30,22 @@ function AdminPedidos({
   const [error, setError] =
     useState('');
 
+  const [menuExportar, setMenuExportar] =
+    useState(false);
+
   useEffect(() => {
     cargarPedidos();
   }, []);
+
+  function exportarExcel() {
+    setMenuExportar(false);
+    exportarPedidosExcel(pedidosFiltrados);
+  }
+
+  function exportarPDF() {
+    setMenuExportar(false);
+    exportarPedidosPDF(pedidosFiltrados);
+  }
 
   async function cargarPedidos() {
     setCargando(true);
@@ -146,12 +164,48 @@ function AdminPedidos({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={cargarPedidos}
-        >
-          ACTUALIZAR
-        </button>
+        <div className="admin-pedidos-heading-acciones">
+          <div className="admin-pedidos-exportar">
+            <button
+              type="button"
+              className="admin-pedidos-exportar-boton"
+              onClick={() =>
+                setMenuExportar((actual) => !actual)
+              }
+            >
+              EXPORTAR
+
+              <span className="bro-chevron">
+                ⌄
+              </span>
+            </button>
+
+            {menuExportar && (
+              <div className="admin-pedidos-exportar-menu">
+                <button
+                  type="button"
+                  onClick={exportarExcel}
+                >
+                  Excel (.csv)
+                </button>
+
+                <button
+                  type="button"
+                  onClick={exportarPDF}
+                >
+                  PDF
+                </button>
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={cargarPedidos}
+          >
+            ACTUALIZAR
+          </button>
+        </div>
       </div>
 
       <div className="admin-pedidos-toolbar">

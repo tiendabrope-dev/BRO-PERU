@@ -5,6 +5,7 @@ const SELECT_CUPON = `
   codigo,
   monto_descuento,
   tipo_uso,
+  categoria,
   activo,
   creado_en,
   actualizado_en
@@ -14,6 +15,12 @@ const TIPOS_USO_VALIDOS = [
   'ilimitado',
   'un_uso_por_cliente',
   'un_solo_uso_total',
+];
+
+const CATEGORIAS_VALIDAS = [
+  'general',
+  'trabajador',
+  'influencer',
 ];
 
 function limpiarCodigo(codigo) {
@@ -61,6 +68,14 @@ function validarTipoUso(tipoUso) {
   return tipoUso;
 }
 
+function validarCategoria(categoria) {
+  if (!CATEGORIAS_VALIDAS.includes(categoria)) {
+    throw new Error('Categoría de cupón inválida.');
+  }
+
+  return categoria;
+}
+
 function notificarCambio() {
   if (typeof window === 'undefined') {
     return;
@@ -88,10 +103,12 @@ export async function crearCuponAdmin({
   codigo,
   monto_descuento,
   tipo_uso,
+  categoria,
 }) {
   const codigoLimpio = validarCodigo(codigo);
   const montoLimpio = validarMonto(monto_descuento);
   const tipoUsoLimpio = validarTipoUso(tipo_uso);
+  const categoriaLimpia = validarCategoria(categoria || 'general');
 
   const { data, error } = await supabase
     .from('bro_cupones')
@@ -99,6 +116,7 @@ export async function crearCuponAdmin({
       codigo: codigoLimpio,
       monto_descuento: montoLimpio,
       tipo_uso: tipoUsoLimpio,
+      categoria: categoriaLimpia,
       activo: true,
     })
     .select(SELECT_CUPON)
@@ -121,7 +139,7 @@ export async function crearCuponAdmin({
 
 export async function actualizarCuponAdmin(
   id,
-  { codigo, monto_descuento, tipo_uso, activo }
+  { codigo, monto_descuento, tipo_uso, categoria, activo }
 ) {
   if (!id) {
     throw new Error('Cupón inválido.');
@@ -130,6 +148,7 @@ export async function actualizarCuponAdmin(
   const codigoLimpio = validarCodigo(codigo);
   const montoLimpio = validarMonto(monto_descuento);
   const tipoUsoLimpio = validarTipoUso(tipo_uso);
+  const categoriaLimpia = validarCategoria(categoria || 'general');
 
   const { data, error } = await supabase
     .from('bro_cupones')
@@ -137,6 +156,7 @@ export async function actualizarCuponAdmin(
       codigo: codigoLimpio,
       monto_descuento: montoLimpio,
       tipo_uso: tipoUsoLimpio,
+      categoria: categoriaLimpia,
       activo: Boolean(activo),
       actualizado_en: new Date().toISOString(),
     })
@@ -157,6 +177,35 @@ export async function actualizarCuponAdmin(
   notificarCambio();
 
   return data;
+}
+
+export async function obtenerMetricasCuponesAdmin() {
+  const { data, error } = await supabase
+    .from('vista_metricas_cupones')
+    .select(
+      `
+      cupon_id,
+      codigo,
+      categoria,
+      tipo_uso,
+      activo,
+      monto_descuento,
+      creado_en,
+      veces_usado,
+      soles_descontados,
+      ventas_generadas,
+      ultimo_uso
+    `
+    )
+    .order('veces_usado', { ascending: false });
+
+  if (error) {
+    console.error('Error cargando métricas de cupones:', error);
+
+    throw new Error('No se pudieron cargar las métricas de cupones.');
+  }
+
+  return data || [];
 }
 
 export async function eliminarCuponAdmin(id) {

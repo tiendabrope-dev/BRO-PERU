@@ -108,6 +108,39 @@ function App() {
 
       if (
         pathname ===
+        '/productos'
+      ) {
+        return {
+          pagina: 'productos',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname ===
+        '/ropa'
+      ) {
+        return {
+          pagina: 'ropa',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname ===
+        '/todos'
+      ) {
+        return {
+          pagina: 'todos',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname ===
         '/mi-pedido'
       ) {
         return {
@@ -277,6 +310,30 @@ function App() {
         descripcion:
           'Cuadros de autos Perú: Ferrari, Lamborghini, Porsche, BMW y más. El regalo perfecto para tu novio, enamorado o esposo. Cuadros personalizados con envíos a todo el país.',
         ruta: '/cuadros',
+      });
+    } else if (pagina === 'productos') {
+      actualizarSeoPagina({
+        titulo:
+          'BRO Perú | Productos y accesorios',
+        descripcion:
+          'Descubre los productos y accesorios BRO Perú, el regalo ideal para él.',
+        ruta: '/productos',
+      });
+    } else if (pagina === 'ropa') {
+      actualizarSeoPagina({
+        titulo:
+          'BRO Perú | Ropa',
+        descripcion:
+          'Descubre la ropa BRO Perú, el regalo ideal para él.',
+        ruta: '/ropa',
+      });
+    } else if (pagina === 'todos') {
+      actualizarSeoPagina({
+        titulo:
+          'BRO Perú | Todo el catálogo',
+        descripcion:
+          'Todo el catálogo de BRO Perú en un solo lugar: cuadros, productos y ropa.',
+        ruta: '/todos',
       });
     } else if (
       pagina === 'producto' &&
@@ -470,6 +527,15 @@ function App() {
       cuadros:
         '/cuadros',
 
+      productos:
+        '/productos',
+
+      ropa:
+        '/ropa',
+
+      todos:
+        '/todos',
+
       pedido:
         '/mi-pedido',
 
@@ -615,47 +681,57 @@ function App() {
       tipoCategoria ===
         'cuadro' ||
       tipoCategoria ===
-        'cuadros'
-    ) {
-      irTodosCuadros();
-      return;
-    }
-
-    if (
+        'cuadros' ||
       tipoCategoria ===
         'wallpaper' ||
       tipoCategoria ===
         'wallpapers'
     ) {
-      irTodosCuadros();
+      irPagina(
+        'cuadros'
+      );
+      return;
+    }
+
+    if (
+      tipoCategoria ===
+        'case' ||
+      tipoCategoria ===
+        'producto' ||
+      tipoCategoria ===
+        'productos'
+    ) {
+      irPagina(
+        'productos'
+      );
+      return;
+    }
+
+    if (
+      tipoCategoria ===
+        'polo' ||
+      tipoCategoria ===
+        'ropa'
+    ) {
+      irPagina(
+        'ropa'
+      );
+      return;
+    }
+
+    if (
+      tipoCategoria ===
+        'todos'
+    ) {
+      irPagina(
+        'todos'
+      );
       return;
     }
 
     irPagina(
       'inicio'
     );
-
-    setTimeout(() => {
-      const seccion =
-        document.getElementById(
-          'categorias'
-        );
-
-      if (seccion) {
-        seccion.scrollIntoView({
-          behavior:
-            'smooth',
-
-          block:
-            'center',
-        });
-      }
-
-      console.log(
-        'Categoría seleccionada:',
-        tipoCategoria
-      );
-    }, 80);
   }
 
   function irContacto() {
@@ -1659,6 +1735,55 @@ function App() {
           onVolver={
               volverAtras
             }
+          categoria="cuadros"
+        />
+      )}
+
+      {pagina ===
+        'productos' && (
+        <TodosCuadros
+          productos={
+            productos
+          }
+          onVerProducto={
+            verProducto
+          }
+          onVolver={
+              volverAtras
+            }
+          categoria="productos"
+        />
+      )}
+
+      {pagina ===
+        'ropa' && (
+        <TodosCuadros
+          productos={
+            productos
+          }
+          onVerProducto={
+            verProducto
+          }
+          onVolver={
+              volverAtras
+            }
+          categoria="ropa"
+        />
+      )}
+
+      {pagina ===
+        'todos' && (
+        <TodosCuadros
+          productos={
+            productos
+          }
+          onVerProducto={
+            verProducto
+          }
+          onVolver={
+              volverAtras
+            }
+          categoria="todos"
         />
       )}
 

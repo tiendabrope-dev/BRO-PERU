@@ -33,7 +33,38 @@ const FORMULARIO_VACIO = {
   promedioResenasBase: '5.0',
   activo: true,
   imagenUrl: '',
+  categoria: 'cuadros',
 };
+
+const OPCIONES_CATEGORIA_PRODUCTO = [
+  { valor: 'cuadros', etiqueta: 'Cuadros' },
+  { valor: 'productos', etiqueta: 'Productos' },
+  { valor: 'ropa', etiqueta: 'Ropa' },
+];
+
+function normalizarCategoriaProducto(
+  categoria
+) {
+  if (
+    categoria === 'cuadro' ||
+    categoria === 'cuadros'
+  ) {
+    return 'cuadros';
+  }
+
+  if (
+    categoria === 'producto' ||
+    categoria === 'productos'
+  ) {
+    return 'productos';
+  }
+
+  if (categoria === 'ropa') {
+    return 'ropa';
+  }
+
+  return 'cuadros';
+}
 
 function obtenerImagenProducto(
   producto
@@ -139,6 +170,11 @@ function AdminProductos() {
   ] = useState(
     FORMULARIO_VACIO
   );
+
+  const [
+    categoriaActiva,
+    setCategoriaActiva,
+  ] = useState('cuadros');
 
   const [
     archivoImagen,
@@ -257,6 +293,8 @@ function AdminProductos() {
 
     setFormulario({
       ...FORMULARIO_VACIO,
+      categoria:
+        categoriaActiva,
     });
 
     setArchivoImagen(
@@ -312,6 +350,11 @@ function AdminProductos() {
       activo:
         Boolean(
           producto.activo
+        ),
+
+      categoria:
+        normalizarCategoriaProducto(
+          producto.categoria
         ),
 
       /*
@@ -449,6 +492,21 @@ function AdminProductos() {
     );
   }
 
+  function cambiarCategoria(
+    evento
+  ) {
+    const categoria =
+      evento.target.value;
+
+    setFormulario(
+      (actual) => ({
+        ...actual,
+
+        categoria,
+      })
+    );
+  }
+
   function cambiarActivo() {
     setFormulario(
       (actual) => ({
@@ -572,6 +630,9 @@ function AdminProductos() {
 
             activo:
               formulario.activo,
+
+            categoria:
+              formulario.categoria,
           });
 
         setProductos(
@@ -583,7 +644,7 @@ function AdminProductos() {
         );
 
         setMensaje(
-          'Cuadro creado correctamente.'
+          'Producto creado correctamente.'
         );
       } else {
         productoGuardado =
@@ -607,6 +668,9 @@ function AdminProductos() {
 
               activo:
                 formulario.activo,
+
+              categoria:
+                formulario.categoria,
             }
           );
 
@@ -806,17 +870,16 @@ function AdminProductos() {
     }
   }
 
-  const productosCuadros =
+  const productosFiltrados =
     productos.filter(
       (producto) =>
-        producto.categoria ===
-          'cuadro' ||
-        producto.categoria ===
-          'cuadros'
+        normalizarCategoriaProducto(
+          producto.categoria
+        ) === categoriaActiva
     );
 
   const productosActivos =
-    productosCuadros.filter(
+    productosFiltrados.filter(
       (producto) =>
         producto.activo
     ).length;
@@ -854,40 +917,37 @@ function AdminProductos() {
               abrirNuevoProducto
             }
           >
-            + NUEVO CUADRO
+            + NUEVO {categoriaActiva === 'cuadros'
+              ? 'CUADRO'
+              : categoriaActiva === 'ropa'
+                ? 'PRODUCTO DE ROPA'
+                : 'PRODUCTO'}
           </button>
         </div>
       </div>
 
       <div className="admin-productos-tabs">
-        <button
-          type="button"
-          className="activo"
-        >
-          CUADROS
-        </button>
-
-        <button
-          type="button"
-          disabled
-        >
-          CASES
-
-          <small>
-            PRÓXIMAMENTE
-          </small>
-        </button>
-
-        <button
-          type="button"
-          disabled
-        >
-          POLOS
-
-          <small>
-            PRÓXIMAMENTE
-          </small>
-        </button>
+        {OPCIONES_CATEGORIA_PRODUCTO.map(
+          (opcion) => (
+            <button
+              key={opcion.valor}
+              type="button"
+              className={
+                categoriaActiva ===
+                opcion.valor
+                  ? 'activo'
+                  : ''
+              }
+              onClick={() =>
+                setCategoriaActiva(
+                  opcion.valor
+                )
+              }
+            >
+              {opcion.etiqueta.toUpperCase()}
+            </button>
+          )
+        )}
       </div>
 
       {error && (
@@ -902,18 +962,20 @@ function AdminProductos() {
         </div>
       )}
 
-      <div className="admin-productos-precios-info">
-        <strong>
-          PRECIOS COMPARTIDOS
-        </strong>
+      {categoriaActiva === 'cuadros' && (
+        <div className="admin-productos-precios-info">
+          <strong>
+            PRECIOS COMPARTIDOS
+          </strong>
 
-        <span>
-          Todos los cuadros utilizan
-          automáticamente los precios
-          A4, A3, A2 y Marco definidos
-          en Admin → Precios.
-        </span>
-      </div>
+          <span>
+            Todos los cuadros utilizan
+            automáticamente los precios
+            A4, A3, A2 y Marco definidos
+            en Admin → Precios.
+          </span>
+        </div>
+      )}
 
       {cargando ? (
         <div className="admin-productos-status">
@@ -921,14 +983,14 @@ function AdminProductos() {
         </div>
       ) : (
         <div className="admin-productos-lista">
-          {productosCuadros.length ===
+          {productosFiltrados.length ===
           0 ? (
             <div className="admin-productos-vacio">
-              Todavía no hay cuadros
-              registrados.
+              Todavía no hay productos
+              registrados en esta categoría.
             </div>
           ) : (
-            productosCuadros.map(
+            productosFiltrados.map(
               (producto) => {
                 const imagenProducto =
                   obtenerImagenProducto(
@@ -1193,7 +1255,7 @@ function AdminProductos() {
 
                 <label>
                   <span>
-                    NOMBRE DEL CUADRO
+                    NOMBRE DEL PRODUCTO
                   </span>
 
                   <input
@@ -1208,6 +1270,32 @@ function AdminProductos() {
                     maxLength="120"
                     autoFocus
                   />
+                </label>
+
+                <label>
+                  <span>
+                    CATEGORÍA
+                  </span>
+
+                  <select
+                    value={
+                      formulario.categoria
+                    }
+                    onChange={
+                      cambiarCategoria
+                    }
+                  >
+                    {OPCIONES_CATEGORIA_PRODUCTO.map(
+                      (opcion) => (
+                        <option
+                          key={opcion.valor}
+                          value={opcion.valor}
+                        >
+                          {opcion.etiqueta}
+                        </option>
+                      )
+                    )}
+                  </select>
                 </label>
 
                 <label>
@@ -1315,17 +1403,19 @@ function AdminProductos() {
                   </button>
                 </div>
 
-                <div className="admin-producto-precio-note">
-                  <strong>
-                    PRECIO AUTOMÁTICO
-                  </strong>
+                {formulario.categoria === 'cuadros' && (
+                  <div className="admin-producto-precio-note">
+                    <strong>
+                      PRECIO AUTOMÁTICO
+                    </strong>
 
-                  <span>
-                    Este cuadro utilizará
-                    los precios configurados
-                    en Admin → Precios.
-                  </span>
-                </div>
+                    <span>
+                      Este cuadro utilizará
+                      los precios configurados
+                      en Admin → Precios.
+                    </span>
+                  </div>
+                )}
 
               </div>
 

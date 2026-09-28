@@ -290,6 +290,26 @@ function AdminPedidoDetalle({
             Método: {pedido.metodo_pago}
           </p>
         </article>
+
+        {pedido.cupon_codigo && (
+          <article className="admin-pedido-panel">
+            <h3>
+              Cupón
+            </h3>
+
+            <p>
+              <strong>
+                {pedido.cupon_codigo}
+              </strong>
+            </p>
+
+            <p>
+              Descuento aplicado: S/ {Number(
+                pedido.descuento || 0
+              ).toFixed(2)}
+            </p>
+          </article>
+        )}
       </div>
 
       <article className="admin-pedido-productos">
@@ -350,6 +370,20 @@ function AdminPedidoDetalle({
             ).toFixed(2)}
           </strong>
         </div>
+
+        {pedido.cupon_codigo && (
+          <div className="descuento">
+            <span>
+              Descuento ({pedido.cupon_codigo})
+            </span>
+
+            <strong>
+              − S/ {Number(
+                pedido.descuento || 0
+              ).toFixed(2)}
+            </strong>
+          </div>
+        )}
 
         <div className="total">
           <span>

@@ -14,6 +14,20 @@ const SELECT_PRODUCTO = `
   actualizado_en
 `;
 
+const CATEGORIAS_PRODUCTO_VALIDAS = [
+  'cuadros',
+  'productos',
+  'ropa',
+];
+
+function validarCategoriaProducto(categoria) {
+  if (!CATEGORIAS_PRODUCTO_VALIDAS.includes(categoria)) {
+    return 'cuadros';
+  }
+
+  return categoria;
+}
+
 export function generarSlugProducto(
   nombre = ''
 ) {
@@ -658,6 +672,7 @@ export async function crearProductoAdmin({
   cantidadResenas = 0,
   promedioResenasBase = null,
   activo = true,
+  categoria = 'cuadros',
 }) {
   const nombreLimpio =
     String(nombre || '')
@@ -720,7 +735,9 @@ export async function crearProductoAdmin({
           slugLimpio,
 
         categoria:
-          'cuadro',
+          validarCategoriaProducto(
+            categoria
+          ),
 
         activo:
           Boolean(activo),
@@ -782,6 +799,7 @@ export async function actualizarProductoAdmin(
     cantidadResenas = 0,
     promedioResenasBase = null,
     activo = true,
+    categoria = 'cuadros',
   }
 ) {
   const nombreLimpio =
@@ -831,7 +849,9 @@ export async function actualizarProductoAdmin(
       slugLimpio,
 
     categoria:
-      'cuadro',
+      validarCategoriaProducto(
+        categoria
+      ),
 
     activo:
       Boolean(activo),

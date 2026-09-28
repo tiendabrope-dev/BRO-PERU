@@ -5,6 +5,7 @@ import {
   crearCuponAdmin,
   eliminarCuponAdmin,
   obtenerCuponesAdmin,
+  obtenerMetricasCuponesAdmin,
 } from '../lib/adminCupones';
 
 const OPCIONES_TIPO_USO = [
@@ -12,6 +13,43 @@ const OPCIONES_TIPO_USO = [
   { valor: 'un_uso_por_cliente', etiqueta: 'Una vez por cliente' },
   { valor: 'un_solo_uso_total', etiqueta: 'Un solo uso (se agota)' },
 ];
+
+const OPCIONES_CATEGORIA = [
+  { valor: 'general', etiqueta: 'General' },
+  { valor: 'trabajador', etiqueta: 'Trabajador' },
+  { valor: 'influencer', etiqueta: 'Influencer' },
+];
+
+const ETIQUETA_CATEGORIA = {
+  general: 'General',
+  trabajador: 'Trabajador',
+  influencer: 'Influencer',
+};
+
+function formatearSoles(monto) {
+  const numero = Number(monto) || 0;
+
+  return `S/ ${numero.toLocaleString('es-PE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+function formatearFecha(fechaISO) {
+  if (!fechaISO) {
+    return '—';
+  }
+
+  try {
+    return new Date(fechaISO).toLocaleDateString('es-PE', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  } catch {
+    return '—';
+  }
+}
 
 function AdminCupones() {
   const [cupones, setCupones] = useState([]);
@@ -23,11 +61,56 @@ function AdminCupones() {
   const [nuevoCodigo, setNuevoCodigo] = useState('');
   const [nuevoMonto, setNuevoMonto] = useState('');
   const [nuevoTipoUso, setNuevoTipoUso] = useState('ilimitado');
+  const [nuevaCategoria, setNuevaCategoria] = useState('general');
+
+  const [metricas, setMetricas] = useState([]);
+  const [cargandoMetricas, setCargandoMetricas] = useState(true);
+  const [errorMetricas, setErrorMetricas] = useState('');
 
   const activos = useMemo(
     () => cupones.filter((item) => item.activo).length,
     [cupones]
   );
+
+  const resumenPorCategoria = useMemo(() => {
+    const base = {
+      general: { vecesUsado: 0, descontado: 0, generado: 0 },
+      trabajador: { vecesUsado: 0, descontado: 0, generado: 0 },
+      influencer: { vecesUsado: 0, descontado: 0, generado: 0 },
+    };
+
+    metricas.forEach((fila) => {
+      const grupo = base[fila.categoria] || base.general;
+
+      grupo.vecesUsado += Number(fila.veces_usado) || 0;
+      grupo.descontado += Number(fila.soles_descontados) || 0;
+      grupo.generado += Number(fila.ventas_generadas) || 0;
+    });
+
+    return base;
+  }, [metricas]);
+
+  const resumenGeneral = useMemo(() => {
+    const totalDescontado = metricas.reduce(
+      (acumulado, fila) => acumulado + (Number(fila.soles_descontados) || 0),
+      0
+    );
+
+    const totalVendido = metricas.reduce(
+      (acumulado, fila) => acumulado + (Number(fila.ventas_generadas) || 0),
+      0
+    );
+
+    const masUsado = metricas.reduce((mejor, fila) => {
+      if (!mejor || (Number(fila.veces_usado) || 0) > (Number(mejor.veces_usado) || 0)) {
+        return fila;
+      }
+
+      return mejor;
+    }, null);
+
+    return { totalDescontado, totalVendido, masUsado };
+  }, [metricas]);
 
   async function cargarCupones() {
     setCargando(true);
@@ -44,8 +127,26 @@ function AdminCupones() {
     }
   }
 
+  async function cargarMetricas() {
+    setCargandoMetricas(true);
+    setErrorMetricas('');
+
+    try {
+      const datos = await obtenerMetricasCuponesAdmin();
+
+      setMetricas(datos);
+    } catch (errorCarga) {
+      setErrorMetricas(
+        errorCarga.message || 'No se pudieron cargar las métricas.'
+      );
+    } finally {
+      setCargandoMetricas(false);
+    }
+  }
+
   useEffect(() => {
     cargarCupones();
+    cargarMetricas();
   }, []);
 
   function cambiarCampo(id, campo, valor) {
@@ -82,6 +183,7 @@ function AdminCupones() {
         codigo,
         monto_descuento: monto,
         tipo_uso: nuevoTipoUso,
+        categoria: nuevaCategoria,
       });
 
       setCupones((actuales) => [creado, ...actuales]);
@@ -89,8 +191,11 @@ function AdminCupones() {
       setNuevoCodigo('');
       setNuevoMonto('');
       setNuevoTipoUso('ilimitado');
+      setNuevaCategoria('general');
 
       setMensaje('Cupón creado correctamente.');
+
+      cargarMetricas();
     } catch (errorCrear) {
       setError(errorCrear.message || 'No se pudo crear el cupón.');
     } finally {
@@ -108,6 +213,7 @@ function AdminCupones() {
         codigo: cupon.codigo,
         monto_descuento: cupon.monto_descuento,
         tipo_uso: cupon.tipo_uso,
+        categoria: cupon.categoria,
         activo: cupon.activo,
       });
 
@@ -116,6 +222,8 @@ function AdminCupones() {
       );
 
       setMensaje('Cupón guardado correctamente.');
+
+      cargarMetricas();
     } catch (errorGuardar) {
       setError(errorGuardar.message || 'No se pudo guardar el cupón.');
     } finally {
@@ -252,6 +360,10 @@ function AdminCupones() {
             min-width: 200px;
           }
 
+          .admin-cupones-nueva .categoria {
+            width: 150px;
+          }
+
           .admin-cupones-nueva input:focus,
           .admin-cupones-nueva select:focus,
           .admin-cupon-codigo:focus,
@@ -289,7 +401,7 @@ function AdminCupones() {
           .admin-cupon-card {
             padding: 15px;
             display: grid;
-            grid-template-columns: 150px 100px minmax(190px, 1fr) 90px auto;
+            grid-template-columns: 140px 90px minmax(170px, 1fr) 120px 90px auto;
             gap: 10px;
             align-items: center;
             border: 1px solid var(--bro-borde-fuerte);
@@ -299,7 +411,8 @@ function AdminCupones() {
 
           .admin-cupon-codigo,
           .admin-cupon-monto,
-          .admin-cupon-tipo-uso {
+          .admin-cupon-tipo-uso,
+          .admin-cupon-categoria {
             height: 40px;
             padding: 0 11px;
             box-sizing: border-box;
@@ -390,6 +503,132 @@ function AdminCupones() {
             font-size: 12px;
           }
 
+          /* ==================================================
+             MÉTRICAS
+          ================================================== */
+
+          .admin-cupones-metricas {
+            margin-top: 34px;
+          }
+
+          .admin-cupones-metricas-titulo {
+            margin: 0 0 14px;
+            color: var(--bro-texto);
+            font-size: 18px;
+            font-weight: 800;
+          }
+
+          .admin-metricas-resumen-general {
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+          }
+
+          .admin-metricas-tarjeta {
+            padding: 14px 16px;
+            border: 1px solid var(--bro-borde-fuerte);
+            border-radius: 10px;
+            background: var(--bro-panel);
+          }
+
+          .admin-metricas-tarjeta span {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--bro-texto-tenue);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+          }
+
+          .admin-metricas-tarjeta strong {
+            display: block;
+            color: var(--bro-texto);
+            font-size: 18px;
+          }
+
+          .admin-metricas-categorias {
+            margin-bottom: 22px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+          }
+
+          .admin-metricas-categoria {
+            padding: 14px 16px;
+            border: 1px solid var(--bro-borde-fuerte);
+            border-radius: 10px;
+            background: var(--bro-verde-palido);
+          }
+
+          .admin-metricas-categoria h4 {
+            margin: 0 0 10px;
+            color: var(--bro-verde-fuerte);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+          }
+
+          .admin-metricas-categoria p {
+            margin: 0 0 4px;
+            color: var(--bro-texto);
+            font-size: 12px;
+          }
+
+          .admin-metricas-categoria p:last-child {
+            margin-bottom: 0;
+          }
+
+          .admin-metricas-tabla-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--bro-borde-fuerte);
+            border-radius: 10px;
+          }
+
+          .admin-metricas-tabla {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+            background: var(--bro-panel);
+          }
+
+          .admin-metricas-tabla th,
+          .admin-metricas-tabla td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--bro-borde-fuerte);
+            text-align: left;
+            font-size: 12px;
+            color: var(--bro-texto);
+            white-space: nowrap;
+          }
+
+          .admin-metricas-tabla th {
+            color: var(--bro-texto-tenue);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+          }
+
+          .admin-metricas-tabla tr:last-child td {
+            border-bottom: 0;
+          }
+
+          .admin-metricas-badge {
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--bro-verde-palido);
+            color: var(--bro-verde-fuerte);
+            font-size: 10px;
+            font-weight: 800;
+          }
+
+          .admin-metricas-badge.inactivo {
+            background: var(--bro-icono-fondo);
+            color: var(--bro-texto-tenue);
+          }
+
           @media (max-width: 760px) {
             .admin-cupones-head {
               flex-direction: column;
@@ -405,7 +644,8 @@ function AdminCupones() {
 
             .admin-cupones-nueva .codigo,
             .admin-cupones-nueva .monto,
-            .admin-cupones-nueva .tipo-uso {
+            .admin-cupones-nueva .tipo-uso,
+            .admin-cupones-nueva .categoria {
               width: 100%;
             }
 
@@ -423,6 +663,11 @@ function AdminCupones() {
 
             .admin-cupon-acciones button {
               flex: 1;
+            }
+
+            .admin-metricas-resumen-general,
+            .admin-metricas-categorias {
+              grid-template-columns: minmax(0, 1fr);
             }
           }
         `}
@@ -496,6 +741,18 @@ function AdminCupones() {
           ))}
         </select>
 
+        <select
+          className="categoria"
+          value={nuevaCategoria}
+          onChange={(evento) => setNuevaCategoria(evento.target.value)}
+        >
+          {OPCIONES_CATEGORIA.map((opcion) => (
+            <option key={opcion.valor} value={opcion.valor}>
+              {opcion.etiqueta}
+            </option>
+          ))}
+        </select>
+
         <button
           type="button"
           disabled={guardando === 'nuevo'}
@@ -551,6 +808,21 @@ function AdminCupones() {
                 ))}
               </select>
 
+              <select
+                className="admin-cupon-categoria"
+                value={cupon.categoria || 'general'}
+                aria-label="Categoría del cupón"
+                onChange={(evento) =>
+                  cambiarCampo(cupon.id, 'categoria', evento.target.value)
+                }
+              >
+                {OPCIONES_CATEGORIA.map((opcion) => (
+                  <option key={opcion.valor} value={opcion.valor}>
+                    {opcion.etiqueta}
+                  </option>
+                ))}
+              </select>
+
               <label className="admin-cupon-activo">
                 <input
                   type="checkbox"
@@ -585,6 +857,151 @@ function AdminCupones() {
           ))}
         </div>
       )}
+
+      <div className="admin-cupones-metricas">
+        <h3 className="admin-cupones-metricas-titulo">
+          Métricas de uso
+        </h3>
+
+        {errorMetricas && (
+          <div className="admin-cupones-error">{errorMetricas}</div>
+        )}
+
+        {cargandoMetricas ? (
+          <div className="admin-cupones-status">
+            Cargando métricas...
+          </div>
+        ) : metricas.length === 0 ? (
+          <div className="admin-cupones-status">
+            Todavía no hay usos de cupones registrados.
+          </div>
+        ) : (
+          <>
+            <div className="admin-metricas-resumen-general">
+              <div className="admin-metricas-tarjeta">
+                <span>TOTAL DESCONTADO</span>
+                <strong>
+                  {formatearSoles(resumenGeneral.totalDescontado)}
+                </strong>
+              </div>
+
+              <div className="admin-metricas-tarjeta">
+                <span>VENTAS GENERADAS CON CUPÓN</span>
+                <strong>
+                  {formatearSoles(resumenGeneral.totalVendido)}
+                </strong>
+              </div>
+
+              <div className="admin-metricas-tarjeta">
+                <span>CUPÓN MÁS USADO</span>
+                <strong>
+                  {resumenGeneral.masUsado &&
+                  Number(resumenGeneral.masUsado.veces_usado) > 0
+                    ? `${resumenGeneral.masUsado.codigo} (${resumenGeneral.masUsado.veces_usado})`
+                    : '—'}
+                </strong>
+              </div>
+            </div>
+
+            <div className="admin-metricas-categorias">
+              {OPCIONES_CATEGORIA.map((opcion) => {
+                const datos =
+                  resumenPorCategoria[opcion.valor] || {
+                    vecesUsado: 0,
+                    descontado: 0,
+                    generado: 0,
+                  };
+
+                return (
+                  <div
+                    key={opcion.valor}
+                    className="admin-metricas-categoria"
+                  >
+                    <h4>{opcion.etiqueta}</h4>
+
+                    <p>Veces usado: {datos.vecesUsado}</p>
+                    <p>
+                      Descontado: {formatearSoles(datos.descontado)}
+                    </p>
+                    <p>
+                      Ventas generadas:{' '}
+                      {formatearSoles(datos.generado)}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="admin-metricas-tabla-wrap">
+              <table className="admin-metricas-tabla">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Categoría</th>
+                    <th>Estado</th>
+                    <th>Veces usado</th>
+                    <th>Descontado</th>
+                    <th>Ventas generadas</th>
+                    <th>Ticket promedio</th>
+                    <th>Último uso</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {metricas.map((fila) => {
+                    const vecesUsado = Number(fila.veces_usado) || 0;
+
+                    const ventasGeneradas =
+                      Number(fila.ventas_generadas) || 0;
+
+                    const ticketPromedio =
+                      vecesUsado > 0
+                        ? ventasGeneradas / vecesUsado
+                        : 0;
+
+                    return (
+                      <tr key={fila.cupon_id}>
+                        <td>{fila.codigo}</td>
+
+                        <td>
+                          {ETIQUETA_CATEGORIA[fila.categoria] ||
+                            'General'}
+                        </td>
+
+                        <td>
+                          <span
+                            className={`admin-metricas-badge${
+                              fila.activo ? '' : ' inactivo'
+                            }`}
+                          >
+                            {fila.activo ? 'ACTIVO' : 'INACTIVO'}
+                          </span>
+                        </td>
+
+                        <td>{vecesUsado}</td>
+
+                        <td>
+                          {formatearSoles(fila.soles_descontados)}
+                        </td>
+
+                        <td>{formatearSoles(ventasGeneradas)}</td>
+
+                        <td>
+                          {vecesUsado > 0
+                            ? formatearSoles(ticketPromedio)
+                            : '—'}
+                        </td>
+
+                        <td>{formatearFecha(fila.ultimo_uso)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
     </section>
   );
 }

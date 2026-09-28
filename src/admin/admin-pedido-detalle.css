@@ -137,6 +137,14 @@
   font-size: 18px;
 }
 
+.admin-pedido-totales .descuento {
+  color: #b42318;
+}
+
+.admin-pedido-totales .descuento strong {
+  color: #b42318;
+}
+
 @media (max-width: 650px) {
   .admin-pedido-detalle-header {
     align-items: flex-start;
