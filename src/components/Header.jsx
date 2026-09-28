@@ -117,6 +117,9 @@ function Header({
   const lastScrollY =
     useRef(0);
 
+  const categoriaRef =
+    useRef(null);
+
   useEffect(() => {
     let activo = true;
 
@@ -288,6 +291,53 @@ function Header({
       );
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      !menuCategorias
+    ) {
+      return undefined;
+    }
+
+    function manejarClicAfuera(
+      evento
+    ) {
+      if (
+        categoriaRef.current &&
+        !categoriaRef.current.contains(
+          evento.target
+        )
+      ) {
+        setMenuCategorias(
+          false
+        );
+      }
+    }
+
+    document.addEventListener(
+      'mousedown',
+      manejarClicAfuera
+    );
+
+    document.addEventListener(
+      'touchstart',
+      manejarClicAfuera
+    );
+
+    return () => {
+      document.removeEventListener(
+        'mousedown',
+        manejarClicAfuera
+      );
+
+      document.removeEventListener(
+        'touchstart',
+        manejarClicAfuera
+      );
+    };
+  }, [
+    menuCategorias,
+  ]);
 
   function mensajeAnteriorTopbar() {
     if (
@@ -524,7 +574,12 @@ function Header({
             Inicio
           </button>
 
-          <div className="bro-category-dropdown">
+          <div
+            className="bro-category-dropdown"
+            ref={
+              categoriaRef
+            }
+          >
 
             <button
               type="button"

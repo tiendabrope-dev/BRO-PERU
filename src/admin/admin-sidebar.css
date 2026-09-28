@@ -207,6 +207,10 @@
 }
 
 @media (max-width: 900px) {
+  .bro-admin {
+    flex-direction: column;
+  }
+
   .bro-admin > .bro-sidebar {
     display: none;
   }
