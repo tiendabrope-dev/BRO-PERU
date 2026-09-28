@@ -1023,6 +1023,14 @@ img {
   object-fit: contain;
 }
 
+.cart-item-clickable {
+  cursor: pointer;
+}
+
+.cart-item-top h3.cart-item-clickable:hover {
+  text-decoration: underline;
+}
+
 .cart-item-info {
   display: flex;
   flex-direction: column;

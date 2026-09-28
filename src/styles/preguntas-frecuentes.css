@@ -15,7 +15,7 @@
 }
 
 .bro-faq-header {
-  margin-bottom: 34px;
+  margin-bottom: 20px;
 }
 
 .bro-faq-eyebrow {
@@ -36,25 +36,25 @@
     sans-serif;
   font-size:
     clamp(
-      38px,
-      5vw,
-      58px
+      26px,
+      3.4vw,
+      40px
     );
-  line-height: 0.92;
+  line-height: 0.96;
   font-weight: 800;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   color: #111111;
 }
 
 .bro-faq-intro {
   max-width: 500px;
   margin:
-    20px 0 0;
+    12px 0 0;
   font-family:
     'DM Sans',
     sans-serif;
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: #676767;
 }
 
@@ -196,17 +196,17 @@
 
   .bro-faq-header {
     margin-bottom:
-      25px;
+      16px;
   }
 
   .bro-faq-title {
-    font-size: 38px;
-    line-height: 0.94;
+    font-size: 30px;
+    line-height: 0.98;
   }
 
   .bro-faq-intro {
-    margin-top: 16px;
-    font-size: 14px;
+    margin-top: 10px;
+    font-size: 13px;
   }
 
   .bro-faq-box {

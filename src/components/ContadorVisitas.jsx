@@ -12,9 +12,9 @@ import '../styles/contador-visitas.css';
 
 const DIGITOS_MINIMOS = 5;
 
-const DURACION_GIRO_MS = 170;
-const PAUSA_ENTRE_GIROS_MS = 60;
-const MINIMO_GIROS = 6;
+const DURACION_GIRO_MS = 110;
+const PAUSA_ENTRE_GIROS_MS = 30;
+const MINIMO_GIROS = 4;
 
 function calcularDigitos(
   numero
@@ -338,7 +338,7 @@ function ContadorVisitas() {
               valorFinal={digito}
               activo={listo}
               retraso={
-                indice * 200
+                indice * 110
               }
             />
           )

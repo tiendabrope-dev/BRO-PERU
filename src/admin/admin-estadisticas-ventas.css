@@ -123,4 +123,26 @@
   .admin-estadisticas-barra-riel {
     height: 100px;
   }
+
+  /*
+    En pantallas angostas hay demasiadas columnas
+    (hasta 14 en "Por día") para mostrar una fecha
+    debajo de cada una sin que se encimen. Se oculta
+    la etiqueta de una de cada dos columnas, dejando
+    la barra visible pero sin su fecha.
+  */
+  .admin-estadisticas-barra-columna:nth-child(even) span {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  /*
+    En celulares muy angostos, con la mitad de las
+    etiquetas todavía se encimaban. Se deja solo una
+    de cada tres.
+  */
+  .admin-estadisticas-barra-columna:not(:nth-child(3n + 1)) span {
+    display: none;
+  }
 }

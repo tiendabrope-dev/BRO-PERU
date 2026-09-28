@@ -3,6 +3,8 @@ import {
   useState,
 } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import {
   suscribirNewsletterBro,
 } from '../lib/newsletter';
@@ -21,6 +23,9 @@ function Footer({
   onPrivacidad,
   onCambios,
 }) {
+  const navigate =
+    useNavigate();
+
   const [
     correoNewsletter,
     setCorreoNewsletter,
@@ -106,6 +111,10 @@ function Footer({
     }
   }
 
+  function irALinks() {
+    navigate('/links');
+  }
+
   function abrirInstagram() {
     window.open(
       'https://www.instagram.com/tiendabro.pe?igsh=MTRiNmliY3YyMmpjbw==',
@@ -185,7 +194,7 @@ function Footer({
       className="footer bro-footer-v2"
       id="contacto"
       style={{
-        padding: '32px 6% 24px',
+        padding: '26px 6% 18px',
       }}
     >
       <style>
@@ -349,9 +358,9 @@ function Footer({
 
             .bro-footer-v2 {
               padding:
-                44px
+                34px
                 22px
-                24px
+                18px
                 !important;
 
               box-sizing:
@@ -378,7 +387,7 @@ function Footer({
 
               padding:
                 0 0
-                36px
+                26px
                 !important;
 
               display:
@@ -425,12 +434,12 @@ function Footer({
 
               margin:
                 0 0
-                38px
+                26px
                 !important;
 
               padding:
                 0 0
-                30px
+                20px
                 !important;
 
               border-bottom:
@@ -643,12 +652,12 @@ function Footer({
                 !important;
 
               margin:
-                38px 0
+                26px 0
                 0
                 !important;
 
               padding:
-                32px 0
+                22px 0
                 0
                 !important;
 
@@ -909,7 +918,7 @@ function Footer({
                 !important;
 
               padding:
-                24px 0
+                16px 0
                 0
                 !important;
 
@@ -930,7 +939,7 @@ function Footer({
                 !important;
 
               gap:
-                8px
+                6px
                 !important;
 
               border-top:
@@ -1073,6 +1082,23 @@ function Footer({
               }
             >
               WhatsApp
+            </button>
+          </div>
+
+          <div
+            className="bro-footer-socials"
+            style={{
+              marginTop: '8px',
+            }}
+          >
+            <button
+              type="button"
+              className="bro-footer-social-link"
+              onClick={
+                irALinks
+              }
+            >
+              BRO Links
             </button>
           </div>
         </div>
@@ -1639,10 +1665,10 @@ function Footer({
             '1200px',
 
           margin:
-            '20px auto 0',
+            '14px auto 0',
 
           paddingTop:
-            '14px',
+            '10px',
 
           fontSize:
             '11.5px',

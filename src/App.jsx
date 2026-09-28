@@ -51,6 +51,7 @@ import Producto from './pages/Producto';
 import TodosCuadros from './pages/TodosCuadros';
 import Legal from './pages/Legal';
 import AdminApp from './admin/AdminApp';
+import LinksBro from './pages/LinksBro';
 
 function App() {
   const productos =
@@ -184,6 +185,17 @@ function App() {
       ) {
         return {
           pagina: 'admin',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname === '/links' ||
+        pathname.startsWith('/links/')
+      ) {
+        return {
+          pagina: 'links',
           producto: null,
           valida: true,
         };
@@ -1486,6 +1498,10 @@ function App() {
     return <AdminApp />;
   }
 
+  if (pagina === 'links') {
+    return <LinksBro />;
+  }
+
   return (
     <div className="site">
       <Header
@@ -1754,6 +1770,9 @@ function App() {
         }
         onCheckout={
           abrirCheckout
+        }
+        onVerProducto={
+          verProducto
         }
       />
 

@@ -110,7 +110,7 @@ function TodosCuadros({
         {`
           .bro-catalogo-cuadros {
             min-height: 100vh;
-            padding: 155px 28px 78px;
+            padding: 130px 28px 78px;
             background: #F4F1EC;
           }
 
@@ -124,7 +124,7 @@ function TodosCuadros({
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            margin-bottom: 34px;
+            margin-bottom: 18px;
             padding: 0;
             border: 0;
             background: transparent;
@@ -146,7 +146,7 @@ function TodosCuadros({
             align-items: flex-end;
             justify-content: space-between;
             gap: 30px;
-            margin-bottom: 28px;
+            margin-bottom: 16px;
           }
 
           .bro-catalogo-eyebrow {
@@ -191,8 +191,8 @@ function TodosCuadros({
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            margin-bottom: 38px;
-            padding: 15px 0;
+            margin-bottom: 24px;
+            padding: 10px 0;
             border-top: 1px solid rgba(17,17,17,0.12);
             border-bottom: 1px solid rgba(17,17,17,0.12);
           }
@@ -612,7 +612,7 @@ function TodosCuadros({
 
           @media (max-width: 760px) {
             .bro-catalogo-cuadros {
-              padding: 140px 18px 60px;
+              padding: 120px 18px 60px;
             }
 
             .bro-catalogo-heading {
@@ -721,12 +721,6 @@ function TodosCuadros({
             <h1 className="bro-catalogo-title">
               CUADROS
             </h1>
-
-            <p className="bro-catalogo-subtitle">
-              Diseños automotrices
-              para darle personalidad
-              a tu espacio.
-            </p>
           </div>
 
           <p className="bro-catalogo-count">

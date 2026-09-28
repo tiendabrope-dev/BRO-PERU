@@ -11,9 +11,27 @@ function Carrito({
   onEliminar,
   onVaciar,
   onCheckout,
+  onVerProducto,
 }) {
   if (!abierto) {
     return null;
+  }
+
+  function irAlProducto(
+    item
+  ) {
+    if (
+      !onVerProducto ||
+      !item?.slug
+    ) {
+      return;
+    }
+
+    onVerProducto(
+      item
+    );
+
+    onCerrar?.();
   }
 
   return (
@@ -85,6 +103,16 @@ function Carrito({
                       <img
                         src={item.imagen}
                         alt={item.nombre}
+                        onClick={() =>
+                          irAlProducto(
+                            item
+                          )
+                        }
+                        className={
+                          item.slug
+                            ? 'cart-item-clickable'
+                            : ''
+                        }
                       />
 
                       <div className="cart-item-info">
@@ -94,7 +122,18 @@ function Carrito({
                               BRO PERÚ
                             </p>
 
-                            <h3>
+                            <h3
+                              onClick={() =>
+                                irAlProducto(
+                                  item
+                                )
+                              }
+                              className={
+                                item.slug
+                                  ? 'cart-item-clickable'
+                                  : ''
+                              }
+                            >
                               {item.nombre}
                             </h3>
 
