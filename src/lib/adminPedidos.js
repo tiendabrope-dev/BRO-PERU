@@ -197,3 +197,44 @@ export async function actualizarEstadoPagoAdmin(
 
   return data;
 }
+
+export async function actualizarMetodoPagoAdmin(
+  pedidoId,
+  metodoPago
+) {
+  const permitidos = [
+    'yape',
+    'plin',
+    'transferencia',
+    'efectivo',
+  ];
+
+  if (!permitidos.includes(metodoPago)) {
+    throw new Error(
+      'Método de pago inválido.'
+    );
+  }
+
+  const { data, error } =
+    await supabase
+      .from('pedidos')
+      .update({
+        metodo_pago: metodoPago,
+      })
+      .eq('id', pedidoId)
+      .select(CAMPOS_PEDIDO)
+      .single();
+
+  if (error) {
+    console.error(
+      'Error actualizando método de pago:',
+      error
+    );
+
+    throw new Error(
+      'No se pudo actualizar el método de pago.'
+    );
+  }
+
+  return data;
+}

@@ -1,0 +1,252 @@
+.admin-nota-venta-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bro-fondo, #EDEAE3);
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.admin-nota-venta-acciones {
+  max-width: 720px;
+  margin: 0 auto 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-nota-venta-cerrar {
+  border: 0;
+  background: transparent;
+  color: var(--bro-texto-tenue, #6b6a63);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.admin-nota-venta-imprimir {
+  border: 1px solid var(--bro-borde-fuerte, #D8D5CB);
+  background: #141413;
+  color: #F4F1EC;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.admin-nota-venta-imprimible {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #E3E0D8;
+  border-radius: 16px;
+  padding: 40px 44px;
+  box-shadow: 0 2px 10px rgba(20, 20, 19, 0.06);
+  color: #141413;
+}
+
+.admin-nota-venta-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.admin-nota-venta-logo {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 26px;
+  letter-spacing: -0.04em;
+  color: #111111;
+}
+
+.admin-nota-venta-logo span {
+  color: #2D5A3D;
+}
+
+.admin-nota-venta-marca p {
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #9a988f;
+}
+
+.admin-nota-venta-titulo {
+  text-align: right;
+}
+
+.admin-nota-venta-titulo span {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.admin-nota-venta-titulo p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #6b6a63;
+}
+
+.admin-nota-venta-aviso {
+  background: #FDF6E9;
+  border: 1px solid #F0E2BC;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: #8A6D1F;
+  margin-bottom: 18px;
+}
+
+.admin-nota-venta-datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #EEEBE2;
+}
+
+.admin-nota-venta-datos span {
+  display: block;
+  font-size: 10px;
+  color: #9a988f;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 3px;
+}
+
+.admin-nota-venta-datos strong {
+  font-size: 14px;
+}
+
+.admin-nota-venta-datos p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #6b6a63;
+}
+
+.admin-nota-venta-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+}
+
+.admin-nota-venta-tabla thead th {
+  text-align: left;
+  font-size: 11px;
+  color: #9a988f;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #EEEBE2;
+}
+
+.admin-nota-venta-tabla thead th:nth-child(2) {
+  text-align: center;
+}
+
+.admin-nota-venta-tabla thead th:nth-child(3),
+.admin-nota-venta-tabla thead th:nth-child(4) {
+  text-align: right;
+}
+
+.admin-nota-venta-tabla tbody td {
+  padding: 12px 0;
+  font-size: 13.5px;
+  border-bottom: 1px solid #F4F2EC;
+  vertical-align: top;
+}
+
+.admin-nota-venta-tabla tbody td:nth-child(2) {
+  text-align: center;
+}
+
+.admin-nota-venta-tabla tbody td:nth-child(3),
+.admin-nota-venta-tabla tbody td:nth-child(4) {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.admin-nota-venta-variante {
+  font-size: 11.5px;
+  color: #9a988f;
+}
+
+.admin-nota-venta-totales {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 260px;
+  font-size: 13.5px;
+}
+
+.admin-nota-venta-totales > div {
+  display: flex;
+  justify-content: space-between;
+  color: #6b6a63;
+}
+
+.admin-nota-venta-descuento {
+  color: #b42318 !important;
+}
+
+.admin-nota-venta-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 800;
+  color: #141413 !important;
+  border-top: 1px solid #EEEBE2;
+  margin-top: 4px;
+  padding-top: 8px;
+}
+
+.admin-nota-venta-pie {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px dashed #E3E0D8;
+  text-align: center;
+}
+
+.admin-nota-venta-pie strong {
+  display: block;
+  font-size: 13px;
+}
+
+.admin-nota-venta-pie p {
+  margin: 3px 0 0;
+  font-size: 11px;
+  color: #9a988f;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .admin-nota-venta-overlay,
+  .admin-nota-venta-overlay * {
+    visibility: visible;
+  }
+
+  .admin-nota-venta-overlay {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    padding: 0;
+  }
+
+  .admin-nota-venta-acciones {
+    display: none;
+  }
+
+  .admin-nota-venta-imprimible {
+    box-shadow: none;
+    border: none;
+    max-width: 100%;
+    margin: 0;
+  }
+}

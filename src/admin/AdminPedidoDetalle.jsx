@@ -6,8 +6,25 @@ import {
 import {
   actualizarEstadoPagoAdmin,
   actualizarEstadoPedidoAdmin,
+  actualizarMetodoPagoAdmin,
   obtenerPedidoAdmin,
 } from '../lib/adminPedidos';
+
+import AdminNotaVenta from './AdminNotaVenta';
+
+const METODOS_PAGO_VALIDOS = [
+  'yape',
+  'plin',
+  'transferencia',
+  'efectivo',
+];
+
+const ETIQUETAS_METODO_PAGO = {
+  yape: 'Yape',
+  plin: 'Plin',
+  transferencia: 'Transferencia bancaria',
+  efectivo: 'Efectivo / contraentrega',
+};
 
 function AdminPedidoDetalle({
   pedidoId,
@@ -27,6 +44,9 @@ function AdminPedidoDetalle({
 
   const [error, setError] =
     useState('');
+
+  const [mostrarNotaVenta, setMostrarNotaVenta] =
+    useState(false);
 
   useEffect(() => {
     async function cargar() {
@@ -96,6 +116,28 @@ function AdminPedidoDetalle({
     }
   }
 
+  async function cambiarMetodoPago(
+    metodoPago
+  ) {
+    setGuardando('metodoPago');
+
+    try {
+      const actualizado =
+        await actualizarMetodoPagoAdmin(
+          pedido.id,
+          metodoPago
+        );
+
+      setPedido(actualizado);
+    } catch (errorCambio) {
+      setError(
+        errorCambio.message
+      );
+    } finally {
+      setGuardando('');
+    }
+  }
+
   function fecha(fechaPedido) {
     return new Intl.DateTimeFormat(
       'es-PE',
@@ -121,6 +163,38 @@ function AdminPedidoDetalle({
       <div className="admin-pedidos-error">
         No se encontró el pedido.
       </div>
+    );
+  }
+
+  const metodoPagoValido =
+    METODOS_PAGO_VALIDOS.includes(
+      pedido.metodo_pago
+    );
+
+  const puedeGenerarNotaVenta =
+    pedido.estado_pedido ===
+      'entregado' &&
+    pedido.estado_pago ===
+      'pagado' &&
+    metodoPagoValido;
+
+  function generarNotaVenta() {
+    if (!puedeGenerarNotaVenta) {
+      return;
+    }
+
+    setMostrarNotaVenta(true);
+  }
+
+  if (mostrarNotaVenta) {
+    return (
+      <AdminNotaVenta
+        pedido={pedido}
+        items={items}
+        onCerrar={() =>
+          setMostrarNotaVenta(false)
+        }
+      />
     );
   }
 
@@ -151,12 +225,54 @@ function AdminPedidoDetalle({
           </p>
         </div>
 
-        <strong className="admin-pedido-detalle-total">
-          S/ {Number(
-            pedido.total
-          ).toFixed(2)}
-        </strong>
+        <div className="admin-pedido-detalle-header-acciones">
+          <strong className="admin-pedido-detalle-total">
+            S/ {Number(
+              pedido.total
+            ).toFixed(2)}
+          </strong>
+
+          <button
+            type="button"
+            className="admin-pedido-nota-venta-boton"
+            disabled={
+              !puedeGenerarNotaVenta
+            }
+            onClick={
+              generarNotaVenta
+            }
+            title={
+              puedeGenerarNotaVenta
+                ? 'Generar nota de venta'
+                : 'El pedido debe estar Entregado y con método de pago confirmado'
+            }
+          >
+            🧾 Generar nota de venta
+          </button>
+        </div>
       </div>
+
+      {!puedeGenerarNotaVenta && (
+        <div className="admin-pedido-nota-venta-aviso">
+          Para generar la nota de venta, el pedido debe estar{' '}
+          <strong>Entregado</strong>, con el pago marcado como{' '}
+          <strong>Pagado</strong> y con un{' '}
+          <strong>método de pago</strong> confirmado. Falta:{' '}
+          {[
+            pedido.estado_pedido !==
+              'entregado' &&
+              'marcar el pedido como Entregado',
+            pedido.estado_pago !==
+              'pagado' &&
+              'marcar el pago como Pagado',
+            !metodoPagoValido &&
+              'confirmar el método de pago',
+          ]
+            .filter(Boolean)
+            .join(', ')}
+          .
+        </div>
+      )}
 
       {error && (
         <div className="admin-pedidos-error">
@@ -286,9 +402,45 @@ function AdminPedidoDetalle({
             </option>
           </select>
 
-          <p>
-            Método: {pedido.metodo_pago}
-          </p>
+          <label className="admin-pedido-metodo-pago-label">
+            Método de pago
+          </label>
+
+          <select
+            value={
+              metodoPagoValido
+                ? pedido.metodo_pago
+                : ''
+            }
+            disabled={
+              guardando ===
+              'metodoPago'
+            }
+            onChange={(event) =>
+              cambiarMetodoPago(
+                event.target.value
+              )
+            }
+          >
+            <option value="" disabled>
+              Sin definir — seleccionar
+            </option>
+
+            {METODOS_PAGO_VALIDOS.map(
+              (metodo) => (
+                <option
+                  key={metodo}
+                  value={metodo}
+                >
+                  {
+                    ETIQUETAS_METODO_PAGO[
+                      metodo
+                    ]
+                  }
+                </option>
+              )
+            )}
+          </select>
         </article>
 
         {pedido.cupon_codigo && (
