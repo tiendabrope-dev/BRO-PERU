@@ -1,5 +1,44 @@
 import { supabase } from './supabase';
 
+export async function previsualizarCuponBro({
+  codigo,
+  dni,
+  total,
+}) {
+  const codigoLimpio =
+    String(codigo || '')
+      .trim()
+      .toUpperCase();
+
+  const { data, error } =
+    await supabase.rpc(
+      'previsualizar_cupon_bro',
+      {
+        p_codigo: codigoLimpio,
+        p_dni: String(dni || '').trim(),
+        p_total: Number(total),
+      }
+    );
+
+  if (error) {
+    throw new Error(
+      error.message ||
+        'No se pudo validar el cupón.'
+    );
+  }
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+    throw new Error(
+      'No se pudo validar el cupón.'
+    );
+  }
+
+  return data[0];
+}
+
 export async function crearPedidoBro({
   formulario,
   carrito,

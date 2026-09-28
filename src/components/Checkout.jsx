@@ -9,6 +9,10 @@ import {
   obtenerAjustesPublicos,
 } from '../lib/ajustes';
 
+import {
+  previsualizarCuponBro,
+} from '../lib/pedidos';
+
 function formatearNumeroPago(
   numero
 ) {
@@ -52,6 +56,21 @@ function Checkout({
     AJUSTES_POR_DEFECTO
   );
 
+  const [
+    cuponAplicado,
+    setCuponAplicado,
+  ] = useState(null);
+
+  const [
+    aplicandoCupon,
+    setAplicandoCupon,
+  ] = useState(false);
+
+  const [
+    errorCupon,
+    setErrorCupon,
+  ] = useState('');
+
   const formularioRef =
     useRef(null);
 
@@ -59,8 +78,75 @@ function Checkout({
     if (abierto) {
       setPaso(1);
       setErrorPaso('');
+      setCuponAplicado(null);
+      setErrorCupon('');
     }
   }, [abierto]);
+
+  useEffect(() => {
+    const codigoLimpio =
+      String(codigoCupon || '')
+        .trim()
+        .toUpperCase();
+
+    if (
+      cuponAplicado &&
+      cuponAplicado.codigo !== codigoLimpio
+    ) {
+      setCuponAplicado(null);
+    }
+
+    setErrorCupon('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [codigoCupon]);
+
+  async function aplicarCupon() {
+    const codigoLimpio =
+      String(codigoCupon || '')
+        .trim()
+        .toUpperCase();
+
+    if (!codigoLimpio) {
+      setErrorCupon(
+        'Escribe un código de cupón.'
+      );
+      return;
+    }
+
+    if (!formulario.dni || !formulario.dni.trim()) {
+      setErrorCupon(
+        'Ingresa tu documento en el paso anterior antes de aplicar un cupón.'
+      );
+      return;
+    }
+
+    setAplicandoCupon(true);
+    setErrorCupon('');
+
+    try {
+      const resultado =
+        await previsualizarCuponBro({
+          codigo: codigoLimpio,
+          dni: formulario.dni,
+          total,
+        });
+
+      setCuponAplicado({
+        codigo: codigoLimpio,
+        descuento: Number(resultado.descuento),
+        total: Number(resultado.total),
+      });
+    } catch (errorAplicar) {
+      setCuponAplicado(null);
+
+      setErrorCupon(
+        errorAplicar.message ||
+          'No se pudo aplicar el cupón.'
+      );
+    } finally {
+      setAplicandoCupon(false);
+    }
+  }
 
   useEffect(() => {
     let activo = true;
@@ -1276,21 +1362,55 @@ function Checkout({
                   ¿TIENES UN CUPÓN?
                 </span>
 
-                <input
-                  type="text"
-                  name="codigoCupon"
-                  value={
-                    codigoCupon
-                  }
-                  onChange={
-                    onCambiarCupon
-                  }
-                  placeholder="CÓDIGO (OPCIONAL)"
-                  autoComplete="off"
-                  disabled={
-                    guardandoPedido
-                  }
-                />
+                <div className="checkout-cupon-fila">
+                  <input
+                    type="text"
+                    name="codigoCupon"
+                    value={
+                      codigoCupon
+                    }
+                    onChange={
+                      onCambiarCupon
+                    }
+                    placeholder="CÓDIGO (OPCIONAL)"
+                    autoComplete="off"
+                    disabled={
+                      guardandoPedido
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    className="checkout-cupon-aplicar"
+                    disabled={
+                      guardandoPedido ||
+                      aplicandoCupon ||
+                      Boolean(cuponAplicado)
+                    }
+                    onClick={
+                      aplicarCupon
+                    }
+                  >
+                    {aplicandoCupon
+                      ? 'APLICANDO...'
+                      : cuponAplicado
+                        ? 'APLICADO'
+                        : 'APLICAR'}
+                  </button>
+                </div>
+
+                {errorCupon && (
+                  <small className="checkout-cupon-error">
+                    {errorCupon}
+                  </small>
+                )}
+
+                {cuponAplicado && (
+                  <small className="checkout-cupon-ok">
+                    Cupón {cuponAplicado.codigo} aplicado: −S/{' '}
+                    {cuponAplicado.descuento.toFixed(2)}
+                  </small>
+                )}
               </label>
 
               <div className="checkout-totals">
@@ -1323,6 +1443,21 @@ function Checkout({
                   </div>
                 )}
 
+                {cuponAplicado && (
+                  <div className="checkout-total-descuento">
+                    <span>
+                      DESCUENTO ({cuponAplicado.codigo})
+                    </span>
+
+                    <strong>
+                      − S/{' '}
+                      {cuponAplicado.descuento.toFixed(
+                        2
+                      )}
+                    </strong>
+                  </div>
+                )}
+
                 <div className="checkout-total-final">
                   <span>
                     TOTAL
@@ -1330,7 +1465,11 @@ function Checkout({
 
                   <strong>
                     S/{' '}
-                    {total.toFixed(
+                    {(
+                      cuponAplicado
+                        ? cuponAplicado.total
+                        : total
+                    ).toFixed(
                       2
                     )}
                   </strong>

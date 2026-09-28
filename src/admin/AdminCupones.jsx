@@ -14,6 +14,11 @@ const OPCIONES_TIPO_USO = [
   { valor: 'un_solo_uso_total', etiqueta: 'Un solo uso (se agota)' },
 ];
 
+const OPCIONES_TIPO_DESCUENTO = [
+  { valor: 'monto', etiqueta: 'Monto fijo (S/)' },
+  { valor: 'porcentaje', etiqueta: 'Porcentaje (%)' },
+];
+
 const OPCIONES_CATEGORIA = [
   { valor: 'general', etiqueta: 'General' },
   { valor: 'trabajador', etiqueta: 'Trabajador' },
@@ -59,7 +64,9 @@ function AdminCupones() {
   const [mensaje, setMensaje] = useState('');
 
   const [nuevoCodigo, setNuevoCodigo] = useState('');
+  const [nuevoTipoDescuento, setNuevoTipoDescuento] = useState('monto');
   const [nuevoMonto, setNuevoMonto] = useState('');
+  const [nuevoPorcentaje, setNuevoPorcentaje] = useState('');
   const [nuevoTipoUso, setNuevoTipoUso] = useState('ilimitado');
   const [nuevaCategoria, setNuevaCategoria] = useState('general');
 
@@ -67,10 +74,33 @@ function AdminCupones() {
   const [cargandoMetricas, setCargandoMetricas] = useState(true);
   const [errorMetricas, setErrorMetricas] = useState('');
 
+  const [filtroCategoriaMetricas, setFiltroCategoriaMetricas] =
+    useState('todas');
+
+  const [filtroCodigoMetricas, setFiltroCodigoMetricas] = useState('');
+
   const activos = useMemo(
     () => cupones.filter((item) => item.activo).length,
     [cupones]
   );
+
+  const metricasFiltradas = useMemo(() => {
+    const codigoBuscado = filtroCodigoMetricas.trim().toUpperCase();
+
+    return metricas.filter((fila) => {
+      const pasaCategoria =
+        filtroCategoriaMetricas === 'todas' ||
+        (fila.categoria || 'general') === filtroCategoriaMetricas;
+
+      const pasaCodigo =
+        !codigoBuscado ||
+        String(fila.codigo || '')
+          .toUpperCase()
+          .includes(codigoBuscado);
+
+      return pasaCategoria && pasaCodigo;
+    });
+  }, [metricas, filtroCategoriaMetricas, filtroCodigoMetricas]);
 
   const resumenPorCategoria = useMemo(() => {
     const base = {
@@ -79,7 +109,7 @@ function AdminCupones() {
       influencer: { vecesUsado: 0, descontado: 0, generado: 0 },
     };
 
-    metricas.forEach((fila) => {
+    metricasFiltradas.forEach((fila) => {
       const grupo = base[fila.categoria] || base.general;
 
       grupo.vecesUsado += Number(fila.veces_usado) || 0;
@@ -88,20 +118,20 @@ function AdminCupones() {
     });
 
     return base;
-  }, [metricas]);
+  }, [metricasFiltradas]);
 
   const resumenGeneral = useMemo(() => {
-    const totalDescontado = metricas.reduce(
+    const totalDescontado = metricasFiltradas.reduce(
       (acumulado, fila) => acumulado + (Number(fila.soles_descontados) || 0),
       0
     );
 
-    const totalVendido = metricas.reduce(
+    const totalVendido = metricasFiltradas.reduce(
       (acumulado, fila) => acumulado + (Number(fila.ventas_generadas) || 0),
       0
     );
 
-    const masUsado = metricas.reduce((mejor, fila) => {
+    const masUsado = metricasFiltradas.reduce((mejor, fila) => {
       if (!mejor || (Number(fila.veces_usado) || 0) > (Number(mejor.veces_usado) || 0)) {
         return fila;
       }
@@ -110,7 +140,7 @@ function AdminCupones() {
     }, null);
 
     return { totalDescontado, totalVendido, masUsado };
-  }, [metricas]);
+  }, [metricasFiltradas]);
 
   async function cargarCupones() {
     setCargando(true);
@@ -162,15 +192,19 @@ function AdminCupones() {
 
   async function crear() {
     const codigo = nuevoCodigo.trim();
-    const monto = nuevoMonto;
 
     if (!codigo) {
       setError('Escribe un código de cupón.');
       return;
     }
 
-    if (!monto) {
+    if (nuevoTipoDescuento === 'monto' && !nuevoMonto) {
       setError('Escribe el monto de descuento.');
+      return;
+    }
+
+    if (nuevoTipoDescuento === 'porcentaje' && !nuevoPorcentaje) {
+      setError('Escribe el porcentaje de descuento.');
       return;
     }
 
@@ -181,7 +215,9 @@ function AdminCupones() {
     try {
       const creado = await crearCuponAdmin({
         codigo,
-        monto_descuento: monto,
+        tipo_descuento: nuevoTipoDescuento,
+        monto_descuento: nuevoMonto,
+        porcentaje_descuento: nuevoPorcentaje,
         tipo_uso: nuevoTipoUso,
         categoria: nuevaCategoria,
       });
@@ -189,7 +225,9 @@ function AdminCupones() {
       setCupones((actuales) => [creado, ...actuales]);
 
       setNuevoCodigo('');
+      setNuevoTipoDescuento('monto');
       setNuevoMonto('');
+      setNuevoPorcentaje('');
       setNuevoTipoUso('ilimitado');
       setNuevaCategoria('general');
 
@@ -211,7 +249,9 @@ function AdminCupones() {
     try {
       const actualizado = await actualizarCuponAdmin(cupon.id, {
         codigo: cupon.codigo,
+        tipo_descuento: cupon.tipo_descuento || 'monto',
         monto_descuento: cupon.monto_descuento,
+        porcentaje_descuento: cupon.porcentaje_descuento,
         tipo_uso: cupon.tipo_uso,
         categoria: cupon.categoria,
         activo: cupon.activo,
@@ -355,6 +395,10 @@ function AdminCupones() {
             width: 110px;
           }
 
+          .admin-cupones-nueva .tipo-descuento {
+            width: 150px;
+          }
+
           .admin-cupones-nueva .tipo-uso {
             flex: 1;
             min-width: 200px;
@@ -401,7 +445,7 @@ function AdminCupones() {
           .admin-cupon-card {
             padding: 15px;
             display: grid;
-            grid-template-columns: 140px 90px minmax(170px, 1fr) 120px 90px auto;
+            grid-template-columns: 140px 130px 90px minmax(170px, 1fr) 120px 90px auto;
             gap: 10px;
             align-items: center;
             border: 1px solid var(--bro-borde-fuerte);
@@ -516,6 +560,36 @@ function AdminCupones() {
             color: var(--bro-texto);
             font-size: 18px;
             font-weight: 800;
+          }
+
+          .admin-metricas-filtros {
+            margin-bottom: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+          }
+
+          .admin-metricas-filtros select,
+          .admin-metricas-filtros input {
+            height: 40px;
+            padding: 0 12px;
+            box-sizing: border-box;
+            border: 1px solid var(--bro-borde-fuerte);
+            border-radius: 6px;
+            outline: none;
+            background: var(--bro-panel);
+            color: var(--bro-texto);
+            font: inherit;
+            font-size: 12px;
+          }
+
+          .admin-metricas-filtros select {
+            min-width: 180px;
+          }
+
+          .admin-metricas-filtros input {
+            flex: 1;
+            min-width: 180px;
           }
 
           .admin-metricas-resumen-general {
@@ -715,19 +789,52 @@ function AdminCupones() {
           }}
         />
 
-        <input
-          type="number"
-          className="monto"
-          min="0.10"
-          step="0.10"
-          value={nuevoMonto}
-          placeholder="S/ monto"
+        <select
+          className="tipo-descuento"
+          value={nuevoTipoDescuento}
           onChange={(evento) => {
-            setNuevoMonto(evento.target.value);
+            setNuevoTipoDescuento(evento.target.value);
             setError('');
             setMensaje('');
           }}
-        />
+        >
+          {OPCIONES_TIPO_DESCUENTO.map((opcion) => (
+            <option key={opcion.valor} value={opcion.valor}>
+              {opcion.etiqueta}
+            </option>
+          ))}
+        </select>
+
+        {nuevoTipoDescuento === 'monto' ? (
+          <input
+            type="number"
+            className="monto"
+            min="0.10"
+            step="0.10"
+            value={nuevoMonto}
+            placeholder="S/ monto"
+            onChange={(evento) => {
+              setNuevoMonto(evento.target.value);
+              setError('');
+              setMensaje('');
+            }}
+          />
+        ) : (
+          <input
+            type="number"
+            className="monto"
+            min="1"
+            max="100"
+            step="1"
+            value={nuevoPorcentaje}
+            placeholder="% descuento"
+            onChange={(evento) => {
+              setNuevoPorcentaje(evento.target.value);
+              setError('');
+              setMensaje('');
+            }}
+          />
+        )}
 
         <select
           className="tipo-uso"
@@ -781,17 +888,47 @@ function AdminCupones() {
                 }
               />
 
-              <input
-                type="number"
-                className="admin-cupon-monto"
-                min="0.10"
-                step="0.10"
-                value={cupon.monto_descuento}
-                aria-label="Monto de descuento"
+              <select
+                className="admin-cupon-tipo-descuento"
+                value={cupon.tipo_descuento || 'monto'}
+                aria-label="Tipo de descuento"
                 onChange={(evento) =>
-                  cambiarCampo(cupon.id, 'monto_descuento', evento.target.value)
+                  cambiarCampo(cupon.id, 'tipo_descuento', evento.target.value)
                 }
-              />
+              >
+                {OPCIONES_TIPO_DESCUENTO.map((opcion) => (
+                  <option key={opcion.valor} value={opcion.valor}>
+                    {opcion.etiqueta}
+                  </option>
+                ))}
+              </select>
+
+              {(cupon.tipo_descuento || 'monto') === 'monto' ? (
+                <input
+                  type="number"
+                  className="admin-cupon-monto"
+                  min="0.10"
+                  step="0.10"
+                  value={cupon.monto_descuento}
+                  aria-label="Monto de descuento"
+                  onChange={(evento) =>
+                    cambiarCampo(cupon.id, 'monto_descuento', evento.target.value)
+                  }
+                />
+              ) : (
+                <input
+                  type="number"
+                  className="admin-cupon-monto"
+                  min="1"
+                  max="100"
+                  step="1"
+                  value={cupon.porcentaje_descuento || ''}
+                  aria-label="Porcentaje de descuento"
+                  onChange={(evento) =>
+                    cambiarCampo(cupon.id, 'porcentaje_descuento', evento.target.value)
+                  }
+                />
+              )}
 
               <select
                 className="admin-cupon-tipo-uso"
@@ -863,6 +1000,36 @@ function AdminCupones() {
           Métricas de uso
         </h3>
 
+        {metricas.length > 0 && (
+          <div className="admin-metricas-filtros">
+            <select
+              value={filtroCategoriaMetricas}
+              onChange={(evento) =>
+                setFiltroCategoriaMetricas(evento.target.value)
+              }
+              aria-label="Filtrar métricas por categoría"
+            >
+              <option value="todas">Todas las categorías</option>
+
+              {OPCIONES_CATEGORIA.map((opcion) => (
+                <option key={opcion.valor} value={opcion.valor}>
+                  {opcion.etiqueta}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              placeholder="Buscar por código..."
+              value={filtroCodigoMetricas}
+              onChange={(evento) =>
+                setFiltroCodigoMetricas(evento.target.value)
+              }
+              aria-label="Buscar métricas por código de cupón"
+            />
+          </div>
+        )}
+
         {errorMetricas && (
           <div className="admin-cupones-error">{errorMetricas}</div>
         )}
@@ -874,6 +1041,10 @@ function AdminCupones() {
         ) : metricas.length === 0 ? (
           <div className="admin-cupones-status">
             Todavía no hay usos de cupones registrados.
+          </div>
+        ) : metricasFiltradas.length === 0 ? (
+          <div className="admin-cupones-status">
+            Ningún cupón coincide con ese filtro.
           </div>
         ) : (
           <>
@@ -948,7 +1119,7 @@ function AdminCupones() {
                 </thead>
 
                 <tbody>
-                  {metricas.map((fila) => {
+                  {metricasFiltradas.map((fila) => {
                     const vecesUsado = Number(fila.veces_usado) || 0;
 
                     const ventasGeneradas =

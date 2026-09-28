@@ -1538,6 +1538,58 @@ img {
   text-transform: uppercase;
 }
 
+.checkout-cupon-fila {
+  display: flex;
+  gap: 8px;
+}
+
+.checkout-cupon-fila input {
+  flex: 1;
+}
+
+.checkout-cupon-aplicar {
+  height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--black);
+  color: #fff;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.checkout-cupon-aplicar:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.checkout-cupon-error {
+  display: block;
+  margin-top: 6px;
+  color: #b42318;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.checkout-cupon-ok {
+  display: block;
+  margin-top: 6px;
+  color: #2d5a3d;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.checkout-total-descuento span {
+  color: #b42318;
+}
+
+.checkout-total-descuento strong {
+  color: #b42318;
+}
+
 .checkout-totals {
   margin-top: 28px;
   padding-top: 20px;

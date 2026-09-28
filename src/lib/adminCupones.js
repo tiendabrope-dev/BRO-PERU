@@ -4,6 +4,8 @@ const SELECT_CUPON = `
   id,
   codigo,
   monto_descuento,
+  tipo_descuento,
+  porcentaje_descuento,
   tipo_uso,
   categoria,
   activo,
@@ -21,6 +23,11 @@ const CATEGORIAS_VALIDAS = [
   'general',
   'trabajador',
   'influencer',
+];
+
+const TIPOS_DESCUENTO_VALIDOS = [
+  'monto',
+  'porcentaje',
 ];
 
 function limpiarCodigo(codigo) {
@@ -55,6 +62,26 @@ function validarMonto(monto) {
 
   if (!Number.isFinite(numero) || numero <= 0) {
     throw new Error('El monto de descuento debe ser mayor a 0.');
+  }
+
+  return Math.round(numero * 100) / 100;
+}
+
+function validarTipoDescuento(tipoDescuento) {
+  const valor = tipoDescuento || 'monto';
+
+  if (!TIPOS_DESCUENTO_VALIDOS.includes(valor)) {
+    throw new Error('Tipo de descuento inválido.');
+  }
+
+  return valor;
+}
+
+function validarPorcentaje(porcentaje) {
+  const numero = Number(porcentaje);
+
+  if (!Number.isFinite(numero) || numero <= 0 || numero > 100) {
+    throw new Error('El porcentaje debe estar entre 0 y 100.');
   }
 
   return Math.round(numero * 100) / 100;
@@ -102,11 +129,24 @@ export async function obtenerCuponesAdmin() {
 export async function crearCuponAdmin({
   codigo,
   monto_descuento,
+  tipo_descuento,
+  porcentaje_descuento,
   tipo_uso,
   categoria,
 }) {
   const codigoLimpio = validarCodigo(codigo);
-  const montoLimpio = validarMonto(monto_descuento);
+  const tipoDescuentoLimpio = validarTipoDescuento(tipo_descuento);
+
+  const montoLimpio =
+    tipoDescuentoLimpio === 'monto'
+      ? validarMonto(monto_descuento)
+      : 0;
+
+  const porcentajeLimpio =
+    tipoDescuentoLimpio === 'porcentaje'
+      ? validarPorcentaje(porcentaje_descuento)
+      : null;
+
   const tipoUsoLimpio = validarTipoUso(tipo_uso);
   const categoriaLimpia = validarCategoria(categoria || 'general');
 
@@ -115,6 +155,8 @@ export async function crearCuponAdmin({
     .insert({
       codigo: codigoLimpio,
       monto_descuento: montoLimpio,
+      tipo_descuento: tipoDescuentoLimpio,
+      porcentaje_descuento: porcentajeLimpio,
       tipo_uso: tipoUsoLimpio,
       categoria: categoriaLimpia,
       activo: true,
@@ -139,14 +181,33 @@ export async function crearCuponAdmin({
 
 export async function actualizarCuponAdmin(
   id,
-  { codigo, monto_descuento, tipo_uso, categoria, activo }
+  {
+    codigo,
+    monto_descuento,
+    tipo_descuento,
+    porcentaje_descuento,
+    tipo_uso,
+    categoria,
+    activo,
+  }
 ) {
   if (!id) {
     throw new Error('Cupón inválido.');
   }
 
   const codigoLimpio = validarCodigo(codigo);
-  const montoLimpio = validarMonto(monto_descuento);
+  const tipoDescuentoLimpio = validarTipoDescuento(tipo_descuento);
+
+  const montoLimpio =
+    tipoDescuentoLimpio === 'monto'
+      ? validarMonto(monto_descuento)
+      : 0;
+
+  const porcentajeLimpio =
+    tipoDescuentoLimpio === 'porcentaje'
+      ? validarPorcentaje(porcentaje_descuento)
+      : null;
+
   const tipoUsoLimpio = validarTipoUso(tipo_uso);
   const categoriaLimpia = validarCategoria(categoria || 'general');
 
@@ -155,6 +216,8 @@ export async function actualizarCuponAdmin(
     .update({
       codigo: codigoLimpio,
       monto_descuento: montoLimpio,
+      tipo_descuento: tipoDescuentoLimpio,
+      porcentaje_descuento: porcentajeLimpio,
       tipo_uso: tipoUsoLimpio,
       categoria: categoriaLimpia,
       activo: Boolean(activo),
