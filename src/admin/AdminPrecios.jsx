@@ -1,18 +1,46 @@
 import {
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 
 import {
   actualizarPrecioAdmin,
+  crearPrecioAdmin,
   obtenerPreciosAdmin,
 } from '../lib/adminPrecios';
 
 import './admin-precios.css';
 
+const OPCIONES_CATEGORIA_PRECIO = [
+  { valor: 'cuadros', etiqueta: 'Cuadros' },
+  { valor: 'productos', etiqueta: 'Productos' },
+  { valor: 'ropa', etiqueta: 'Ropa' },
+  { valor: 'entrega', etiqueta: 'Entrega' },
+];
+
+const FORMULARIO_VACIO = {
+  clave: '',
+  nombre: '',
+  categoria: 'cuadros',
+  precio: '',
+};
+
 function AdminPrecios() {
   const [precios, setPrecios] =
     useState([]);
+
+  const [categoriaActiva, setCategoriaActiva] =
+    useState('cuadros');
+
+  const [mostrarNuevo, setMostrarNuevo] =
+    useState(false);
+
+  const [formulario, setFormulario] =
+    useState(FORMULARIO_VACIO);
+
+  const [creando, setCreando] =
+    useState(false);
 
   const [cargando, setCargando] =
     useState(true);
@@ -47,6 +75,19 @@ function AdminPrecios() {
       setCargando(false);
     }
   }
+
+  const preciosFiltrados =
+    useMemo(() => {
+      return precios.filter(
+        (item) =>
+          (item.categoria ||
+            'cuadros') ===
+          categoriaActiva
+      );
+    }, [
+      precios,
+      categoriaActiva,
+    ]);
 
   function cambiarPrecio(
     clave,
@@ -108,6 +149,67 @@ function AdminPrecios() {
     }
   }
 
+  function abrirNuevoPrecio() {
+    setFormulario({
+      ...FORMULARIO_VACIO,
+      categoria: categoriaActiva,
+    });
+
+    setMensaje('');
+    setError('');
+    setMostrarNuevo(true);
+  }
+
+  function cerrarNuevoPrecio() {
+    setMostrarNuevo(false);
+    setFormulario(FORMULARIO_VACIO);
+  }
+
+  async function crearPrecio(
+    evento
+  ) {
+    evento.preventDefault();
+
+    if (creando) {
+      return;
+    }
+
+    setMensaje('');
+    setError('');
+    setCreando(true);
+
+    try {
+      const nuevo =
+        await crearPrecioAdmin(
+          formulario
+        );
+
+      setPrecios(
+        (actuales) => [
+          ...actuales,
+          nuevo,
+        ]
+      );
+
+      setCategoriaActiva(
+        nuevo.categoria
+      );
+
+      setMensaje(
+        `${nuevo.nombre} creado correctamente.`
+      );
+
+      cerrarNuevoPrecio();
+    } catch (errorCreacion) {
+      setError(
+        errorCreacion.message ||
+          'No se pudo crear el precio.'
+      );
+    } finally {
+      setCreando(false);
+    }
+  }
+
   if (cargando) {
     return (
       <div className="admin-precios-status">
@@ -133,6 +235,30 @@ function AdminPrecios() {
         </p>
       </div>
 
+      <div className="admin-precios-tabs">
+        {OPCIONES_CATEGORIA_PRECIO.map(
+          (opcion) => (
+            <button
+              key={opcion.valor}
+              type="button"
+              className={
+                categoriaActiva ===
+                opcion.valor
+                  ? 'activo'
+                  : ''
+              }
+              onClick={() =>
+                setCategoriaActiva(
+                  opcion.valor
+                )
+              }
+            >
+              {opcion.etiqueta.toUpperCase()}
+            </button>
+          )
+        )}
+      </div>
+
       {mensaje && (
         <div className="admin-precios-success">
           {mensaje}
@@ -145,63 +271,233 @@ function AdminPrecios() {
         </div>
       )}
 
-      <div className="admin-precios-grid">
-        {precios.map(
-          (item) => (
-            <article
-              key={item.clave}
-              className="admin-precio-card"
+      {!mostrarNuevo && (
+        <button
+          type="button"
+          className="admin-precios-nuevo-boton"
+          onClick={
+            abrirNuevoPrecio
+          }
+        >
+          + NUEVO PRECIO EN{' '}
+          {
+            OPCIONES_CATEGORIA_PRECIO.find(
+              (opcion) =>
+                opcion.valor ===
+                categoriaActiva
+            )?.etiqueta.toUpperCase()
+          }
+        </button>
+      )}
+
+      {mostrarNuevo && (
+        <form
+          className="admin-precios-nuevo-form"
+          onSubmit={
+            crearPrecio
+          }
+        >
+          <div>
+            <label>
+              NOMBRE
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ej. Polo talla M"
+              value={
+                formulario.nombre
+              }
+              onChange={(event) =>
+                setFormulario(
+                  (actual) => ({
+                    ...actual,
+                    nombre:
+                      event.target
+                        .value,
+                  })
+                )
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label>
+              CLAVE (identificador único)
+            </label>
+
+            <input
+              type="text"
+              placeholder="Ej. polo_m"
+              value={
+                formulario.clave
+              }
+              onChange={(event) =>
+                setFormulario(
+                  (actual) => ({
+                    ...actual,
+                    clave:
+                      event.target
+                        .value,
+                  })
+                )
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label>
+              CATEGORÍA
+            </label>
+
+            <select
+              value={
+                formulario.categoria
+              }
+              onChange={(event) =>
+                setFormulario(
+                  (actual) => ({
+                    ...actual,
+                    categoria:
+                      event.target
+                        .value,
+                  })
+                )
+              }
             >
-              <div>
-                <small>
-                  {item.categoria}
-                </small>
+              {OPCIONES_CATEGORIA_PRECIO.map(
+                (opcion) => (
+                  <option
+                    key={opcion.valor}
+                    value={
+                      opcion.valor
+                    }
+                  >
+                    {opcion.etiqueta}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
 
-                <strong>
-                  {item.nombre}
-                </strong>
-              </div>
+          <div>
+            <label>
+              PRECIO (S/)
+            </label>
 
-              <div className="admin-precio-editor">
-                <span>
-                  S/
-                </span>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              value={
+                formulario.precio
+              }
+              onChange={(event) =>
+                setFormulario(
+                  (actual) => ({
+                    ...actual,
+                    precio:
+                      event.target
+                        .value,
+                  })
+                )
+              }
+              required
+            />
+          </div>
 
-                <input
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={item.precio}
-                  onChange={(event) =>
-                    cambiarPrecio(
-                      item.clave,
-                      event.target.value
-                    )
-                  }
-                />
+          <div className="admin-precios-nuevo-acciones">
+            <button
+              type="button"
+              className="cancelar"
+              onClick={
+                cerrarNuevoPrecio
+              }
+            >
+              CANCELAR
+            </button>
 
-                <button
-                  type="button"
-                  disabled={
-                    guardando ===
+            <button
+              type="submit"
+              disabled={
+                creando
+              }
+            >
+              {creando
+                ? 'CREANDO...'
+                : 'CREAR PRECIO'}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {preciosFiltrados.length === 0 ? (
+        <div className="admin-precios-vacio">
+          Todavía no hay precios en esta
+          categoría.
+        </div>
+      ) : (
+        <div className="admin-precios-grid">
+          {preciosFiltrados.map(
+            (item) => (
+              <article
+                key={item.clave}
+                className="admin-precio-card"
+              >
+                <div>
+                  <small>
+                    {item.categoria}
+                  </small>
+
+                  <strong>
+                    {item.nombre}
+                  </strong>
+                </div>
+
+                <div className="admin-precio-editor">
+                  <span>
+                    S/
+                  </span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={item.precio}
+                    onChange={(event) =>
+                      cambiarPrecio(
+                        item.clave,
+                        event.target.value
+                      )
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    disabled={
+                      guardando ===
+                      item.clave
+                    }
+                    onClick={() =>
+                      guardarPrecio(
+                        item
+                      )
+                    }
+                  >
+                    {guardando ===
                     item.clave
-                  }
-                  onClick={() =>
-                    guardarPrecio(
-                      item
-                    )
-                  }
-                >
-                  {guardando ===
-                  item.clave
-                    ? 'GUARDANDO...'
-                    : 'GUARDAR'}
-                </button>
-              </div>
-            </article>
-          )
-        )}
-      </div>
+                      ? 'GUARDANDO...'
+                      : 'GUARDAR'}
+                  </button>
+                </div>
+              </article>
+            )
+          )}
+        </div>
+      )}
     </section>
   );
 }

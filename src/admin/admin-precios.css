@@ -27,6 +27,168 @@
   line-height: 1.4;
 }
 
+.admin-precios-tabs {
+  margin-bottom: 18px;
+
+  padding: 5px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 5px;
+
+  background: var(--bro-hover-fuerte);
+
+  border-radius: 11px;
+}
+
+.admin-precios-tabs button {
+  min-height: 42px;
+
+  padding: 7px 10px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--bro-texto-tenue);
+
+  cursor: pointer;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.admin-precios-tabs button.activo {
+  background: var(--bro-panel);
+  color: var(--bro-texto);
+
+  box-shadow:
+    0 2px 8px
+    rgba(0, 0, 0, 0.16);
+}
+
+.admin-precios-nuevo-boton {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 13px 16px;
+
+  border: 1px dashed var(--bro-borde-fuerte);
+  border-radius: 10px;
+
+  background: transparent;
+  color: var(--bro-texto-tenue);
+
+  cursor: pointer;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+.admin-precios-nuevo-boton:hover {
+  border-color: var(--bro-verde);
+  color: var(--bro-verde);
+}
+
+.admin-precios-nuevo-form {
+  margin-bottom: 18px;
+  padding: 18px;
+
+  border: 1px solid var(--bro-borde-fuerte);
+  border-radius: 12px;
+
+  background: var(--bro-panel);
+
+  display: grid;
+  gap: 12px;
+}
+
+.admin-precios-nuevo-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--bro-texto-tenue);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.admin-precios-nuevo-form input,
+.admin-precios-nuevo-form select {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+
+  border: 1px solid var(--bro-borde-fuerte);
+  border-radius: 8px;
+
+  background: var(--bro-panel);
+  color: var(--bro-texto);
+
+  font: inherit;
+}
+
+.admin-precios-nuevo-form input:focus,
+.admin-precios-nuevo-form select:focus {
+  outline: 2px solid var(--bro-verde);
+  outline-offset: 1px;
+}
+
+.admin-precios-nuevo-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.admin-precios-nuevo-acciones button {
+  height: 42px;
+  padding: 0 18px;
+
+  border: 0;
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.admin-precios-nuevo-acciones button[type='submit'] {
+  background: var(--bro-verde);
+  color: #fff;
+}
+
+.admin-precios-nuevo-acciones button[type='submit']:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.admin-precios-nuevo-acciones button.cancelar {
+  background: transparent;
+  color: var(--bro-texto-tenue);
+  border: 1px solid var(--bro-borde-fuerte);
+}
+
+.admin-precios-vacio {
+  padding: 26px;
+
+  border: 1px solid var(--bro-borde-fuerte);
+  border-radius: 12px;
+
+  background: var(--bro-panel);
+  color: var(--bro-texto-tenue);
+
+  font-weight: 700;
+  text-align: center;
+}
+
 .admin-precios-success,
 .admin-precios-error {
   margin-bottom: 18px;
