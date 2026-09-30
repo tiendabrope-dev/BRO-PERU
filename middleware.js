@@ -1,5 +1,10 @@
 /*
-  Arreglo completo de "imagen real al compartir un producto".
+  Este archivo (Vercel Edge Middleware) hace dos cosas independientes,
+  cada una interceptando su propia ruta antes de que Vercel sirva la
+  SPA. No se toca `vercel.json` para ninguna de las dos — Vercel
+  detecta `middleware.js` en la raíz del repo automáticamente.
+
+  1) Arreglo completo de "imagen real al compartir un producto".
 
   Por qué hace falta esto: BRO es una SPA (un solo index.html).
   Los bots de WhatsApp/Facebook/Twitter/etc. que generan la vista
@@ -10,17 +15,29 @@
   de `index.html` (con la imagen genérica agregada en una sesión
   anterior).
 
-  Esta función (Vercel Edge Middleware) se ejecuta ANTES de servir
-  cualquier página. Si detecta que la visita es uno de esos bots Y
-  la URL es de un producto (`/producto/:slug`), responde con un HTML
-  mínimo que ya trae el título, la descripción y la imagen REAL de
-  ese producto en los meta tags — sin tocar nada de la app normal
-  para visitantes reales, que siguen viendo la SPA de siempre.
+  Si detecta que la visita a `/producto/:slug` es uno de esos bots,
+  responde con un HTML mínimo que ya trae el título, la descripción
+  y la imagen REAL de ese producto en los meta tags — sin tocar nada
+  de la app normal para visitantes reales, que siguen viendo la SPA
+  de siempre.
+
+  2) Sitemap dinámico de productos (`/sitemap.xml`).
+
+  El `public/sitemap.xml` estático solo lista las páginas fijas del
+  sitio (inicio, /cuadros, preguntas frecuentes, etc.) — nunca incluyó
+  las páginas de cada producto (`/producto/:slug`), así que Google
+  nunca se enteraba de esas URLs por ahí. Esta función intercepta
+  `/sitemap.xml`, arma el XML con las mismas páginas fijas de siempre
+  MÁS una entrada por cada producto activo (consultado en vivo a
+  Supabase), así que un producto nuevo aparece solo, sin tocar código.
+  `public/sitemap.xml` se deja intacto como respaldo estático, por si
+  esta función fallara por cualquier motivo.
 */
 
 export const config = {
   matcher: [
     '/producto/:slug*',
+    '/sitemap.xml',
   ],
 };
 
@@ -60,9 +77,153 @@ function escaparHtml(texto) {
     .replace(/"/g, '&quot;');
 }
 
+/*
+  Páginas fijas del sitio — las mismas que ya
+  vivían en public/sitemap.xml, hardcodeadas ahí
+  a mano. Se mantienen igual acá para no perder
+  ninguna al pasar a generación dinámica.
+*/
+const PAGINAS_FIJAS = [
+  {
+    ruta: '/',
+    changefreq: 'daily',
+    priority: '1.0',
+  },
+  {
+    ruta: '/cuadros',
+    changefreq: 'daily',
+    priority: '0.9',
+  },
+  {
+    ruta: '/preguntas-frecuentes',
+    changefreq: 'monthly',
+    priority: '0.4',
+  },
+  {
+    ruta: '/afiliados',
+    changefreq: 'monthly',
+    priority: '0.3',
+  },
+  {
+    ruta: '/cambios-devoluciones',
+    changefreq: 'monthly',
+    priority: '0.3',
+  },
+  {
+    ruta: '/terminos-condiciones',
+    changefreq: 'yearly',
+    priority: '0.2',
+  },
+  {
+    ruta: '/politica-privacidad',
+    changefreq: 'yearly',
+    priority: '0.2',
+  },
+];
+
+async function generarSitemap() {
+  const supabaseUrl =
+    process.env.VITE_SUPABASE_URL;
+
+  const supabaseKey =
+    process.env
+      .VITE_SUPABASE_PUBLISHABLE_KEY;
+
+  let productos = [];
+
+  if (supabaseUrl && supabaseKey) {
+    try {
+      const respuesta = await fetch(
+        `${supabaseUrl}/rest/v1/bro_productos` +
+          `?activo=eq.true` +
+          `&select=slug,actualizado_en`,
+        {
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+          },
+        }
+      );
+
+      if (respuesta.ok) {
+        const datos =
+          await respuesta.json();
+
+        productos = Array.isArray(
+          datos
+        )
+          ? datos
+          : [];
+      }
+    } catch (error) {
+      /*
+        Si Supabase falla, el sitemap
+        sale igual con las páginas
+        fijas — nunca debe tumbar la
+        respuesta.
+      */
+    }
+  }
+
+  const urlsFijas = PAGINAS_FIJAS.map(
+    (pagina) => `
+  <url>
+    <loc>${URL_BASE}${pagina.ruta}</loc>
+    <changefreq>${pagina.changefreq}</changefreq>
+    <priority>${pagina.priority}</priority>
+  </url>`
+  ).join('');
+
+  const urlsProductos = productos
+    .filter((producto) => producto.slug)
+    .map((producto) => {
+      const fecha =
+        producto.actualizado_en
+          ? `
+    <lastmod>${String(
+      producto.actualizado_en
+    ).slice(0, 10)}</lastmod>`
+          : '';
+
+      return `
+  <url>
+    <loc>${URL_BASE}/producto/${encodeURIComponent(
+        producto.slug
+      )}</loc>${fecha}
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    })
+    .join('');
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urlsFijas}${urlsProductos}
+</urlset>`;
+
+  return new Response(xml, {
+    status: 200,
+    headers: {
+      'content-type':
+        'application/xml; charset=utf-8',
+      'cache-control':
+        'public, max-age=0, s-maxage=3600',
+    },
+  });
+}
+
 export default async function middleware(
   request
 ) {
+  const url = new URL(
+    request.url
+  );
+
+  if (
+    url.pathname === '/sitemap.xml'
+  ) {
+    return generarSitemap();
+  }
+
   const userAgent =
     request.headers.get(
       'user-agent'
@@ -78,10 +239,6 @@ export default async function middleware(
   ) {
     return;
   }
-
-  const url = new URL(
-    request.url
-  );
 
   const slug = decodeURIComponent(
     url.pathname
