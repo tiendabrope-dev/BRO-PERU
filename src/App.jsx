@@ -52,6 +52,7 @@ import TodosCuadros from './pages/TodosCuadros';
 import Legal from './pages/Legal';
 import AdminApp from './admin/AdminApp';
 import LinksBro from './pages/LinksBro';
+import MilEstilosApp from './milestilos/MilEstilosApp';
 
 function App() {
   const productos =
@@ -218,6 +219,17 @@ function App() {
       ) {
         return {
           pagina: 'admin',
+          producto: null,
+          valida: true,
+        };
+      }
+
+      if (
+        pathname === '/panel-milestilos' ||
+        pathname.startsWith('/panel-milestilos/')
+      ) {
+        return {
+          pagina: 'milestilos',
           producto: null,
           valida: true,
         };
@@ -454,7 +466,9 @@ function App() {
       pathname === '/cuenta' ||
       pathname.startsWith('/cuenta/') ||
       pathname === '/admin' ||
-      pathname.startsWith('/admin/');
+      pathname.startsWith('/admin/') ||
+      pathname === '/panel-milestilos' ||
+      pathname.startsWith('/panel-milestilos/');
 
     const veniaDeZonaPrivada =
       zonaPrivadaAnterior.current;
@@ -1572,6 +1586,10 @@ function App() {
 
   if (pagina === 'admin') {
     return <AdminApp />;
+  }
+
+  if (pagina === 'milestilos') {
+    return <MilEstilosApp />;
   }
 
   if (pagina === 'links') {
