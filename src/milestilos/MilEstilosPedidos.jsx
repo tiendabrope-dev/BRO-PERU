@@ -379,20 +379,18 @@ function MilEstilosPedidos() {
     <div className="me-vista">
       <div className="me-encabezado-vista">
         <h2 className="me-titulo-vista">Pedidos</h2>
-        <div className="me-acciones-formulario">
-          {pedidos.length > 0 ? (
-            <button className="me-boton" type="button" onClick={exportar} disabled={exportando}>
-              {exportando ? 'Generando...' : '⬇ Exportar resumen a Excel'}
-            </button>
-          ) : null}
-          <FormularioNuevoPedido productos={productos} onCreado={cargarTodo} />
-        </div>
       </div>
 
-      {pedidos.length > 0 ? (
-        <div className="me-filtro-pedidos">
+      <div className="me-barra-acciones">
+        <FormularioNuevoPedido productos={productos} onCreado={cargarTodo} />
+        {pedidos.length > 0 ? (
+          <button className="me-boton" type="button" onClick={exportar} disabled={exportando}>
+            {exportando ? 'Generando...' : '⬇ Exportar resumen a Excel'}
+          </button>
+        ) : null}
+        {pedidos.length > 0 ? (
           <select
-            className="me-input"
+            className="me-input me-filtro-pedidos"
             value={filtroEstado}
             onChange={(evento) => setFiltroEstado(evento.target.value)}
           >
@@ -401,8 +399,8 @@ function MilEstilosPedidos() {
             <option value="facturado">Facturado</option>
             <option value="cancelado">Cancelado</option>
           </select>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
       {error ? <p className="me-error">{error}</p> : null}
 

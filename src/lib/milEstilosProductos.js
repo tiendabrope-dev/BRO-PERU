@@ -46,6 +46,8 @@ export async function crearProductoMilEstilos({
   precio,
   imagenUrl,
   stockInicial,
+  color,
+  precioCosto,
 }) {
   const { data: producto, error: errorProducto } = await supabase
     .from('mil_estilos_productos')
@@ -54,6 +56,10 @@ export async function crearProductoMilEstilos({
       precio: Number(precio) || 0,
       imagen_url: imagenUrl || null,
       stock_actual: 0,
+      color: String(color || '').trim() || null,
+      precio_costo: precioCosto === '' || precioCosto === undefined || precioCosto === null
+        ? null
+        : Number(precioCosto),
     })
     .select()
     .single();

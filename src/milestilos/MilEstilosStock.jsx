@@ -90,6 +90,8 @@ function FormularioNuevoProducto({ onCreado }) {
   const [nombre, setNombre] = useState('');
   const [precio, setPrecio] = useState('');
   const [stockInicial, setStockInicial] = useState('');
+  const [color, setColor] = useState('');
+  const [precioCosto, setPrecioCosto] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState('');
@@ -118,11 +120,15 @@ function FormularioNuevoProducto({ onCreado }) {
         precio,
         imagenUrl,
         stockInicial,
+        color,
+        precioCosto,
       });
 
       setNombre('');
       setPrecio('');
       setStockInicial('');
+      setColor('');
+      setPrecioCosto('');
       setArchivo(null);
       setAbierto(false);
       onCreado();
@@ -190,6 +196,34 @@ function FormularioNuevoProducto({ onCreado }) {
           onChange={(evento) => setArchivo(evento.target.files?.[0] || null)}
         />
       </label>
+
+      <div className="me-datos-internos">
+        <p className="me-etiqueta-interno">Datos internos (no se ven al crear un pedido)</p>
+
+        <label className="me-etiqueta">
+          Color
+          <input
+            className="me-input"
+            type="text"
+            value={color}
+            onChange={(evento) => setColor(evento.target.value)}
+            placeholder="Ej: negro"
+          />
+        </label>
+
+        <label className="me-etiqueta">
+          Precio costo (S/)
+          <input
+            className="me-input"
+            type="number"
+            step="0.01"
+            min="0"
+            value={precioCosto}
+            onChange={(evento) => setPrecioCosto(evento.target.value)}
+            placeholder="Lo que te cuesta a ti"
+          />
+        </label>
+      </div>
 
       {error ? <p className="me-error">{error}</p> : null}
 
@@ -260,25 +294,25 @@ function MilEstilosStock() {
     <div className="me-vista">
       <div className="me-encabezado-vista">
         <h2 className="me-titulo-vista">Stock</h2>
-        <div className="me-acciones-formulario">
-          {productos.length > 0 ? (
-            <button className="me-boton" type="button" onClick={exportar} disabled={exportando}>
-              {exportando ? 'Generando...' : '⬇ Exportar a Excel'}
-            </button>
-          ) : null}
-          <FormularioNuevoProducto onCreado={cargarProductos} />
-        </div>
       </div>
 
-      {productos.length > 0 ? (
-        <input
-          className="me-input me-input-busqueda"
-          type="text"
-          placeholder="Buscar por nombre..."
-          value={busqueda}
-          onChange={(evento) => setBusqueda(evento.target.value)}
-        />
-      ) : null}
+      <div className="me-barra-acciones">
+        <FormularioNuevoProducto onCreado={cargarProductos} />
+        {productos.length > 0 ? (
+          <button className="me-boton" type="button" onClick={exportar} disabled={exportando}>
+            {exportando ? 'Generando...' : '⬇ Exportar a Excel'}
+          </button>
+        ) : null}
+        {productos.length > 0 ? (
+          <input
+            className="me-input me-input-busqueda"
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={busqueda}
+            onChange={(evento) => setBusqueda(evento.target.value)}
+          />
+        ) : null}
+      </div>
 
       {error ? <p className="me-error">{error}</p> : null}
 

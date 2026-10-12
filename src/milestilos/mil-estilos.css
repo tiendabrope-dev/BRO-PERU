@@ -280,6 +280,21 @@
   font-size: 14px;
 }
 
+.me-barra-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.me-vacio {
+  background: var(--me-superficie);
+  border: 1px dashed var(--me-borde);
+  border-radius: var(--me-radio);
+  padding: 32px 20px;
+  text-align: center;
+}
+
 .me-lista-productos,
 .me-lista-pedidos {
   display: flex;
