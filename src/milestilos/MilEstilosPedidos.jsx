@@ -17,6 +17,7 @@ function FormularioNuevoPedido({ productos, onCreado }) {
   const [items, setItems] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState('');
   const [cantidadSeleccionada, setCantidadSeleccionada] = useState('1');
+  const [precioSeleccionado, setPrecioSeleccionado] = useState('');
   const [error, setError] = useState('');
   const [guardando, setGuardando] = useState(false);
   const [abierto, setAbierto] = useState(false);
@@ -31,6 +32,7 @@ function FormularioNuevoPedido({ productos, onCreado }) {
 
   function elegirProducto(producto) {
     setProductoSeleccionado(producto.id);
+    setPrecioSeleccionado(String(producto.precio));
     setSelectorAbierto(false);
     setBusquedaProducto('');
   }
@@ -50,6 +52,13 @@ function FormularioNuevoPedido({ productos, onCreado }) {
       return;
     }
 
+    const precioUnitario = precioSeleccionado === '' ? Number(producto.precio) : Number(precioSeleccionado);
+
+    if (Number.isNaN(precioUnitario) || precioUnitario < 0) {
+      setError('Precio inválido.');
+      return;
+    }
+
     setItems([
       ...items,
       {
@@ -57,11 +66,12 @@ function FormularioNuevoPedido({ productos, onCreado }) {
         nombreProducto: producto.nombre,
         color: producto.color || '',
         cantidad,
-        precioUnitario: producto.precio,
+        precioUnitario,
       },
     ]);
     setProductoSeleccionado('');
     setCantidadSeleccionada('1');
+    setPrecioSeleccionado('');
     setError('');
   }
 
@@ -214,8 +224,18 @@ function FormularioNuevoPedido({ productos, onCreado }) {
           className="me-input me-input-cantidad"
           type="number"
           min="1"
+          placeholder="Cant."
           value={cantidadSeleccionada}
           onChange={(e) => setCantidadSeleccionada(e.target.value)}
+        />
+        <input
+          className="me-input me-input-precio"
+          type="number"
+          step="0.01"
+          min="0"
+          placeholder="Precio (S/)"
+          value={precioSeleccionado}
+          onChange={(e) => setPrecioSeleccionado(e.target.value)}
         />
         <button className="me-boton me-boton-secundario" type="button" onClick={agregarItem}>
           Agregar
