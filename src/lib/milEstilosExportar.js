@@ -51,7 +51,9 @@ export async function exportarStockAExcel(productos) {
   hoja.columns = [
     { header: 'Foto', key: 'foto', width: 12 },
     { header: 'Producto', key: 'nombre', width: 30 },
-    { header: 'Precio (S/)', key: 'precio', width: 14 },
+    { header: 'Precio costo (S/)', key: 'precioCosto', width: 16 },
+    { header: 'Precio venta (S/)', key: 'precio', width: 16 },
+    { header: 'Ganancia por unidad (S/)', key: 'ganancia', width: 20 },
     { header: 'Stock actual', key: 'stock', width: 14 },
     { header: 'Activo', key: 'activo', width: 10 },
   ];
@@ -62,10 +64,18 @@ export async function exportarStockAExcel(productos) {
     const producto = productos[indice];
     const numeroFila = indice + 2;
 
+    const precioCosto = producto.precio_costo === null || producto.precio_costo === undefined
+      ? null
+      : Number(producto.precio_costo);
+    const precioVenta = Number(producto.precio);
+    const ganancia = precioCosto === null ? null : precioVenta - precioCosto;
+
     hoja.addRow({
       foto: '',
       nombre: producto.nombre,
-      precio: Number(producto.precio),
+      precioCosto: precioCosto === null ? '' : precioCosto,
+      precio: precioVenta,
+      ganancia: ganancia === null ? '' : ganancia,
       stock: Number(producto.stock_actual),
       activo: producto.activo ? 'Sí' : 'No',
     });
