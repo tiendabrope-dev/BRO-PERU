@@ -65,6 +65,7 @@ function FormularioNuevoPedido({ productos, onCreado }) {
         productoId: producto.id,
         nombreProducto: producto.nombre,
         color: producto.color || '',
+        imagenUrl: producto.imagen_url || '',
         cantidad,
         precioUnitario,
       },
@@ -246,7 +247,16 @@ function FormularioNuevoPedido({ productos, onCreado }) {
         <ul className="me-lista-items-pedido">
           {items.map((item, indice) => (
             <li key={`${item.productoId}-${indice}`}>
-              {item.cantidad} × {item.nombreProducto}{item.color ? ` (${item.color})` : ''} — S/ {(item.cantidad * item.precioUnitario).toFixed(2)}
+              <span className="me-selector-foto me-item-pedido-foto">
+                {item.imagenUrl ? (
+                  <img src={item.imagenUrl} alt={item.nombreProducto} />
+                ) : (
+                  <span className="me-foto-vacia">Sin foto</span>
+                )}
+              </span>
+              <span className="me-item-pedido-texto">
+                {item.cantidad} × {item.nombreProducto}{item.color ? ` (${item.color})` : ''} — S/ {(item.cantidad * item.precioUnitario).toFixed(2)}
+              </span>
               <button className="me-boton-quitar" type="button" onClick={() => quitarItem(indice)}>
                 ✕
               </button>

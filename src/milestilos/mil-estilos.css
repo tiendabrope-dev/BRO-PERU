@@ -422,8 +422,28 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-size: 13px;
+}
+
+.me-lista-items-pedido li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--me-borde);
+  background: var(--me-fondo);
+  border-radius: var(--me-radio-chico);
+  padding: 6px 10px;
+}
+
+.me-item-pedido-foto {
+  width: 32px;
+  height: 32px;
+}
+
+.me-item-pedido-texto {
+  flex: 1;
+  min-width: 0;
 }
 
 .me-encabezado-pedido {
