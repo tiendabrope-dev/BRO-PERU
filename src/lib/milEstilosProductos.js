@@ -146,6 +146,12 @@ export async function actualizarProductoConfiguracionMilEstilos(productoId, camb
   if (cambios.stockActual !== undefined) payload.stock_actual = Number(cambios.stockActual) || 0;
   if (cambios.activo !== undefined) payload.activo = Boolean(cambios.activo);
   if (cambios.imagenUrl !== undefined) payload.imagen_url = cambios.imagenUrl;
+  if (cambios.color !== undefined) payload.color = String(cambios.color || '').trim() || null;
+  if (cambios.precioCosto !== undefined) {
+    payload.precio_costo = cambios.precioCosto === '' || cambios.precioCosto === null
+      ? null
+      : Number(cambios.precioCosto);
+  }
 
   payload.actualizado_en = new Date().toISOString();
 

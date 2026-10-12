@@ -588,6 +588,27 @@
   border-top: 1px solid var(--me-borde);
 }
 
+.me-datos-internos {
+  margin-top: 6px;
+  border-top: 1px solid var(--me-borde);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--me-fondo-alterno);
+  border-radius: var(--me-radio-chico);
+  padding: 12px;
+}
+
+.me-etiqueta-interno {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--me-texto-suave);
+}
+
 @media print {
   .no-imprimir {
     display: none !important;

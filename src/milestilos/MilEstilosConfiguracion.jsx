@@ -12,6 +12,8 @@ function FilaConfiguracion({ producto, onGuardado, onEliminado }) {
   const [precio, setPrecio] = useState(producto.precio);
   const [stockActual, setStockActual] = useState(producto.stock_actual);
   const [activo, setActivo] = useState(producto.activo);
+  const [color, setColor] = useState(producto.color || '');
+  const [precioCosto, setPrecioCosto] = useState(producto.precio_costo ?? '');
   const [nuevaFoto, setNuevaFoto] = useState(null);
   const [guardando, setGuardando] = useState(false);
   const [eliminando, setEliminando] = useState(false);
@@ -36,6 +38,8 @@ function FilaConfiguracion({ producto, onGuardado, onEliminado }) {
         precio,
         stockActual,
         activo,
+        color,
+        precioCosto,
         ...(imagenUrl ? { imagenUrl } : {}),
       });
       setNuevaFoto(null);
@@ -139,6 +143,34 @@ function FilaConfiguracion({ producto, onGuardado, onEliminado }) {
         </div>
 
         {mensaje ? <p className="me-nota">{mensaje}</p> : null}
+
+        <div className="me-datos-internos">
+          <p className="me-etiqueta-interno">Datos internos (no se ven al crear un pedido)</p>
+
+          <label className="me-etiqueta">
+            Color
+            <input
+              className="me-input"
+              type="text"
+              value={color}
+              onChange={(evento) => setColor(evento.target.value)}
+              placeholder="Ej: negro"
+            />
+          </label>
+
+          <label className="me-etiqueta">
+            Precio costo (S/)
+            <input
+              className="me-input"
+              type="number"
+              step="0.01"
+              min="0"
+              value={precioCosto}
+              onChange={(evento) => setPrecioCosto(evento.target.value)}
+              placeholder="Lo que te cuesta a ti"
+            />
+          </label>
+        </div>
 
         {verHistorial ? (
           <div className="me-historial">
