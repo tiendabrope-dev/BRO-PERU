@@ -109,22 +109,24 @@ function FormularioNuevoPedido({ productos, onCreado }) {
     <form className="me-tarjeta me-form-nuevo-pedido" onSubmit={manejarEnvio}>
       <h3 className="me-subtitulo">Nuevo pedido</h3>
 
-      <label className="me-etiqueta">
-        Cliente
-        <input className="me-input" value={clienteNombre} onChange={(e) => setClienteNombre(e.target.value)} />
-      </label>
+      <div className="me-fila-dos-columnas">
+        <label className="me-etiqueta">
+          Cliente
+          <input className="me-input" value={clienteNombre} onChange={(e) => setClienteNombre(e.target.value)} />
+        </label>
 
-      <label className="me-etiqueta">
-        Teléfono
-        <input className="me-input" value={clienteTelefono} onChange={(e) => setClienteTelefono(e.target.value)} />
-      </label>
+        <label className="me-etiqueta">
+          Teléfono
+          <input className="me-input" value={clienteTelefono} onChange={(e) => setClienteTelefono(e.target.value)} />
+        </label>
+      </div>
 
       <label className="me-etiqueta">
         Método de pago
         <input className="me-input" value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)} placeholder="Yape, efectivo, etc." />
       </label>
 
-      <div className="me-selector-producto">
+      <div className="me-selector-producto-grupo">
         <button
           type="button"
           className="me-selector-producto-boton"
@@ -147,6 +149,26 @@ function FormularioNuevoPedido({ productos, onCreado }) {
             <span className="me-selector-texto">Elige un producto...</span>
           )}
         </button>
+
+        {productoElegido ? (
+          <div className="me-vista-previa-producto">
+            <div className="me-vista-previa-foto">
+              {productoElegido.imagen_url ? (
+                <img src={productoElegido.imagen_url} alt={productoElegido.nombre} />
+              ) : (
+                <span className="me-foto-vacia">Sin foto</span>
+              )}
+            </div>
+            <div className="me-vista-previa-info">
+              <p className="me-vista-previa-nombre">
+                {productoElegido.nombre}{productoElegido.color ? ` (${productoElegido.color})` : ''}
+              </p>
+              <p className="me-nota">
+                S/ {Number(productoElegido.precio).toFixed(2)} · stock: {productoElegido.stock_actual}
+              </p>
+            </div>
+          </div>
+        ) : null}
 
         {selectorAbierto ? (
           <div className="me-selector-panel">
