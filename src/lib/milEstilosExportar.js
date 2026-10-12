@@ -142,6 +142,7 @@ export async function exportarResumenVentasAExcel(pedidos) {
   hojaDetalle.columns = [
     { header: 'Código de pedido', key: 'codigo', width: 18 },
     { header: 'Producto', key: 'producto', width: 28 },
+    { header: 'Color', key: 'color', width: 14 },
     { header: 'Cantidad', key: 'cantidad', width: 12 },
     { header: 'Precio unitario (S/)', key: 'precio', width: 18 },
     { header: 'Subtotal (S/)', key: 'subtotal', width: 16 },
@@ -155,6 +156,7 @@ export async function exportarResumenVentasAExcel(pedidos) {
       hojaDetalle.addRow({
         codigo: pedido.codigo_pedido,
         producto: item.nombre_producto,
+        color: item.color || '',
         cantidad: Number(item.cantidad),
         precio: Number(item.precio_unitario),
         subtotal: Number(item.total_linea),

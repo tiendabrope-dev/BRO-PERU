@@ -38,7 +38,7 @@ function MilEstilosNotaVenta({ pedido, onVolver }) {
           <tbody>
             {items.map((item) => (
               <tr key={item.id}>
-                <td>{item.nombre_producto}</td>
+                <td>{item.nombre_producto}{item.color ? ` (${item.color})` : ''}</td>
                 <td>{item.cantidad}</td>
                 <td>S/ {Number(item.precio_unitario).toFixed(2)}</td>
                 <td>S/ {Number(item.total_linea).toFixed(2)}</td>

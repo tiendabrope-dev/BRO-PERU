@@ -20,6 +20,20 @@ function FormularioNuevoPedido({ productos, onCreado }) {
   const [error, setError] = useState('');
   const [guardando, setGuardando] = useState(false);
   const [abierto, setAbierto] = useState(false);
+  const [selectorAbierto, setSelectorAbierto] = useState(false);
+  const [busquedaProducto, setBusquedaProducto] = useState('');
+
+  const productoElegido = productos.find((p) => p.id === productoSeleccionado);
+
+  const productosFiltrados = productos.filter((producto) =>
+    producto.nombre.toLowerCase().includes(busquedaProducto.trim().toLowerCase())
+  );
+
+  function elegirProducto(producto) {
+    setProductoSeleccionado(producto.id);
+    setSelectorAbierto(false);
+    setBusquedaProducto('');
+  }
 
   function agregarItem() {
     const producto = productos.find((p) => p.id === productoSeleccionado);
@@ -41,6 +55,7 @@ function FormularioNuevoPedido({ productos, onCreado }) {
       {
         productoId: producto.id,
         nombreProducto: producto.nombre,
+        color: producto.color || '',
         cantidad,
         precioUnitario: producto.precio,
       },
@@ -109,19 +124,70 @@ function FormularioNuevoPedido({ productos, onCreado }) {
         <input className="me-input" value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)} placeholder="Yape, efectivo, etc." />
       </label>
 
-      <div className="me-agregar-item">
-        <select
-          className="me-input"
-          value={productoSeleccionado}
-          onChange={(e) => setProductoSeleccionado(e.target.value)}
+      <div className="me-selector-producto">
+        <button
+          type="button"
+          className="me-selector-producto-boton"
+          onClick={() => setSelectorAbierto(!selectorAbierto)}
         >
-          <option value="">Elige un producto...</option>
-          {productos.map((producto) => (
-            <option key={producto.id} value={producto.id}>
-              {producto.nombre} — S/ {Number(producto.precio).toFixed(2)} (stock: {producto.stock_actual})
-            </option>
-          ))}
-        </select>
+          {productoElegido ? (
+            <>
+              <span className="me-selector-foto">
+                {productoElegido.imagen_url ? (
+                  <img src={productoElegido.imagen_url} alt={productoElegido.nombre} />
+                ) : (
+                  <span className="me-foto-vacia">Sin foto</span>
+                )}
+              </span>
+              <span className="me-selector-texto">
+                {productoElegido.nombre}{productoElegido.color ? ` (${productoElegido.color})` : ''} — S/ {Number(productoElegido.precio).toFixed(2)} (stock: {productoElegido.stock_actual})
+              </span>
+            </>
+          ) : (
+            <span className="me-selector-texto">Elige un producto...</span>
+          )}
+        </button>
+
+        {selectorAbierto ? (
+          <div className="me-selector-panel">
+            <input
+              className="me-input"
+              type="text"
+              placeholder="Buscar por nombre..."
+              value={busquedaProducto}
+              onChange={(evento) => setBusquedaProducto(evento.target.value)}
+              autoFocus
+            />
+            <div className="me-selector-lista">
+              {productosFiltrados.length === 0 ? (
+                <p className="me-nota">Ningún producto coincide.</p>
+              ) : (
+                productosFiltrados.map((producto) => (
+                  <button
+                    type="button"
+                    key={producto.id}
+                    className="me-selector-opcion"
+                    onClick={() => elegirProducto(producto)}
+                  >
+                    <span className="me-selector-foto">
+                      {producto.imagen_url ? (
+                        <img src={producto.imagen_url} alt={producto.nombre} />
+                      ) : (
+                        <span className="me-foto-vacia">Sin foto</span>
+                      )}
+                    </span>
+                    <span className="me-selector-texto">
+                      {producto.nombre}{producto.color ? ` (${producto.color})` : ''} — S/ {Number(producto.precio).toFixed(2)} (stock: {producto.stock_actual})
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="me-agregar-item">
         <input
           className="me-input me-input-cantidad"
           type="number"
@@ -138,7 +204,7 @@ function FormularioNuevoPedido({ productos, onCreado }) {
         <ul className="me-lista-items-pedido">
           {items.map((item, indice) => (
             <li key={`${item.productoId}-${indice}`}>
-              {item.cantidad} × {item.nombreProducto} — S/ {(item.cantidad * item.precioUnitario).toFixed(2)}
+              {item.cantidad} × {item.nombreProducto}{item.color ? ` (${item.color})` : ''} — S/ {(item.cantidad * item.precioUnitario).toFixed(2)}
               <button className="me-boton-quitar" type="button" onClick={() => quitarItem(indice)}>
                 ✕
               </button>
@@ -226,7 +292,7 @@ function FilaPedido({ pedido, onCambio, onVerNota }) {
       <ul className="me-lista-items-pedido">
         {items.map((item) => (
           <li key={item.id}>
-            {item.cantidad} × {item.nombre_producto} — S/ {Number(item.total_linea).toFixed(2)}
+            {item.cantidad} × {item.nombre_producto}{item.color ? ` (${item.color})` : ''} — S/ {Number(item.total_linea).toFixed(2)}
           </li>
         ))}
       </ul>

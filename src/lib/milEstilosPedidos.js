@@ -66,6 +66,7 @@ export async function crearPedidoMilEstilos({ clienteNombre, clienteTelefono, me
     pedido_id: pedido.id,
     producto_id: item.productoId || null,
     nombre_producto: item.nombreProducto,
+    color: item.color || null,
     cantidad: Number(item.cantidad),
     precio_unitario: Number(item.precioUnitario),
     total_linea: Number(item.cantidad) * Number(item.precioUnitario),
